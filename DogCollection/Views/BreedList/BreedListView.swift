@@ -15,9 +15,7 @@ struct BreedListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                SearchBar(text: $viewModel.searchText,
-                          isEditing: $viewModel.isSearching,
-                          showsCancelButton: viewModel.showsSearchCancelButton, statusChanged: viewModel.searchStatusChanged)
+                SearchBar(text: $viewModel.searchText)
 
                 self.content
                 Spacer()

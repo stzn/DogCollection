@@ -16,7 +16,6 @@ final class BreedListViewModel: ObservableObject {
         case error
     }
 
-    @Published var isSearching: Bool = false
     @Published var searchText: String = "" {
         didSet {
             if !searchText.isEmpty {
@@ -33,10 +32,6 @@ final class BreedListViewModel: ObservableObject {
     }
     private(set) var error: String = "" {
         didSet { self.state = .error }
-    }
-
-    var showsSearchCancelButton: Bool {
-        isSearching
     }
 
     private var cancellables: Set<AnyCancellable> = []
@@ -57,14 +52,5 @@ final class BreedListViewModel: ObservableObject {
                     self.originalBreeds = breeds
                     self.breeds = breeds
             }).store(in: &cancellables)
-    }
-
-    func searchStatusChanged(_ value: SearchBar.Status) {
-        switch value {
-        case .searching:
-            isSearching = true
-        case .notSearching:
-            isSearching = false
-        }
     }
 }

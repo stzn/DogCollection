@@ -9,47 +9,38 @@
 import SwiftUI
 
 struct SearchBar: UIViewRepresentable {
-    enum Status {
-        case notSearching
-        case searching
-    }
-
     @Binding var text: String
-    @Binding var isEditing: Bool
-    let showsCancelButton: Bool
-    let statusChanged: (Status) -> Void
 
     class Coordinator: NSObject, UISearchBarDelegate {
-        @Binding var text: String
-        let statusChanged: (Status) -> Void
+        let text: Binding<String>
 
-        init(text: Binding<String>, statusChanged: @escaping (Status) -> Void) {
-            _text = text
-            self.statusChanged = statusChanged
+        init(text: Binding<String>) {
+            self.text = text
         }
 
-        func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-            statusChanged(.searching)
+        func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+            searchBar.setShowsCancelButton(true, animated: true)
+            return true
+        }
+
+        func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+            searchBar.setShowsCancelButton(false, animated: true)
+            return true
         }
 
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            text = searchText
-        }
-
-        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.resignFirstResponder()
-            statusChanged(.notSearching)
+            text.wrappedValue = searchText
         }
 
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            text = ""
-            searchBar.resignFirstResponder()
-            statusChanged(.notSearching)
+            searchBar.endEditing(true)
+            searchBar.text = ""
+            text.wrappedValue = ""
         }
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(text: $text, statusChanged: statusChanged)
+        Coordinator(text: $text)
     }
 
     func makeUIView(context: Context) -> UISearchBar {
@@ -62,18 +53,12 @@ struct SearchBar: UIViewRepresentable {
 
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
         uiView.text = text
-        uiView.showsCancelButton = self.showsCancelButton
-        if isEditing && !uiView.isFirstResponder {
-            uiView.becomeFirstResponder()
-        } else if !isEditing && uiView.isFirstResponder {
-            uiView.resignFirstResponder()
-        }
     }
 }
 
 struct SearchBar_Previews: PreviewProvider {
     static var previews: some View {
-        SearchBar(text: .constant(""), isEditing: .constant(false), showsCancelButton: false, statusChanged: { _ in })
+        SearchBar(text: .constant(""))
             .previewLayout(.sizeThatFits)
     }
 }
