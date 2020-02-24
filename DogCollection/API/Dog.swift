@@ -32,16 +32,15 @@ final class DogAPI: ObservableObject {
 extension DogAPI {
     func run<M: Model>(_ type: M.Type, _ request: URLRequest) -> AnyPublisher<M, Error> {
         client.send(request: request)
-            .tryMap { response in
-                do {
-                    return try M.decoder.decode(M.self, from: response.data)
-                } catch let error as DecodingError {
-                    throw APIError.decodingError(error)
-                } catch {
-                    throw APIError.unknown(error)
+            .map(\.data)
+            .decode(type: M.self, decoder: M.decoder)
+            .mapError { error in
+                if let error = error as? DecodingError {
+                    return APIError.decodingError(error)
                 }
+                return  error
         }
-            .eraseToAnyPublisher()
+        .eraseToAnyPublisher()
     }
 }
 
