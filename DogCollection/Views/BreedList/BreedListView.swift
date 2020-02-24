@@ -34,7 +34,8 @@ struct BreedListView: View {
         case .loaded:
             return AnyView(BreedListResultView(breeds: self.viewModel.breeds))
         case .error:
-            return AnyView(ErrorView(message: self.viewModel.error))
+            return AnyView(ErrorView(message: self.viewModel.error,
+                                     retryAction: { self.viewModel.get(api: self.api) }))
         }
     }
 }

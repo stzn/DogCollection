@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ErrorView: View {
     let message: String
+    let retryAction: () -> Void
 
     var body: some View {
         VStack {
@@ -19,13 +20,14 @@ struct ErrorView: View {
                     .foregroundColor(Color.orange)
             }.font(.headline)
             Text(message).font(.body)
+            Button(action: retryAction, label: { Text("Retry").bold() })
         }.padding()
     }
 }
 
 struct ErrorView_Previews: PreviewProvider {
     static var previews: some View {
-        ErrorView(message: "something wrong")
+        ErrorView(message: "something wrong", retryAction: { })
             .previewLayout(.sizeThatFits)
     }
 }

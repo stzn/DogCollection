@@ -30,7 +30,8 @@ struct DogImageListView: View {
                 DogImageCollection(breed: viewModel.breed, dogImages: viewModel.dogImages)
             )
         case .error:
-            return AnyView(ErrorView(message: self.viewModel.error))
+            return AnyView(ErrorView(message: self.viewModel.error,
+                                     retryAction: { self.viewModel.get(api: self.api) }))
         }
     }
 }
