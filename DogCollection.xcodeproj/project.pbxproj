@@ -34,6 +34,7 @@
 		D6D2E61B2401BD84008C7239 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6D2E61A2401BD84008C7239 /* Preview Assets.xcassets */; };
 		D6D2E61E2401BD84008C7239 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6D2E61C2401BD84008C7239 /* LaunchScreen.storyboard */; };
 		D6DC71652403C181007A5C6F /* SearchBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC71642403C181007A5C6F /* SearchBarTests.swift */; };
+		D6DC716824049711007A5C6F /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC716724049711007A5C6F /* Binding+.swift */; };
 		D6F24A8C24036BCA00EDD0EA /* DogImageCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F24A8B24036BCA00EDD0EA /* DogImageCollection.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		D6D2E6242401BD84008C7239 /* DogCollectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogCollectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D2E62A2401BD84008C7239 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6DC71642403C181007A5C6F /* SearchBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTests.swift; sourceTree = "<group>"; };
+		D6DC716724049711007A5C6F /* Binding+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+.swift"; sourceTree = "<group>"; };
 		D6F24A8B24036BCA00EDD0EA /* DogImageCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageCollection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -213,6 +215,7 @@
 		D6D2E6102401BD82008C7239 /* DogCollection */ = {
 			isa = PBXGroup;
 			children = (
+				D6DC716624049696007A5C6F /* Extensions */,
 				D649C5A624020BDD0053CDD7 /* Views */,
 				D649C5A124020AED0053CDD7 /* ViewModels */,
 				D69FA31F2401C59300C37862 /* API */,
@@ -269,6 +272,14 @@
 				D6DC71642403C181007A5C6F /* SearchBarTests.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		D6DC716624049696007A5C6F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D6DC716724049711007A5C6F /* Binding+.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,6 +389,7 @@
 				D6D2E6122401BD82008C7239 /* AppDelegate.swift in Sources */,
 				D6D2E6142401BD82008C7239 /* SceneDelegate.swift in Sources */,
 				D69FA2EA2401BE4500C37862 /* DogImage.swift in Sources */,
+				D6DC716824049711007A5C6F /* Binding+.swift in Sources */,
 				D649C5B724024A0B0053CDD7 /* BreedRow.swift in Sources */,
 				D69FA3212401C5A700C37862 /* URLSessionAPIClient.swift in Sources */,
 				D649C5AD2402104A0053CDD7 /* ActivityIndicator.swift in Sources */,

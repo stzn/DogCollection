@@ -14,7 +14,7 @@ class SearchBarTests: XCTestCase {
 
     func test_searchBarCorrdinator_beginEditing() {
         let expected = "abc"
-        let text = Binding(get: { expected }, set: { _ in })
+        let text = Binding<String>(wrappedValue: expected)
         let sut = SearchBar.Coordinator(text: text)
         let searchBar = UISearchBar(frame: .zero)
         searchBar.delegate = sut
@@ -25,7 +25,7 @@ class SearchBarTests: XCTestCase {
 
     func test_searchBarCorrdinator_endEditing() {
         let expected = "abc"
-        let text = Binding(get: { expected }, set: { _ in })
+        let text = Binding<String>(wrappedValue: expected)
         let sut = SearchBar.Coordinator(text: text)
         let searchBar = UISearchBar(frame: .zero)
         searchBar.delegate = sut
@@ -35,8 +35,7 @@ class SearchBarTests: XCTestCase {
     }
 
     func test_searchBarCorrdinator_textDidChange() {
-        var _text = "abc"
-        let text = Binding<String>(get: { _text }, set: { text in _text = text })
+        let text = Binding<String>(wrappedValue: "abc")
         let sut = SearchBar.Coordinator(text: text)
         let searchBar = UISearchBar(frame: .zero)
         searchBar.delegate = sut
@@ -45,8 +44,7 @@ class SearchBarTests: XCTestCase {
     }
 
     func test_searchBarCoordinator_cancelButtonClicked() {
-        var _text = "abc"
-        let text = Binding<String>(get: { _text }, set: { text in _text = text })
+        let text = Binding<String>(wrappedValue: "abc")
         let sut = SearchBar.Coordinator(text: text)
         let searchBar = UISearchBar(frame: .zero)
         searchBar.text = text.wrappedValue
