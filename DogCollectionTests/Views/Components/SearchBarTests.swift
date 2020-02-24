@@ -12,7 +12,7 @@ import XCTest
 
 class SearchBarTests: XCTestCase {
 
-    func testSearchBarCorrdinatorBeginEditing() {
+    func test_searchBarCorrdinator_beginEditing() {
         let expected = "abc"
         let text = Binding(get: { expected }, set: { _ in })
         let sut = SearchBar.Coordinator(text: text)
@@ -23,7 +23,7 @@ class SearchBarTests: XCTestCase {
         XCTAssertEqual(text.wrappedValue, expected)
     }
 
-    func testSearchBarCorrdinatorEndEditing() {
+    func test_searchBarCorrdinator_endEditing() {
         let expected = "abc"
         let text = Binding(get: { expected }, set: { _ in })
         let sut = SearchBar.Coordinator(text: text)
@@ -34,7 +34,7 @@ class SearchBarTests: XCTestCase {
         XCTAssertEqual(text.wrappedValue, expected)
     }
 
-    func testSearchBarCorrdinatorTextDidChange() {
+    func test_searchBarCorrdinator_textDidChange() {
         var _text = "abc"
         let text = Binding<String>(get: { _text }, set: { text in _text = text })
         let sut = SearchBar.Coordinator(text: text)
@@ -44,7 +44,7 @@ class SearchBarTests: XCTestCase {
         XCTAssertEqual(text.wrappedValue, "bbb")
     }
 
-    func test_SearchBarCoordinatorCancelButtonClicked() {
+    func test_searchBarCoordinator_cancelButtonClicked() {
         var _text = "abc"
         let text = Binding<String>(get: { _text }, set: { text in _text = text })
         let sut = SearchBar.Coordinator(text: text)
