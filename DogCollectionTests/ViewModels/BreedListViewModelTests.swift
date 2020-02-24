@@ -24,7 +24,7 @@ class BreedListViewModelTests: XCTestCase {
         let (sut, api) = makeSUT(with: publisher)
         
         let exp = expectation(description: "\(#function)")
-        sut.$state.dropFirst().sink { state in
+        sut.$state.dropFirst(2).sink { state in
             XCTAssertEqual(state, .loaded)
             XCTAssertEqual(sut.breeds, expected)
             exp.fulfill()
@@ -41,7 +41,7 @@ class BreedListViewModelTests: XCTestCase {
         let (sut, api) = makeSUT(with: publisher)
         
         let exp = expectation(description: "wait for get")
-        sut.$state.dropFirst().sink { state in
+        sut.$state.dropFirst(2).sink { state in
             XCTAssertEqual(state, .error)
             XCTAssertEqual(sut.error, expected.localizedDescription)
             exp.fulfill()

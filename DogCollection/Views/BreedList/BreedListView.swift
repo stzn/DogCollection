@@ -16,19 +16,20 @@ struct BreedListView: View {
         NavigationView {
             VStack {
                 SearchBar(text: $viewModel.searchText)
-
                 self.content
                 Spacer()
             }.navigationBarTitle("Search Dogs")
                 .edgesIgnoringSafeArea(.bottom)
-        }
-        .onAppear {
-            self.viewModel.get(api: self.api)
+            .onAppear {
+                self.viewModel.onAppear()
+            }
         }
     }
 
     private var content: some View {
         switch viewModel.state {
+        case .notRequested:
+            return AnyView(Text("").onAppear { self.viewModel.get(api: self.api) })
         case .loading:
             return AnyView(LoadingView())
         case .loaded:
