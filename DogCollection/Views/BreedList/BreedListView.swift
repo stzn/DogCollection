@@ -23,9 +23,9 @@ struct BreedListView: View {
                 Spacer()
             }.navigationBarTitle("Search Dogs")
                 .edgesIgnoringSafeArea(.bottom)
-                .onAppear {
-                    self.viewModel.get(api: self.api)
-            }
+        }
+        .onAppear {
+            self.viewModel.get(api: self.api)
         }
     }
 
