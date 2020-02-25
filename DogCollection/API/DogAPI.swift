@@ -17,10 +17,6 @@ protocol DogImageListGettable {
     func get(breed: String) -> AnyPublisher<[DogImage], Error>
 }
 
-protocol DogImageDataDownloadable {
-    func download(from url: URL) -> AnyPublisher<Data, Error>
-}
-
 final class DogAPI: ObservableObject {
     private let base = URL(string: "https://dog.ceo/api")!
     private let client: APIClient
@@ -78,14 +74,5 @@ extension DogAPI: DogImageListGettable {
             return DogImage(imageURL: url)
         }
         return dogImages
-    }
-}
-
-extension DogAPI: DogImageDataDownloadable {
-    func download(from url: URL) -> AnyPublisher<Data, Error> {
-        client.send(request: URLRequest(url: url))
-            .map { $0.data }
-            .mapError { $0 as Error }
-            .eraseToAnyPublisher()
     }
 }

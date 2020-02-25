@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct DogImageItem: View {
-    @EnvironmentObject var api: DogAPI
+    @EnvironmentObject var api: ImageAPI
     @ObservedObject var viewModel: DogImageRowViewModel
 
     let size: CGSize

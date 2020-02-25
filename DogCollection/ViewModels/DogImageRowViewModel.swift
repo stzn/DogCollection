@@ -24,7 +24,7 @@ final class DogImageRowViewModel: ObservableObject {
         cancellable?.cancel()
     }
     
-    func download(api: DogImageDataDownloadable) {
+    func download(api: ImageDataDownloadable) {
         cancellable = api.download(from: url)
             .receive(on: DispatchQueue.main)
             .sink(
