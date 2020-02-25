@@ -20,9 +20,9 @@ struct BreedListView: View {
                 Spacer()
             }.navigationBarTitle("Search Dogs")
                 .edgesIgnoringSafeArea(.bottom)
-            .onAppear {
-                self.viewModel.onAppear()
-            }
+        }
+        .onAppear {
+            self.viewModel.onAppear()
         }
     }
 
