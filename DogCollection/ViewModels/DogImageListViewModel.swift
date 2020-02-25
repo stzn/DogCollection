@@ -16,6 +16,8 @@ final class DogImageListViewModel: ObservableObject {
         case error
     }
 
+    @Published var state: State = .loading
+
     private(set) var dogImages: [DogImage] = [] {
         didSet { self.state = .loaded }
     }
@@ -23,7 +25,6 @@ final class DogImageListViewModel: ObservableObject {
     private(set) var error: String = "" {
         didSet { self.state = .error }
     }
-    @Published var state: State = .loading
 
     let breed: String
     private var cancellables: Set<AnyCancellable> = []

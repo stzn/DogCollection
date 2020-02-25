@@ -16,13 +16,29 @@ struct DogImageItem: View {
 
     var body: some View {
         VStack {
-            Image(uiImage: viewModel.image)
-                .resizable()
-                .frame(width: size.width, height: size.height, alignment: .center)
-                .aspectRatio(contentMode: .fill)
-                .clipped()
+            self.content
         }.onAppear {
             self.viewModel.download(api: self.api)
+        }
+    }
+
+    private var content: some View {
+        switch viewModel.state {
+        case .loading:
+            return AnyView(
+                LoadingView(message: "")
+                    .frame(width: size.width, height: size.height, alignment: .center)
+            )
+        case .loaded:
+            return AnyView(
+                Image(uiImage: viewModel.image)
+                    .resizable()
+                    .frame(width: size.width, height: size.height, alignment: .center)
+                    .aspectRatio(contentMode: .fill)
+                    .clipped()
+            )
+        case .error:
+            return AnyView(Image(uiImage: UIImage(systemName: "photo")!))
         }
     }
 }

@@ -9,9 +9,14 @@
 import SwiftUI
 
 struct LoadingView: View {
+    let message: String
+    init(message: String = "Loading...") {
+        self.message = message
+    }
+
     var body: some View {
         HStack {
-            Text("Loading...").font(.body)
+            Text(message).font(.body)
             ActivityIndicator(isAnimating: .constant(true), style: .medium)
         }.padding()
     }

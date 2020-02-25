@@ -18,11 +18,7 @@ struct DogImageCollection: View {
         GeometryReader { geometry in
             List {
                 ForEach(self.dataCollection(items: self.dogImages, size: geometry.size)) { rowModel in
-                    HStack(spacing: 0) {
-                        ForEach(rowModel.items) { image in
-                            self.createDogImageItem(for: geometry, with: image)
-                        }
-                    }.listRowInsets(EdgeInsets())
+                    self.createDogImageItems(for: geometry, with: rowModel)
                 }
             }
             .navigationBarTitle(self.breed)
@@ -33,10 +29,13 @@ struct DogImageCollection: View {
         }
     }
 
-    private func createDogImageItem(for geometry: GeometryProxy, with image: DogImage) -> some View {
-        DogImageItem(
-            viewModel: DogImageRowViewModel(url: image.imageURL),
-            size: self.size(for: geometry))
+    private func createDogImageItems(for geometry: GeometryProxy, with rowModel: RowModel) -> some View {
+        HStack(spacing: 0) {
+            ForEach(rowModel.items) { image in
+                DogImageItem(viewModel: DogImageRowViewModel(url: image.imageURL),
+                             size: self.size(for: geometry))
+            }
+        }.listRowInsets(EdgeInsets())
     }
 
     private func size(for geometry: GeometryProxy) -> CGSize {

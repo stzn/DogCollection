@@ -11,10 +11,19 @@ import Foundation
 import UIKit
 
 final class DogImageRowViewModel: ObservableObject {
-    @Published var image: UIImage = UIImage(systemName: "photo")!
+    enum State {
+        case loading
+        case loaded
+        case error
+    }
+
+    @Published var state: State = .loading
 
     private let url: URL
     private var cancellable: AnyCancellable?
+    private(set) var image: UIImage = UIImage(systemName: "photo")! {
+        didSet { self.state = .loaded }
+    }
 
     init(url: URL) {
         self.url = url
@@ -31,7 +40,7 @@ final class DogImageRowViewModel: ObservableObject {
                 receiveCompletion: { result in
                     if case .failure(let error) = result {
                         print(error)
-                        self.image = UIImage(systemName: "photo")!
+                        self.state = .error
                     }
             },
                 receiveValue: { data in
