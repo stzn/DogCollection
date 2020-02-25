@@ -11,7 +11,6 @@ import Foundation
 
 final class BreedListViewModel: ObservableObject {
     enum State {
-        case notRequested
         case loading
         case loaded
         case error
@@ -26,7 +25,7 @@ final class BreedListViewModel: ObservableObject {
             }
         }
     }
-    @Published var state: State = .notRequested
+    @Published var state: State = .loading
 
     private(set) var breeds: [Breed] = [] {
         didSet { self.state = .loaded }
@@ -39,10 +38,6 @@ final class BreedListViewModel: ObservableObject {
     private var originalBreeds: [Breed] = []
 
     init() {}
-
-    func onAppear() {
-        state = .notRequested
-    }
 
     func get(api: BreedListGettable) {
         state = .loading

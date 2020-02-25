@@ -48,10 +48,12 @@ struct DogImageCollection: View {
     }
 
     private func dataCollection(items: [DogImage], size: CGSize) -> [RowModel] {
-        let strideSize = columnCount(for: size)
-        guard strideSize > 0 else {
+        guard size != .zero else {
             return []
         }
+
+        let strideSize = columnCount(for: size)
+
         let rowModels = stride(from: items.startIndex, to: items.endIndex, by: strideSize)
             .map { index -> RowModel in
                 let range = index..<min(index + strideSize, items.endIndex)

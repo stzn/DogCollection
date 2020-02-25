@@ -26,11 +26,11 @@ struct DogImageListView: View {
         case .loading:
             return AnyView(LoadingView())
         case .loaded:
-            return AnyView(
-                DogImageCollection(breed: viewModel.breed, dogImages: viewModel.dogImages)
-            )
+            return AnyView(DogImageCollection(breed: viewModel.breed,
+                                              dogImages: viewModel.dogImages))
         case .error:
-            return AnyView(ErrorView(message: self.viewModel.error, retryAction: { self.viewModel.get(api: self.api) }))
+            return AnyView(ErrorView(message: self.viewModel.error,
+                                     retryAction: { self.viewModel.get(api: self.api) }))
         }
     }
 }

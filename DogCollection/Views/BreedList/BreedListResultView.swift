@@ -13,24 +13,40 @@ struct BreedListResultView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            if !self.breeds.isEmpty {
-                List {
-                    ForEach(self.breeds) { breed in
-                        NavigationLink(destination: DogImageListView(
-                            viewModel: DogImageListViewModel(breed: breed.name))) {
-                                BreedRow(breed: breed)
-                        }
-                    }
-                }
-            } else {
-                VStack(alignment: .center) {
-                    Spacer().frame(height: 20)
-                    HStack {
-                        Text("No Results")
-                        Image(systemName: "exclamationmark.triangle")
-                    }.font(.headline).frame(width: geometry.size.width)
+            self.content(for: geometry)
+        }
+    }
+
+    private func content(for geometry: GeometryProxy) -> AnyView {
+        if !self.breeds.isEmpty {
+            return AnyView(loadedView)
+        } else {
+            return AnyView(noResultView(for: geometry))
+        }
+    }
+
+    private var loadedView: some View {
+        List {
+            ForEach(self.breeds) { breed in
+                NavigationLink(destination: self.dogImageListView(with: breed)) {
+                    BreedRow(breed: breed)
                 }
             }
+        }
+    }
+
+    private func dogImageListView(with breed: Breed) -> DogImageListView {
+        DogImageListView(
+            viewModel: DogImageListViewModel(breed: breed.name))
+    }
+
+    private func noResultView(for geometry: GeometryProxy) -> some View {
+        VStack(alignment: .center) {
+            Spacer().frame(height: 20)
+            HStack {
+                Text("No Results")
+                Image(systemName: "exclamationmark.triangle")
+            }.font(.headline).frame(width: geometry.size.width)
         }
     }
 }

@@ -14,29 +14,32 @@ struct BreedListView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                SearchBar(text: $viewModel.searchText)
-                self.content
-                Spacer()
-            }.navigationBarTitle("Search Dogs")
+            self.content
+                .navigationBarTitle("Search Dogs")
                 .edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
-            self.viewModel.onAppear()
+            self.viewModel.get(api: self.api)
         }
     }
 
     private var content: some View {
         switch viewModel.state {
-        case .notRequested:
-            return AnyView(Text("").onAppear { self.viewModel.get(api: self.api) })
         case .loading:
             return AnyView(LoadingView())
         case .loaded:
-            return AnyView(BreedListResultView(breeds: self.viewModel.breeds))
+            return AnyView(loadedView)
         case .error:
             return AnyView(ErrorView(message: self.viewModel.error,
                                      retryAction: { self.viewModel.get(api: self.api) }))
+        }
+    }
+
+    private var loadedView: some View {
+        VStack {
+            SearchBar(text: $viewModel.searchText)
+            BreedListResultView(breeds: self.viewModel.breeds)
+            Spacer()
         }
     }
 }

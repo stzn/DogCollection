@@ -30,16 +30,18 @@ struct DogImageItem: View {
                     .frame(width: size.width, height: size.height, alignment: .center)
             )
         case .loaded:
-            return AnyView(
-                Image(uiImage: viewModel.image)
-                    .resizable()
-                    .frame(width: size.width, height: size.height, alignment: .center)
-                    .aspectRatio(contentMode: .fill)
-                    .clipped()
-            )
+            return AnyView(loadedView)
         case .error:
             return AnyView(Image(uiImage: UIImage(systemName: "photo")!))
         }
+    }
+
+    private var loadedView: some View {
+        Image(uiImage: viewModel.image)
+            .resizable()
+            .frame(width: size.width, height: size.height, alignment: .center)
+            .aspectRatio(contentMode: .fill)
+            .clipped()
     }
 }
 
