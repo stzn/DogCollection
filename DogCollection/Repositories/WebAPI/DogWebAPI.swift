@@ -26,10 +26,10 @@ final class DogWebAPI: ObservableObject {
 }
 
 extension DogWebAPI {
-    func run<M: Model>(_ type: M.Type, _ request: URLRequest) -> AnyPublisher<M, Error> {
+    func run<M: Decodable>(_ type: M.Type, _ request: URLRequest) -> AnyPublisher<M, Error> {
         client.send(request: request)
             .map(\.data)
-            .decode(type: M.self, decoder: M.decoder)
+            .decode(type: M.self, decoder: JSONDecoder())
             .mapError { error in
                 if let error = error as? DecodingError {
                     return WebAPIError.decodingError(error)
@@ -41,7 +41,7 @@ extension DogWebAPI {
 }
 
 extension DogWebAPI: BreedListGettable {
-    struct BreedListAPIModel: Model {
+    struct BreedListAPIModel: Decodable {
         let message: [String: [String]]
         let status: String
     }
@@ -54,7 +54,7 @@ extension DogWebAPI: BreedListGettable {
 }
 
 extension DogWebAPI: DogImageListGettable {
-    struct DogImageListAPIModel: Model {
+    struct DogImageListAPIModel: Decodable {
         let message: [String]
         let status: String
     }

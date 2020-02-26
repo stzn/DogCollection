@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Breed: Model, Equatable {
+struct Breed: Equatable {
     let name: String
 }
 
