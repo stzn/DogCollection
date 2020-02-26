@@ -52,8 +52,8 @@ class BreedListViewModelTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func makeSUT(with publisher: AnyPublisher<[Breed], Error> = empty) -> (BreedListViewModel, BreedListGettable) {
-        let api = BreedListGettableStub(publisher: publisher)
+    private func makeSUT(with publisher: AnyPublisher<[Breed], Error> = empty) -> (BreedListViewModel, BreedListLoader) {
+        let api = BreedListLoaderStub(publisher: publisher)
         let sut = BreedListViewModel()
         return (sut, api)
     }
@@ -70,13 +70,13 @@ class BreedListViewModelTests: XCTestCase {
     }
 }
 
-class BreedListGettableStub: BreedListGettable {
+class BreedListLoaderStub: BreedListLoader {
     private let publisher: AnyPublisher<[Breed], Error>
     init(publisher: AnyPublisher<[Breed], Error>) {
         self.publisher = publisher
     }
     
-    func get() -> AnyPublisher<[Breed], Error> {
+    func load() -> AnyPublisher<[Breed], Error> {
         publisher
     }
 }

@@ -33,8 +33,8 @@ final class DogImageListViewModel: ObservableObject {
         self.breed = breed
     }
 
-    func get(api: DogImageListGettable) {
-        api.get(breed: breed)
+    func get(api: DogImageListLoader) {
+        api.load(breed: breed)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { result in

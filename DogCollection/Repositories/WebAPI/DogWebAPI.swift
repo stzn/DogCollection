@@ -9,12 +9,12 @@
 import Combine
 import Foundation
 
-protocol BreedListGettable {
-    func get() -> AnyPublisher<[Breed], Error>
+protocol BreedListLoader {
+    func load() -> AnyPublisher<[Breed], Error>
 }
 
-protocol DogImageListGettable {
-    func get(breed: String) -> AnyPublisher<[DogImage], Error>
+protocol DogImageListLoader {
+    func load(breed: String) -> AnyPublisher<[DogImage], Error>
 }
 
 final class DogWebAPI: ObservableObject {
@@ -40,26 +40,26 @@ extension DogWebAPI {
     }
 }
 
-extension DogWebAPI: BreedListGettable {
+extension DogWebAPI: BreedListLoader {
     struct BreedListAPIModel: Decodable {
         let message: [String: [String]]
         let status: String
     }
 
-    func get() -> AnyPublisher<[Breed], Error> {
+    func load() -> AnyPublisher<[Breed], Error> {
         run(BreedListAPIModel.self, URLRequest(url: base.appendingPathComponent("breeds/list/all")))
             .map { $0.message.keys.map(Breed.init) }
             .eraseToAnyPublisher()
     }
 }
 
-extension DogWebAPI: DogImageListGettable {
+extension DogWebAPI: DogImageListLoader {
     struct DogImageListAPIModel: Decodable {
         let message: [String]
         let status: String
     }
 
-    func get(breed: String) -> AnyPublisher<[DogImage], Error> {
+    func load(breed: String) -> AnyPublisher<[DogImage], Error> {
         run(DogImageListAPIModel.self, URLRequest(url: base.appendingPathComponent("/breed/\(breed)/images")))
             .map(convert(from:))
             .eraseToAnyPublisher()

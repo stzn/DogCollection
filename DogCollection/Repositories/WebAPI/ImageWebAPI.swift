@@ -9,11 +9,11 @@
 import Combine
 import Foundation
 
-protocol ImageDataDownloadable {
+protocol ImageDataDownloader {
     func download(from url: URL) -> AnyPublisher<Data, Error>
 }
 
-final class ImageWebAPI: ImageDataDownloadable, ObservableObject {
+final class ImageWebAPI: ImageDataDownloader, ObservableObject {
     private let client: WebAPIClient
     init(client: WebAPIClient) {
         self.client = client

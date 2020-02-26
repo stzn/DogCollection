@@ -53,12 +53,12 @@ struct BreedListView_Previews: PreviewProvider {
 
 import Combine
 
-final class BreedListGettableStub: BreedListGettable, ObservableObject {
+final class BreedListGettableStub: BreedListLoader, ObservableObject {
     let breeds: [Breed]
     init(breeds: [Breed]) {
         self.breeds = breeds
     }
-    func get() -> AnyPublisher<[Breed], Error> {
+    func load() -> AnyPublisher<[Breed], Error> {
         Just(breeds)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()

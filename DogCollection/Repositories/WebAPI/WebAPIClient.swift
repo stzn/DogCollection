@@ -13,6 +13,11 @@ protocol WebAPIClient {
     func send(request: URLRequest) -> AnyPublisher<Response, WebAPIError>
 }
 
+struct Response {
+    let data: Data
+    let response: HTTPURLResponse
+}
+
 enum WebAPIError : Error {
     case unhandledResponse
     case invalidResponse(URLResponse?)
@@ -38,7 +43,3 @@ extension WebAPIError {
     }
 }
 
-struct Response {
-    let data: Data
-    let response: HTTPURLResponse
-}

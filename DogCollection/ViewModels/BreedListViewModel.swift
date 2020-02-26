@@ -39,9 +39,9 @@ final class BreedListViewModel: ObservableObject {
 
     init() {}
 
-    func get(api: BreedListGettable) {
+    func get(api: BreedListLoader) {
         state = .loading
-        api.get()
+        api.load()
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { result in

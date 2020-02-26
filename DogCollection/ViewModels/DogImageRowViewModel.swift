@@ -33,7 +33,7 @@ final class DogImageRowViewModel: ObservableObject {
         cancellable?.cancel()
     }
     
-    func download(api: ImageDataDownloadable) {
+    func download(api: ImageDataDownloader) {
         cancellable = api.download(from: url)
             .receive(on: DispatchQueue.main)
             .sink(

@@ -52,8 +52,8 @@ class DogImageListViewModelTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    private func makeSUT(with publisher: AnyPublisher<[DogImage], Error> = empty) -> (DogImageListViewModel, DogImageListGettableStub) {
-        let api = DogImageListGettableStub(publisher: publisher)
+    private func makeSUT(with publisher: AnyPublisher<[DogImage], Error> = empty) -> (DogImageListViewModel, DogImageListLoaderStub) {
+        let api = DogImageListLoaderStub(publisher: publisher)
         let sut = DogImageListViewModel(breed: "test")
         return (sut, api)
     }
@@ -70,13 +70,13 @@ class DogImageListViewModelTests: XCTestCase {
     }
 }
 
-class DogImageListGettableStub: DogImageListGettable {
+class DogImageListLoaderStub: DogImageListLoader {
     private let publisher: AnyPublisher<[DogImage], Error>
     init(publisher: AnyPublisher<[DogImage], Error>) {
         self.publisher = publisher
     }
 
-    func get(breed: String) -> AnyPublisher<[DogImage], Error> {
+    func load(breed: String) -> AnyPublisher<[DogImage], Error> {
         publisher
     }
 }
