@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct DogImageListView: View {
-    @EnvironmentObject var api: DogAPI
+    @EnvironmentObject var api: DogWebAPI
     @ObservedObject var viewModel: DogImageListViewModel
 
     var body: some View {

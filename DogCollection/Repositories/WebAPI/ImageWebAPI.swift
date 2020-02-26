@@ -13,9 +13,9 @@ protocol ImageDataDownloadable {
     func download(from url: URL) -> AnyPublisher<Data, Error>
 }
 
-final class ImageAPI: ImageDataDownloadable, ObservableObject {
-    private let client: APIClient
-    init(client: APIClient) {
+final class ImageWebAPI: ImageDataDownloadable, ObservableObject {
+    private let client: WebAPIClient
+    init(client: WebAPIClient) {
         self.client = client
     }
 

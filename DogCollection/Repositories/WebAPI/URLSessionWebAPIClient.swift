@@ -9,28 +9,22 @@
 import Combine
 import Foundation
 
-struct URLSessionAPIClient: APIClient {
+struct URLSessionWebAPIClient: WebAPIClient {
     private let session: URLSession
     init(session: URLSession = URLSession.shared) {
         self.session = session
     }
 
-    func send(request: URLRequest) -> AnyPublisher<Response, APIError> {
+    func send(request: URLRequest) -> AnyPublisher<Response, WebAPIError> {
         session.dataTaskPublisher(for: request)
             .tryMap { (data, response) in
                 guard let httpResponse = response as? HTTPURLResponse else {
-                    throw APIError.invalidResponse(response)
+                    throw WebAPIError.invalidResponse(response)
                 }
-                if let apiError = APIError.error(from: httpResponse) {
+                if let apiError = WebAPIError.error(from: httpResponse) {
                     throw apiError
                 } else {
                     return Response(data: data, response: httpResponse)
-//                    do {
-//                        let model = try M.decoder.decode(M.self, from: data)
-//                        return Response(model: model, response: httpResponse)
-//                    } catch let error as DecodingError {
-//                        throw APIError.decodingError(error)
-//                    }
                 }
         }.mapError {
             .unknown($0)

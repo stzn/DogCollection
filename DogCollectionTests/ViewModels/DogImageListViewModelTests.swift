@@ -36,7 +36,7 @@ class DogImageListViewModelTests: XCTestCase {
     }
 
     func test_get_errorDeliveredOnError() {
-        let expected = APIError.unhandledResponse
+        let expected = WebAPIError.unhandledResponse
         let publisher = createErrorPublisher(with: expected)
         let (sut, api) = makeSUT(with: publisher)
 

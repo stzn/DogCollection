@@ -21,7 +21,7 @@ final class BreedListViewModel: ObservableObject {
             if !searchText.isEmpty {
                 breeds = breeds.filter { $0.name.starts(with: searchText) }
             } else {
-                breeds = originalBreeds
+                breeds = all
             }
         }
     }
@@ -35,7 +35,7 @@ final class BreedListViewModel: ObservableObject {
     }
 
     private var cancellables: Set<AnyCancellable> = []
-    private var originalBreeds: [Breed] = []
+    private var all: [Breed] = []
 
     init() {}
 
@@ -50,7 +50,7 @@ final class BreedListViewModel: ObservableObject {
                     }
             },
                 receiveValue: { breeds in
-                    self.originalBreeds = breeds
+                    self.all = breeds
                     self.breeds = breeds
             }).store(in: &cancellables)
     }

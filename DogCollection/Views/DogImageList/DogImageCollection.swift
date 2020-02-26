@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct DogImageCollection: View {
-    @EnvironmentObject var api: DogAPI
+    @EnvironmentObject var api: DogWebAPI
 
     let breed: String
     let dogImages: [DogImage]

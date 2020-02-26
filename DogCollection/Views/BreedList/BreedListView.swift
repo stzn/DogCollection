@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct BreedListView: View {
-    @EnvironmentObject var api: DogAPI
+    @EnvironmentObject var api: DogWebAPI
     @ObservedObject(initialValue: BreedListViewModel()) var viewModel: BreedListViewModel
 
     var body: some View {

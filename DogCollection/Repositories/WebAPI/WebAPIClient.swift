@@ -9,7 +9,7 @@
 import Combine
 import Foundation
 
-enum APIError : Error {
+enum WebAPIError : Error {
     case unhandledResponse
     case invalidResponse(URLResponse?)
     case requestError(Int)
@@ -19,8 +19,8 @@ enum APIError : Error {
 
 }
 
-extension APIError {
-    static func error(from response: HTTPURLResponse) -> APIError? {
+extension WebAPIError {
+    static func error(from response: HTTPURLResponse) -> WebAPIError? {
         switch response.statusCode {
         case 200...299:
             return nil
@@ -39,6 +39,6 @@ struct Response {
     let response: HTTPURLResponse
 }
 
-protocol APIClient {
-    func send(request: URLRequest) -> AnyPublisher<Response, APIError>
+protocol WebAPIClient {
+    func send(request: URLRequest) -> AnyPublisher<Response, WebAPIError>
 }
