@@ -14,8 +14,12 @@ protocol BreedListInteractor {
     func load(breedList: Binding<Loadable<[Breed]>>)
 }
 
-struct LiveBreedListInteractor: BreedListInteractor  {
+final class LiveBreedListInteractor: BreedListInteractor  {
     let webAPI: BreedListLoader
+    init(webAPI: BreedListLoader) {
+        self.webAPI = webAPI
+    }
+
     func load(breedList: Binding<Loadable<[Breed]>>) {
         let cancelBag = CancelBag()
         breedList.wrappedValue = .isLoading(last: breedList.wrappedValue.value, cancelBag: cancelBag)
@@ -26,6 +30,6 @@ struct LiveBreedListInteractor: BreedListInteractor  {
     }
 }
 
-struct StubBreedListInteractor: BreedListInteractor {
+final class StubBreedListInteractor: BreedListInteractor {
     func load(breedList: Binding<Loadable<[Breed]>>) {}
 }

@@ -14,8 +14,12 @@ protocol ImageDataInteractor {
     func load(from url: URL, image: Binding<Loadable<Data>>)
 }
 
-struct LiveImageDataInteractor: ImageDataInteractor {
-    let webAPI: ImageWebAPI
+final class LiveImageDataInteractor: ImageDataInteractor {
+    let webAPI: ImageDataLoader
+    init(webAPI: ImageDataLoader) {
+        self.webAPI = webAPI
+    }
+
     func load(from url: URL, image: Binding<Loadable<Data>>) {
         let cancelBag = CancelBag()
         image.wrappedValue = .isLoading(last: image.wrappedValue.value, cancelBag: cancelBag)
@@ -26,6 +30,6 @@ struct LiveImageDataInteractor: ImageDataInteractor {
     }
 }
 
-struct StubImageDataInteractor: ImageDataInteractor {
+final class StubImageDataInteractor: ImageDataInteractor {
     func load(from url: URL, image: Binding<Loadable<Data>>) {}
 }

@@ -16,6 +16,7 @@
 		D636F93B24073DE5004C7715 /* BreedListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636F93A24073DE5004C7715 /* BreedListInteractor.swift */; };
 		D636F93D24073E67004C7715 /* DogImageListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636F93C24073E67004C7715 /* DogImageListInteractor.swift */; };
 		D636F94024075FB8004C7715 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636F93F24075FB8004C7715 /* ContentView.swift */; };
+		D647CC2324085CC300F86F58 /* BreedListLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D647CC2224085CC300F86F58 /* BreedListLoaderTests.swift */; };
 		D649C5A324020B040053CDD7 /* BreedListViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D649C5A224020B040053CDD7 /* BreedListViewState.swift */; };
 		D649C5A824020BF30053CDD7 /* BreedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D649C5A724020BF30053CDD7 /* BreedListView.swift */; };
 		D649C5AB24020C800053CDD7 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D649C5AA24020C800053CDD7 /* SearchBar.swift */; };
@@ -82,6 +83,7 @@
 		D636F93A24073DE5004C7715 /* BreedListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListInteractor.swift; sourceTree = "<group>"; };
 		D636F93C24073E67004C7715 /* DogImageListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListInteractor.swift; sourceTree = "<group>"; };
 		D636F93F24075FB8004C7715 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D647CC2224085CC300F86F58 /* BreedListLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListLoaderTests.swift; sourceTree = "<group>"; };
 		D649C5A224020B040053CDD7 /* BreedListViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListViewState.swift; sourceTree = "<group>"; };
 		D649C5A724020BF30053CDD7 /* BreedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListView.swift; sourceTree = "<group>"; };
 		D649C5AA24020C800053CDD7 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 		D636F93E2407545A004C7715 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
+				D647CC2224085CC300F86F58 /* BreedListLoaderTests.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -509,6 +512,7 @@
 			files = (
 				D6DC71652403C181007A5C6F /* SearchBarTests.swift in Sources */,
 				D69FA2EC2401BEED00C37862 /* BreedListViewStateTests.swift in Sources */,
+				D647CC2324085CC300F86F58 /* BreedListLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,8 +14,12 @@ protocol DogImageListInteractor {
     func loadDogImages(of breed: String, dogImages: Binding<Loadable<[DogImage]>>)
 }
 
-struct LiveDogImageListInteractor: DogImageListInteractor {
-    let webAPI: DogWebAPI
+final class LiveDogImageListInteractor: DogImageListInteractor {
+    let webAPI: DogImageListLoader
+    init(webAPI: DogImageListLoader) {
+        self.webAPI = webAPI
+    }
+
     func loadDogImages(of breed: String, dogImages: Binding<Loadable<[DogImage]>>) {
         let cancelBag = CancelBag()
         dogImages.wrappedValue = .isLoading(last: dogImages.wrappedValue.value, cancelBag: cancelBag)
@@ -26,6 +30,6 @@ struct LiveDogImageListInteractor: DogImageListInteractor {
     }
 }
 
-struct StubDogImageListInteractor: DogImageListInteractor {
+final class StubDogImageListInteractor: DogImageListInteractor {
     func loadDogImages(of breed: String, dogImages: Binding<Loadable<[DogImage]>>) {}
 }
