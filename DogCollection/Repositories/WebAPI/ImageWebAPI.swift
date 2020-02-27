@@ -9,17 +9,13 @@
 import Combine
 import Foundation
 
-protocol ImageDataDownloader {
-    func download(from url: URL) -> AnyPublisher<Data, Error>
-}
-
-final class ImageWebAPI: ImageDataDownloader, ObservableObject {
+final class ImageWebAPI: ImageDataLoader {
     private let client: WebAPIClient
     init(client: WebAPIClient) {
         self.client = client
     }
 
-    func download(from url: URL) -> AnyPublisher<Data, Error> {
+    func load(from url: URL) -> AnyPublisher<Data, Error> {
         client.send(request: URLRequest(url: url))
             .map { $0.data }
             .mapError { $0 as Error }

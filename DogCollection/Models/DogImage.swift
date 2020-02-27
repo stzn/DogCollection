@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct DogImage: Equatable {
+struct DogImage: Equatable, Decodable {
     let imageURL: URL
 }
 

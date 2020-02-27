@@ -9,9 +9,9 @@
 import Combine
 import Foundation
 
-struct URLSessionWebAPIClient: WebAPIClient {
+final class URLSessionWebAPIClient: WebAPIClient {
     private let session: URLSession
-    init(session: URLSession = URLSession.shared) {
+    init(session: URLSession) {
         self.session = session
     }
 

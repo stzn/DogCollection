@@ -36,8 +36,7 @@ struct BreedListResultView: View {
     }
 
     private func dogImageListView(with breed: Breed) -> DogImageListView {
-        DogImageListView(
-            viewModel: DogImageListViewModel(breed: breed.name))
+        DogImageListView(breed: breed.name)
     }
 
     private func noResultView(for geometry: GeometryProxy) -> some View {

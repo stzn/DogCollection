@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct BreedListView: View {
-    @EnvironmentObject var api: DogWebAPI
-    @ObservedObject(initialValue: BreedListViewModel()) var viewModel: BreedListViewModel
+    @State private var viewState: BreedListViewState = BreedListViewState()
+    @Environment(\.injected) var container: DIContainer
 
     var body: some View {
         NavigationView {
@@ -18,49 +18,47 @@ struct BreedListView: View {
                 .navigationBarTitle("Search Dogs")
                 .edgesIgnoringSafeArea(.bottom)
         }
-        .onAppear {
-            self.viewModel.get(api: self.api)
-        }
     }
 
     private var content: some View {
-        switch viewModel.state {
-        case .loading:
+        switch viewState.filtered {
+        case .notRequested:
+            return AnyView(notRequestedView)
+        case .isLoading:
             return AnyView(LoadingView())
-        case .loaded:
-            return AnyView(loadedView)
-        case .error:
-            return AnyView(ErrorView(message: self.viewModel.error,
-                                     retryAction: { self.viewModel.get(api: self.api) }))
+        case .loaded(let breeds):
+            return AnyView(loadedView(breeds))
+        case .failed(let error):
+            return AnyView(errorView(error))
         }
     }
 
-    private var loadedView: some View {
+    private var notRequestedView: some View {
+        Text("").onAppear { self.loadBreeds() }
+    }
+
+    private func loadedView(_ breeds: [Breed]) -> some View {
         VStack {
-            SearchBar(text: $viewModel.searchText)
-            BreedListResultView(breeds: self.viewModel.breeds)
+            SearchBar(text: $viewState.searchText)
+            BreedListResultView(breeds: breeds)
             Spacer()
         }
+    }
+
+    private func errorView(_ error: Error) -> some View {
+        ErrorView(message: error.localizedDescription,
+                  retryAction: { self.loadBreeds() })
+    }
+}
+
+private extension BreedListView {
+    func loadBreeds() {
+        container.interactors.breedListInteractor.load(breedList: $viewState.all)
     }
 }
 
 struct BreedListView_Previews: PreviewProvider {
     static var previews: some View {
         BreedListView()
-            .environmentObject(BreedListGettableStub(breeds: [Breed.anyBreed]))
-    }
-}
-
-import Combine
-
-final class BreedListGettableStub: BreedListLoader, ObservableObject {
-    let breeds: [Breed]
-    init(breeds: [Breed]) {
-        self.breeds = breeds
-    }
-    func load() -> AnyPublisher<[Breed], Error> {
-        Just(breeds)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
     }
 }

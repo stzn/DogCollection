@@ -9,34 +9,54 @@
 import SwiftUI
 
 struct DogImageListView: View {
-    @EnvironmentObject var api: DogWebAPI
-    @ObservedObject var viewModel: DogImageListViewModel
+    let breed: String
+
+    @Environment(\.injected) var container: DIContainer
+    @State var viewModel = DogImageListViewState()
 
     var body: some View {
         VStack(spacing: 0) {
             self.content
             Spacer()
         }.onAppear {
-            self.viewModel.get(api: self.api)
+            self.loadDogImages()
         }
     }
 
     private var content: some View {
-        switch viewModel.state {
-        case .loading:
+        switch viewModel.dogImages {
+        case .notRequested:
+            return AnyView(notRequestedView)
+        case .isLoading:
             return AnyView(LoadingView())
-        case .loaded:
-            return AnyView(DogImageCollection(breed: viewModel.breed,
-                                              dogImages: viewModel.dogImages))
-        case .error:
-            return AnyView(ErrorView(message: self.viewModel.error,
-                                     retryAction: { self.viewModel.get(api: self.api) }))
+        case let .loaded(value):
+            return AnyView(loadedView(value))
+        case let .failed(error):
+            return AnyView(ErrorView(message: error.localizedDescription,
+                                     retryAction: { self.loadDogImages() }))
         }
+    }
+
+    private var notRequestedView: some View {
+        Text("").onAppear { self.loadDogImages() }
+    }
+
+    private func loadedView(_ dogImages: [DogImage]) -> some View {
+        DogImageCollection(breed: breed, dogImages: dogImages)
+    }
+
+    private func errorView(_ error: Error) -> some View {
+        ErrorView(message: error.localizedDescription,
+                  retryAction: { self.loadDogImages() })
+    }
+
+    private func loadDogImages() {
+        container.interactors.dogImageListInteractor.loadDogImages(of: breed, dogImages: $viewModel.dogImages)
     }
 }
 
 struct DogImageListView_Previews: PreviewProvider {
     static var previews: some View {
-        DogImageListView(viewModel: DogImageListViewModel(breed: Breed.anyBreed.name))
+        DogImageListView(breed: "test")
     }
 }

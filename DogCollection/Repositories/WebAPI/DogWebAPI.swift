@@ -9,34 +9,12 @@
 import Combine
 import Foundation
 
-protocol BreedListLoader {
-    func load() -> AnyPublisher<[Breed], Error>
-}
-
-protocol DogImageListLoader {
-    func load(breed: String) -> AnyPublisher<[DogImage], Error>
-}
-
-final class DogWebAPI: ObservableObject {
-    private let base = URL(string: "https://dog.ceo/api")!
-    private let client: WebAPIClient
+final class DogWebAPI: WebAPI {
+    let baseURL = URL(string: "https://dog.ceo/api")!
+    let client: WebAPIClient
+    let queue = DispatchQueue(label: "DogWebAPI")
     init(client: WebAPIClient) {
         self.client = client
-    }
-}
-
-extension DogWebAPI {
-    func run<M: Decodable>(_ type: M.Type, _ request: URLRequest) -> AnyPublisher<M, Error> {
-        client.send(request: request)
-            .map(\.data)
-            .decode(type: M.self, decoder: JSONDecoder())
-            .mapError { error in
-                if let error = error as? DecodingError {
-                    return WebAPIError.decodingError(error)
-                }
-                return  error
-        }
-        .eraseToAnyPublisher()
     }
 }
 
@@ -47,7 +25,7 @@ extension DogWebAPI: BreedListLoader {
     }
 
     func load() -> AnyPublisher<[Breed], Error> {
-        run(BreedListAPIModel.self, URLRequest(url: base.appendingPathComponent("breeds/list/all")))
+        call(BreedListAPIModel.self, URLRequest(url: baseURL.appendingPathComponent("breeds/list/all")))
             .map { $0.message.keys.map(Breed.init) }
             .eraseToAnyPublisher()
     }
@@ -59,8 +37,8 @@ extension DogWebAPI: DogImageListLoader {
         let status: String
     }
 
-    func load(breed: String) -> AnyPublisher<[DogImage], Error> {
-        run(DogImageListAPIModel.self, URLRequest(url: base.appendingPathComponent("/breed/\(breed)/images")))
+    func loadDogImages(of breed: String) -> AnyPublisher<[DogImage], Error> {
+        call(DogImageListAPIModel.self, URLRequest(url: baseURL.appendingPathComponent("/breed/\(breed)/images")))
             .map(convert(from:))
             .eraseToAnyPublisher()
     }

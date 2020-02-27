@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct DogImageCollection: View {
-    @EnvironmentObject var api: DogWebAPI
-
     let breed: String
     let dogImages: [DogImage]
 
@@ -32,7 +30,7 @@ struct DogImageCollection: View {
     private func createDogImageItems(for geometry: GeometryProxy, with rowModel: RowModel) -> some View {
         HStack(spacing: 0) {
             ForEach(rowModel.items) { image in
-                DogImageItem(viewModel: DogImageRowViewModel(url: image.imageURL),
+                DogImageItem(url: image.imageURL,
                              size: self.size(for: geometry))
             }
         }.listRowInsets(EdgeInsets())
