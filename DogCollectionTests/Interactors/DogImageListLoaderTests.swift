@@ -86,22 +86,22 @@ class DogImageListLoaderTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-//    private func recordLoadableUpdates(initialLoadable: Loadable<[DogImage]> = .notRequested, for timeInterval: TimeInterval = 0.5)
-//        -> (Binding<Loadable<[DogImage]>>, AnyPublisher<[Loadable<[DogImage]>], Never>) {
-//            let publisher = CurrentValueSubject<Loadable<[DogImage]>, Never>(initialLoadable)
-//            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
-//            let updatesPublisher = Future<[Loadable<[DogImage]>], Never> { promise in
-//                var updates: [Loadable<[DogImage]>] = []
-//
-//                publisher
-//                    .sink { updates.append($0) }
-//                    .store(in: &self.cencellables)
-//
-//                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-//                    promise(.success(updates))
-//                }
-//            }.eraseToAnyPublisher()
-//
-//            return (binding, updatesPublisher)
-//    }
+    private func recordLoadableUpdates(initialLoadable: Loadable<[DogImage]> = .notRequested, for timeInterval: TimeInterval = 0.5)
+        -> (Binding<Loadable<[DogImage]>>, AnyPublisher<[Loadable<[DogImage]>], Never>) {
+            let publisher = CurrentValueSubject<Loadable<[DogImage]>, Never>(initialLoadable)
+            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
+            let updatesPublisher = Future<[Loadable<[DogImage]>], Never> { promise in
+                var updates: [Loadable<[DogImage]>] = []
+
+                publisher
+                    .sink { updates.append($0) }
+                    .store(in: &self.cencellables)
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
+                    promise(.success(updates))
+                }
+            }.eraseToAnyPublisher()
+
+            return (binding, updatesPublisher)
+    }
 }
