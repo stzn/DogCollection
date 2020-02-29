@@ -16,6 +16,10 @@ import XCTest
 let testURL = URL(string: "https://test.com")!
 let okResponse = HTTPURLResponse(url: testURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
 
+var anyError: Error {
+    NSError(domain: "testError", code: -1, userInfo: nil) as Error
+}
+
 func errorResponse(statusCode: Int) -> HTTPURLResponse {
     HTTPURLResponse(url: testURL, statusCode: statusCode, httpVersion: nil, headerFields: nil)!
 }

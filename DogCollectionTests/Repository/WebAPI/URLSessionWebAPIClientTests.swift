@@ -80,10 +80,6 @@ class URLSessionWebAPIClientTests: XCTestCase {
         URLRequest(url: testURL)
     }
 
-    private var anyError: Error {
-        NSError(domain: "testError", code: -1, userInfo: nil) as Error
-    }
-
     private func assert(error expected: WebAPIError, file: StaticString = #file, line: UInt = #line) {
         let (response, completion) = send()
 
