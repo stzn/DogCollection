@@ -31,9 +31,6 @@ final class WebAPIClientStub: WebAPIClient {
     }
 }
 
-private let testURL = URL(string: "https://test.com")!
-private let okResponse = HTTPURLResponse(url: testURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
-
 class TestWebAPI: WebAPI {
     var client: WebAPIClient = WebAPIClientStub.output(response: Response(data: Data(), response: okResponse))
     let baseURL: URL = testURL

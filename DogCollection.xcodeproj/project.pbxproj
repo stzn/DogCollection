@@ -42,6 +42,8 @@
 		D6BB0145240889B9009ACEB7 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BB0144240889B9009ACEB7 /* Mock.swift */; };
 		D6BB014724088BC7009ACEB7 /* MockedWebAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BB014624088BC7009ACEB7 /* MockedWebAPIs.swift */; };
 		D6BB01492408945C009ACEB7 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BB01482408945C009ACEB7 /* TestHelpers.swift */; };
+		D6C1077C2409E6B8008D266D /* URLSessionWebAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C1077B2409E6B8008D266D /* URLSessionWebAPIClientTests.swift */; };
+		D6C1077E2409E786008D266D /* URLProtocolStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C1077D2409E786008D266D /* URLProtocolStub.swift */; };
 		D6D2E6122401BD82008C7239 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D2E6112401BD82008C7239 /* AppDelegate.swift */; };
 		D6D2E6142401BD82008C7239 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D2E6132401BD82008C7239 /* SceneDelegate.swift */; };
 		D6D2E6182401BD84008C7239 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6D2E6172401BD84008C7239 /* Assets.xcassets */; };
@@ -113,6 +115,8 @@
 		D6BB0144240889B9009ACEB7 /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		D6BB014624088BC7009ACEB7 /* MockedWebAPIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedWebAPIs.swift; sourceTree = "<group>"; };
 		D6BB01482408945C009ACEB7 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		D6C1077B2409E6B8008D266D /* URLSessionWebAPIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionWebAPIClientTests.swift; sourceTree = "<group>"; };
+		D6C1077D2409E786008D266D /* URLProtocolStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolStub.swift; sourceTree = "<group>"; };
 		D6D2E60E2401BD82008C7239 /* DogCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D2E6112401BD82008C7239 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6D2E6132401BD82008C7239 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -291,8 +295,25 @@
 			children = (
 				D6BB0144240889B9009ACEB7 /* Mock.swift */,
 				D6BB014624088BC7009ACEB7 /* MockedWebAPIs.swift */,
+				D6C1077D2409E786008D266D /* URLProtocolStub.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		D6C107792409E668008D266D /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				D6C1077A2409E67B008D266D /* WebAPI */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		D6C1077A2409E67B008D266D /* WebAPI */ = {
+			isa = PBXGroup;
+			children = (
+				D6C1077B2409E6B8008D266D /* URLSessionWebAPIClientTests.swift */,
+			);
+			path = WebAPI;
 			sourceTree = "<group>";
 		};
 		D6D2E6052401BD82008C7239 = {
@@ -344,6 +365,7 @@
 		D6D2E6272401BD84008C7239 /* DogCollectionTests */ = {
 			isa = PBXGroup;
 			children = (
+				D6C107792409E668008D266D /* Repository */,
 				D6BB0143240888DB009ACEB7 /* Mocks */,
 				D636F93E2407545A004C7715 /* Interactors */,
 				D6DC71622403C162007A5C6F /* Views */,
@@ -536,7 +558,9 @@
 				D6DF3E932409033E0003168D /* DogImageListLoaderTests.swift in Sources */,
 				D647CC2324085CC300F86F58 /* BreedListLoaderTests.swift in Sources */,
 				D6BB0145240889B9009ACEB7 /* Mock.swift in Sources */,
+				D6C1077E2409E786008D266D /* URLProtocolStub.swift in Sources */,
 				D6BB01492408945C009ACEB7 /* TestHelpers.swift in Sources */,
+				D6C1077C2409E6B8008D266D /* URLSessionWebAPIClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

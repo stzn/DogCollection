@@ -27,7 +27,10 @@ final class URLSessionWebAPIClient: WebAPIClient {
                     return Response(data: data, response: httpResponse)
                 }
         }.mapError {
-            .unknown($0)
+            if let error = $0 as? WebAPIError {
+                return error
+            }
+            return .unknown($0)
         }.eraseToAnyPublisher()
     }
 }

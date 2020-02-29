@@ -6,9 +6,19 @@
 //  Copyright © 2020 shiz. All rights reserved.
 //
 
-import XCTest
-import SwiftUI
 import Combine
+import SwiftUI
+import XCTest
+@testable import DogCollection
+
+// MARK: - Constants & Variables
+
+let testURL = URL(string: "https://test.com")!
+let okResponse = HTTPURLResponse(url: testURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
+
+func errorResponse(statusCode: Int) -> HTTPURLResponse {
+    HTTPURLResponse(url: testURL, statusCode: statusCode, httpVersion: nil, headerFields: nil)!
+}
 
 // MARK: - UI
 
