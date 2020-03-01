@@ -80,6 +80,8 @@ enum Expiry {
     var date: Date {
         switch self {
         case .never:
+            // Ref: http://lists.apple.com/archives/cocoa-dev/2005/Apr/msg01833.html
+            // last of unix time: 2038-01-19 03:14:07 +0000
             return Date(timeIntervalSince1970: 60*60*24*365*68)
         case .seconds(let seconds):
             return Date().addingTimeInterval(seconds)

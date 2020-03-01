@@ -9,7 +9,6 @@
 import Combine
 import Foundation
 
-
 protocol ImageDataCache {
     typealias Key = String
     func cache(data: Data, key: Key, expiry: Expiry?)

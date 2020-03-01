@@ -21,8 +21,8 @@ struct AppEnvironment {
         return URLSession(configuration: configuration)
     }
 
-    private static func configuredMemoryCache(timeLimit: TimeInterval = 60*60*7) -> ImageDataMemoryCache {
-        let config = ImageDataMemoryCache.Config(expiry: .date(Date().advanced(by: timeLimit)))
+    private static func configuredMemoryCache(expiry: Expiry = .seconds(60*60*2)) -> ImageDataMemoryCache {
+        let config = ImageDataMemoryCache.Config(expiry: expiry)
         return ImageDataMemoryCache(config: config)
     }
 

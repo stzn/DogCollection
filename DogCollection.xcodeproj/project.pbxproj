@@ -370,7 +370,6 @@
 		D6D2E6102401BD82008C7239 /* DogCollection */ = {
 			isa = PBXGroup;
 			children = (
-				D636F93324073371004C7715 /* Utilities */,
 				D6D2E6172401BD84008C7239 /* Assets.xcassets */,
 				D636F922240655AB004C7715 /* DI */,
 				D6DC716624049696007A5C6F /* Extensions */,
@@ -381,8 +380,9 @@
 				D6D2E6192401BD84008C7239 /* Preview Content */,
 				D69FA31F2401C59300C37862 /* Repositories */,
 				D636F9252406566F004C7715 /* System */,
-				D649C5A124020AED0053CDD7 /* ViewState */,
+				D636F93324073371004C7715 /* Utilities */,
 				D649C5A624020BDD0053CDD7 /* Views */,
+				D649C5A124020AED0053CDD7 /* ViewState */,
 			);
 			path = DogCollection;
 			sourceTree = "<group>";
