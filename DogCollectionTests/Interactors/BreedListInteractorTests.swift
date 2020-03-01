@@ -1,5 +1,5 @@
 //
-//  BreedListLoaderTests.swift
+//  BreedListInteractorTests.swift
 //  DogCollectionTests
 //
 //  Created by Shinzan Takata on 2020/02/28.
@@ -11,7 +11,7 @@ import XCTest
 import SwiftUI
 @testable import DogCollection
 
-class BreedListLoaderTests: XCTestCase {
+class BreedListInteractorTests: XCTestCase {
     var cencellables: Set<AnyCancellable> = []
     var binding: Binding<Loadable<[Breed]>>!
 

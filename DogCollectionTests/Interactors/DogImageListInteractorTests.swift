@@ -1,5 +1,5 @@
 //
-//  DogImageListLoaderTests.swift
+//  DogImageListInteractorTests.swift
 //  DogCollectionTests
 //
 //  Created by Shinzan Takata on 2020/02/28.
@@ -11,7 +11,7 @@ import XCTest
 import SwiftUI
 @testable import DogCollection
 
-class DogImageListLoaderTests: XCTestCase {
+class DogImageListInteractorTests: XCTestCase {
     var cencellables: Set<AnyCancellable> = []
     var binding: Binding<Loadable<[DogImage]>>!
 

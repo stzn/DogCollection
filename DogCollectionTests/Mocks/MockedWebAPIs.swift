@@ -64,3 +64,17 @@ final class MockedDogImageListLoader: TestWebAPI, Mock, DogImageListLoader {
         return dogImageListResponse.publish()
     }
 }
+
+final class MockedImageDataWebAPILoader: TestWebAPI, Mock, ImageDataLoader {
+    enum Action: Equatable {
+        case loadImage(URL)
+    }
+    var actions = MockActions<Action>(expected: [])
+
+    var imageResponse: Result<Data, Error> = .failure(MockError.valueNotSet)
+
+    func load(from url: URL) -> AnyPublisher<Data, Error> {
+        register(.loadImage(url))
+        return imageResponse.publish()
+    }
+}

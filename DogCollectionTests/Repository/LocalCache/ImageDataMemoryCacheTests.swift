@@ -81,8 +81,4 @@ class ImageDataMemoryCacheTests: XCTestCase {
     private var anyKey: String {
         UUID().uuidString
     }
-
-    private var anyData: Data {
-        UIColor.red.image().pngData()!
-    }
 }

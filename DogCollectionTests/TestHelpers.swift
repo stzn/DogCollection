@@ -24,6 +24,10 @@ func errorResponse(statusCode: Int) -> HTTPURLResponse {
     HTTPURLResponse(url: testURL, statusCode: statusCode, httpVersion: nil, headerFields: nil)!
 }
 
+var anyData: Data {
+    UIColor.red.image().pngData()!
+}
+
 // MARK: - UI
 
 extension UIColor {
@@ -38,28 +42,6 @@ extension UIColor {
 }
 
 // MARK: - Result
-
-extension Result where Success: Equatable {
-    func assertSuccess(value: Success, file: StaticString = #file, line: UInt = #line) {
-        switch self {
-        case let .success(resultValue):
-            XCTAssertEqual(resultValue, value, file: file, line: line)
-        case let .failure(error):
-            XCTFail("Unexpected error: \(error)", file: file, line: line)
-        }
-    }
-}
-
-extension Result {
-    func assertFailure(_ message: String, file: StaticString = #file, line: UInt = #line) {
-        switch self {
-        case let .success(value):
-            XCTFail("Unexpected success: \(value)", file: file, line: line)
-        case let .failure(error):
-            XCTAssertEqual(error.localizedDescription, message, file: file, line: line)
-        }
-    }
-}
 
 extension Result {
     func publish() -> AnyPublisher<Success, Failure> {
