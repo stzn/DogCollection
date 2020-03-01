@@ -16,17 +16,33 @@ protocol ImageDataInteractor {
 
 final class LiveImageDataInteractor: ImageDataInteractor {
     let webAPI: ImageDataLoader
-    init(webAPI: ImageDataLoader) {
+    let cache: ImageDataCache
+    init(webAPI: ImageDataLoader, cache: ImageDataCache) {
         self.webAPI = webAPI
+        self.cache = cache
     }
 
     func load(from url: URL, image: Binding<Loadable<Data>>) {
+        let webAPI = self.webAPI
+        let cache = self.cache
         let cancelBag = CancelBag()
         image.wrappedValue = .isLoading(last: image.wrappedValue.value, cancelBag: cancelBag)
-        webAPI.load(from: url)
-            .receive(on: DispatchQueue.main)
-            .sinkToLoadable { image.wrappedValue = $0 }
-            .store(in: cancelBag)
+        loadFromCache(from: url)
+            .catch { _ in
+                webAPI.load(from: url)
+        }
+        .receive(on: DispatchQueue.main)
+        .sinkToLoadable { loadable in
+            if case .loaded(let data) = loadable {
+                cache.cache(data: data, key: url.absoluteString, expiry: nil)
+            }
+            image.wrappedValue = loadable
+        }
+        .store(in: cancelBag)
+    }
+
+    func loadFromCache(from url: URL) -> AnyPublisher<Data, ImageDataCacheError> {
+        cache.cachedImage(for: url.absoluteString)
     }
 }
 

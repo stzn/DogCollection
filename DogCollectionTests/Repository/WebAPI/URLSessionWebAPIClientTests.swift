@@ -46,8 +46,6 @@ class URLSessionWebAPIClientTests: XCTestCase {
         assert(error: WebAPIError.unknown(expected))
     }
 
-    //    case decodingError(DecodingError)
-
     func test_WebAPIError_httpStatusCode() {
         let testCases: [(line: UInt, response: HTTPURLResponse, error: WebAPIError)] = [
             (#line, errorResponse(statusCode: 300), WebAPIError.unhandledResponse),

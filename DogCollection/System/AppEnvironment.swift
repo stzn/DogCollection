@@ -21,13 +21,18 @@ struct AppEnvironment {
         return URLSession(configuration: configuration)
     }
 
+    private static func configuredMemoryCache(timeLimit: TimeInterval = 60*60*7) -> ImageDataMemoryCache {
+        let config = ImageDataMemoryCache.Config(expiry: .date(Date().advanced(by: timeLimit)))
+        return ImageDataMemoryCache(config: config)
+    }
+
     private static func configureInteractors() -> DIContainer.Interactors {
         let session = configuredURLSession()
         let client = URLSessionWebAPIClient(session: session)
         let webAPIs = configureWebAPIs(client: client)
         return .init(breedListInteractor: LiveBreedListInteractor(webAPI: webAPIs.dogWebAPI),
                      dogImageListInteractor: LiveDogImageListInteractor(webAPI: webAPIs.dogWebAPI),
-                     imageDataInteractor: LiveImageDataInteractor(webAPI: webAPIs.imageWebAPI))
+                     imageDataInteractor: LiveImageDataInteractor(webAPI: webAPIs.imageWebAPI, cache: configuredMemoryCache()))
     }
 
     private static func configureWebAPIs(client: URLSessionWebAPIClient) -> WebAPIContainer {
