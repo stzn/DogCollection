@@ -113,7 +113,9 @@ class ImageDataInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    private func recordLoadableUpdates(initialLoadable: Loadable<Data> = .notRequested, for timeInterval: TimeInterval = 0.5)
+    private func recordLoadableUpdates(
+        initialLoadable: Loadable<Data> = .notRequested,
+        for timeInterval: TimeInterval = 0.5)
         -> (Binding<Loadable<Data>>, AnyPublisher<[Loadable<Data>], Never>) {
             let publisher = CurrentValueSubject<Loadable<Data>, Never>(initialLoadable)
             let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })

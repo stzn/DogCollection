@@ -40,9 +40,9 @@ class BreedListInteractorTests: XCTestCase {
         assert(sut, webAPI,
                initialLoadable: .loaded(initial),
                expected: [
-            .loaded(initial),
-            .isLoading(last: initial, cancelBag: CancelBag()),
-            .loaded(expected),
+                .loaded(initial),
+                .isLoading(last: initial, cancelBag: CancelBag()),
+                .loaded(expected),
         ])
     }
 
@@ -55,9 +55,9 @@ class BreedListInteractorTests: XCTestCase {
         ])
         assert(sut, webAPI,
                expected: [
-            .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .failed(expected),
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .failed(expected),
         ])
     }
 
@@ -72,12 +72,14 @@ class BreedListInteractorTests: XCTestCase {
     private func assert(_ sut: BreedListInteractor,
                         _ webAPI: MockedBreedListLoader,
                         initialLoadable: Loadable<[Breed]> = .notRequested,
-                        expected: [Loadable<[Breed]>]) {
+                        expected: [Loadable<[Breed]>],
+                        file: StaticString = #file,
+                        line: UInt = #line) {
         let exp = expectation(description: "wait for load")
         let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
         updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected)
-            webAPI.verify()
+            XCTAssertEqual(updates, expected, file: file, line: line)
+            webAPI.verify(file: file, line: line)
             exp.fulfill()
         }.store(in: &cencellables)
 
@@ -86,13 +88,14 @@ class BreedListInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    private func recordLoadableUpdates(initialLoadable: Loadable<[Breed]> = .notRequested, for timeInterval: TimeInterval = 0.5)
+    private func recordLoadableUpdates(initialLoadable: Loadable<[Breed]> = .notRequested,
+                                       for timeInterval: TimeInterval = 0.5)
         -> (Binding<Loadable<[Breed]>>, AnyPublisher<[Loadable<[Breed]>], Never>) {
             let publisher = CurrentValueSubject<Loadable<[Breed]>, Never>(initialLoadable)
             let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
             let updatesPublisher = Future<[Loadable<[Breed]>], Never> { promise in
                 var updates: [Loadable<[Breed]>] = []
-
+                
                 publisher
                     .sink { updates.append($0) }
                     .store(in: &self.cencellables)

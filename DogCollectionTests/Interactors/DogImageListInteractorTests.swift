@@ -40,9 +40,9 @@ class DogImageListInteractorTests: XCTestCase {
         assert(sut, webAPI,
                initialLoadable: .loaded(initial),
                expected: [
-            .loaded(initial),
-            .isLoading(last: initial, cancelBag: CancelBag()),
-            .loaded(expected),
+                .loaded(initial),
+                .isLoading(last: initial, cancelBag: CancelBag()),
+                .loaded(expected),
         ])
     }
 
@@ -55,9 +55,9 @@ class DogImageListInteractorTests: XCTestCase {
         ])
         assert(sut, webAPI,
                expected: [
-            .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .failed(expected),
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .failed(expected),
         ])
     }
 
@@ -72,12 +72,14 @@ class DogImageListInteractorTests: XCTestCase {
     private func assert(_ sut: DogImageListInteractor,
                         _ webAPI: MockedDogImageListLoader,
                         initialLoadable: Loadable<[DogImage]> = .notRequested,
-                        expected: [Loadable<[DogImage]>]) {
+                        expected: [Loadable<[DogImage]>],
+                        file: StaticString = #file,
+                        line: UInt = #line) {
         let exp = expectation(description: "wait for load")
         let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
         updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected)
-            webAPI.verify()
+            XCTAssertEqual(updates, expected, file: file, line: line)
+            webAPI.verify(file: file, line: line)
             exp.fulfill()
         }.store(in: &cencellables)
 
@@ -86,7 +88,9 @@ class DogImageListInteractorTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    private func recordLoadableUpdates(initialLoadable: Loadable<[DogImage]> = .notRequested, for timeInterval: TimeInterval = 0.5)
+    private func recordLoadableUpdates(
+        initialLoadable: Loadable<[DogImage]> = .notRequested,
+        for timeInterval: TimeInterval = 0.5)
         -> (Binding<Loadable<[DogImage]>>, AnyPublisher<[Loadable<[DogImage]>], Never>) {
             let publisher = CurrentValueSubject<Loadable<[DogImage]>, Never>(initialLoadable)
             let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
