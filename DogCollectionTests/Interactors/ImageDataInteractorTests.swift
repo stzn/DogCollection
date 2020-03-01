@@ -17,7 +17,7 @@ class ImageDataInteractorTests: XCTestCase {
 
     func test_load_fromWebAPI() {
         let expected = anyData
-        let (sut, webAPI, cache) = makeSUT()
+        let (sut, webAPI, cache, _) = makeSUT()
 
         webAPI.imageResponse = .success(expected)
 
@@ -33,7 +33,7 @@ class ImageDataInteractorTests: XCTestCase {
 
     func test_load_fromCache() {
         let expected = anyData
-        let (sut, webAPI, cache) = makeSUT()
+        let (sut, webAPI, cache, _) = makeSUT()
 
         cache.imageResponse = .success(expected)
 
@@ -52,7 +52,7 @@ class ImageDataInteractorTests: XCTestCase {
 
     func test_load_invalidWebResponse_failed() {
         let expected = anyError
-        let (sut, webAPI, cache) = makeSUT()
+        let (sut, webAPI, cache, _) = makeSUT()
 
         webAPI.imageResponse = .failure(expected)
 
@@ -67,13 +67,26 @@ class ImageDataInteractorTests: XCTestCase {
         ])
     }
 
+    func test_memoryWarning_purgeCache() {
+        let expected = anyData
+        let (sut, _, cache, memoryWarning) = makeSUT()
+        _ = sut // this is to stop warning
+        cache.cache(data: expected, key: testURL.absoluteString, expiry: nil)
+        XCTAssertFalse(cache.didPurgeCalled)
+        memoryWarning.send(())
+        XCTAssertTrue(cache.didPurgeCalled)
+    }
+
     // MARK: - Helper
 
-    private func makeSUT() -> (LiveImageDataInteractor, MockedImageDataWebAPILoader, MockedImageDataCache) {
-        let webAPI = MockedImageDataWebAPILoader()
-        let cache = MockedImageDataCache()
-        let sut = LiveImageDataInteractor(webAPI: webAPI, cache: cache)
-        return (sut, webAPI, cache)
+    private func makeSUT() -> (LiveImageDataInteractor, MockedImageDataWebAPILoader,
+        MockedImageDataCache, PassthroughSubject<Void, Never>) {
+            let webAPI = MockedImageDataWebAPILoader()
+            let cache = MockedImageDataCache()
+            let memoryWarning = PassthroughSubject<Void, Never>()
+            let sut = LiveImageDataInteractor(webAPI: webAPI, cache: cache,
+                                              memoryWarning: memoryWarning.eraseToAnyPublisher())
+            return (sut, webAPI, cache, memoryWarning)
     }
 
     private func expect(

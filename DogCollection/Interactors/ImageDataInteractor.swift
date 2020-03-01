@@ -15,11 +15,16 @@ protocol ImageDataInteractor {
 }
 
 final class LiveImageDataInteractor: ImageDataInteractor {
-    let webAPI: ImageDataLoader
-    let cache: ImageDataCache
-    init(webAPI: ImageDataLoader, cache: ImageDataCache) {
+    private let webAPI: ImageDataLoader
+    private let cache: ImageDataCache
+    private var cancellabels: Set<AnyCancellable> = []
+    init(webAPI: ImageDataLoader, cache: ImageDataCache,
+         memoryWarning: AnyPublisher<Void, Never>) {
         self.webAPI = webAPI
         self.cache = cache
+        memoryWarning.sink { [cache] in
+            cache.purge()
+        }.store(in: &cancellabels)
     }
 
     func load(from url: URL, image: Binding<Loadable<Data>>) {

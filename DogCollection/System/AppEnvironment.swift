@@ -5,7 +5,7 @@
 //  Created by Shinzan Takata on 2020/02/26.
 //  Copyright © 2020 shiz. All rights reserved.
 //
-
+import UIKit
 import Foundation
 
 struct AppEnvironment {
@@ -30,9 +30,15 @@ struct AppEnvironment {
         let session = configuredURLSession()
         let client = URLSessionWebAPIClient(session: session)
         let webAPIs = configureWebAPIs(client: client)
+        let memoryWarning = NotificationCenter.default
+            .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
+            .map { _ in }
+            .eraseToAnyPublisher()
         return .init(breedListInteractor: LiveBreedListInteractor(webAPI: webAPIs.dogWebAPI),
                      dogImageListInteractor: LiveDogImageListInteractor(webAPI: webAPIs.dogWebAPI),
-                     imageDataInteractor: LiveImageDataInteractor(webAPI: webAPIs.imageWebAPI, cache: configuredMemoryCache()))
+                     imageDataInteractor: LiveImageDataInteractor(webAPI: webAPIs.imageWebAPI,
+                                                                  cache: configuredMemoryCache(),
+                                                                  memoryWarning: memoryWarning))
     }
 
     private static func configureWebAPIs(client: URLSessionWebAPIClient) -> WebAPIContainer {
