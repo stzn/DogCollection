@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct DogImageCollection: View {
+    @Environment(\.injected) var container: DIContainer
+
     let breed: String
     let dogImages: [DogImage]
 
@@ -30,8 +32,12 @@ struct DogImageCollection: View {
     private func createDogImageItems(for geometry: GeometryProxy, with rowModel: RowModel) -> some View {
         HStack(spacing: 0) {
             ForEach(rowModel.items) { image in
-                DogImageItem(url: image.imageURL,
-                             size: self.size(for: geometry))
+                AsyncImage<Image>(url: image.imageURL,
+                                  interactor: self.container.interactors.imageDataInteractor,
+                                  placeholder: Image(uiImage: UIImage(systemName: "photo")!))
+                    .frame(width: self.size(for: geometry).width, height: self.size(for: geometry).height, alignment: .center)
+                    .aspectRatio(contentMode: .fill)
+                    .clipped()
             }
         }.listRowInsets(EdgeInsets())
     }
