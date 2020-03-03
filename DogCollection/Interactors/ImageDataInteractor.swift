@@ -43,7 +43,7 @@ final class LiveImageDataInteractor: ImageDataInteractor {
             }
             image.wrappedValue = loadable
         }
-        .store(in: cancelBag)
+        .store(in: &cancellabels)
     }
 
     func loadFromCache(from url: URL) -> AnyPublisher<Data, ImageDataCacheError> {
