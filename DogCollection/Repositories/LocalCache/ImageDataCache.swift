@@ -14,6 +14,7 @@ protocol ImageDataCache {
     func cache(data: Data, key: Key, expiry: Expiry?)
     func cachedImage(for key: Key) -> AnyPublisher<Data, ImageDataCacheError>
     func purge()
+    func purgeExpired()
 }
 
 enum ImageDataCacheError: Error {

@@ -35,6 +35,8 @@
 		D64C344A2407A8B500FDEFB9 /* BreedListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */; };
 		D64C344C2407A8D800FDEFB9 /* DogImageListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344B2407A8D800FDEFB9 /* DogImageListLoader.swift */; };
 		D64C344E2407AA9C00FDEFB9 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */; };
+		D6942BE9240C782400027E0F /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BE8240C782400027E0F /* SystemEventsHandler.swift */; };
+		D6942BEC240C7F5400027E0F /* SystemEventsHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */; };
 		D69F49E8240342AE0006D88F /* DogImageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F49E7240342AE0006D88F /* DogImageListView.swift */; };
 		D69F49EA240342C70006D88F /* DogImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F49E9240342C70006D88F /* DogImageItem.swift */; };
 		D69F49EC240344310006D88F /* DogImageListViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F49EB240344310006D88F /* DogImageListViewState.swift */; };
@@ -114,6 +116,8 @@
 		D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListLoader.swift; sourceTree = "<group>"; };
 		D64C344B2407A8D800FDEFB9 /* DogImageListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListLoader.swift; sourceTree = "<group>"; };
 		D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
+		D6942BE8240C782400027E0F /* SystemEventsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
+		D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandlerTests.swift; sourceTree = "<group>"; };
 		D69F49E7240342AE0006D88F /* DogImageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListView.swift; sourceTree = "<group>"; };
 		D69F49E9240342C70006D88F /* DogImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageItem.swift; sourceTree = "<group>"; };
 		D69F49EB240344310006D88F /* DogImageListViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListViewState.swift; sourceTree = "<group>"; };
@@ -177,8 +181,8 @@
 		D636F922240655AB004C7715 /* DI */ = {
 			isa = PBXGroup;
 			children = (
-				D636F923240655AB004C7715 /* DIContainer.swift */,
 				D636F93624073619004C7715 /* AppState.swift */,
+				D636F923240655AB004C7715 /* DIContainer.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -189,6 +193,7 @@
 				D6D2E6112401BD82008C7239 /* AppDelegate.swift */,
 				D636F9262406566F004C7715 /* AppEnvironment.swift */,
 				D6D2E6132401BD82008C7239 /* SceneDelegate.swift */,
+				D6942BE8240C782400027E0F /* SystemEventsHandler.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -196,9 +201,9 @@
 		D636F9282406584F004C7715 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
-				D636F9292406584F004C7715 /* ImageDataInteractor.swift */,
 				D636F93A24073DE5004C7715 /* BreedListInteractor.swift */,
 				D636F93C24073E67004C7715 /* DogImageListInteractor.swift */,
+				D636F9292406584F004C7715 /* ImageDataInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -290,6 +295,14 @@
 			path = LocalCache;
 			sourceTree = "<group>";
 		};
+		D6942BEA240C7ED500027E0F /* Systems */ = {
+			isa = PBXGroup;
+			children = (
+				D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */,
+			);
+			path = Systems;
+			sourceTree = "<group>";
+		};
 		D69F49E6240342970006D88F /* DogImageList */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,10 +325,10 @@
 		D69FA31F2401C59300C37862 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				D64A6E6A240AFE0700E6AE89 /* LocalCache */,
 				D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */,
 				D64C344B2407A8D800FDEFB9 /* DogImageListLoader.swift */,
 				D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */,
+				D64A6E6A240AFE0700E6AE89 /* LocalCache */,
 				D636F920240636A3004C7715 /* WebAPI */,
 			);
 			path = Repositories;
@@ -398,14 +411,15 @@
 		D6D2E6272401BD84008C7239 /* DogCollectionTests */ = {
 			isa = PBXGroup;
 			children = (
-				D6C107792409E668008D266D /* Repository */,
-				D6BB0143240888DB009ACEB7 /* Mocks */,
+				D6D2E62A2401BD84008C7239 /* Info.plist */,
+				D64A6E68240A0A8200E6AE89 /* LoadableTests.swift */,
+				D6BB01482408945C009ACEB7 /* TestHelpers.swift */,
 				D636F93E2407545A004C7715 /* Interactors */,
+				D6BB0143240888DB009ACEB7 /* Mocks */,
+				D6C107792409E668008D266D /* Repository */,
+				D6942BEA240C7ED500027E0F /* Systems */,
 				D6DC71622403C162007A5C6F /* Views */,
 				D6DC71612403C152007A5C6F /* ViewStates */,
-				D6D2E62A2401BD84008C7239 /* Info.plist */,
-				D6BB01482408945C009ACEB7 /* TestHelpers.swift */,
-				D64A6E68240A0A8200E6AE89 /* LoadableTests.swift */,
 			);
 			path = DogCollectionTests;
 			sourceTree = "<group>";
@@ -556,6 +570,7 @@
 				D69FA3212401C5A700C37862 /* URLSessionWebAPIClient.swift in Sources */,
 				D649C5AD2402104A0053CDD7 /* ActivityIndicator.swift in Sources */,
 				D64C344E2407AA9C00FDEFB9 /* ImageDataLoader.swift in Sources */,
+				D6942BE9240C782400027E0F /* SystemEventsHandler.swift in Sources */,
 				D64C344C2407A8D800FDEFB9 /* DogImageListLoader.swift in Sources */,
 				D636F94024075FB8004C7715 /* ContentView.swift in Sources */,
 				D69FA32D2401EF5800C37862 /* DogWebAPI.swift in Sources */,
@@ -590,6 +605,7 @@
 			files = (
 				D64A6E73240B44E500E6AE89 /* ImageDataInteractorTests.swift in Sources */,
 				D6DC71652403C181007A5C6F /* SearchBarTests.swift in Sources */,
+				D6942BEC240C7F5400027E0F /* SystemEventsHandlerTests.swift in Sources */,
 				D64A6E69240A0A8200E6AE89 /* LoadableTests.swift in Sources */,
 				D64A6E75240B462300E6AE89 /* MockedLocalCaches.swift in Sources */,
 				D69FA2EC2401BEED00C37862 /* BreedListViewStateTests.swift in Sources */,

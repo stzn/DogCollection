@@ -17,11 +17,12 @@ final class MockedImageDataCache: ImageDataCache, Mock {
 
     var actions = MockActions<Action>(expected: [])
     var imageResponse: Result<Data, ImageDataCacheError> = .failure(.isMissing)
-    var cache: [ImageDataCache.Key: Data] = [:]
-    var didPurgeCalled = false
+    private(set) var cache: [ImageDataCache.Key: (Data, Expiry?)] = [:]
+    private(set) var didPurgeCalled = false
+    private(set) var didPurgeExpiredCalled = false
 
     func cache(data: Data, key: Key, expiry: Expiry?) {
-        cache[key] = data
+        cache[key] = (data, expiry)
     }
 
     func cachedImage(for key: Key) -> AnyPublisher<Data, ImageDataCacheError> {
@@ -31,5 +32,16 @@ final class MockedImageDataCache: ImageDataCache, Mock {
 
     func purge() {
         didPurgeCalled = true
+        cache = [:]
+    }
+
+    func purgeExpired() {
+        didPurgeExpiredCalled = true
+        cache.forEach { (key, value) in
+            let (_, expiry) = value
+            if expiry?.isExpired ?? false {
+                cache[key] = nil
+            }
+        }
     }
 }

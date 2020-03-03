@@ -6,6 +6,7 @@
 //  Copyright © 2020 shiz. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
 struct DogImageListView: View {
@@ -52,6 +53,12 @@ struct DogImageListView: View {
 
     private func loadDogImages() {
         container.interactors.dogImageListInteractor.loadDogImages(of: breed, dogImages: $viewModel.dogImages)
+    }
+}
+
+extension DogImageListView {
+    var isSystemActive: AnyPublisher<Bool, Never> {
+        container.appState.updates(for: \.system.isActive)
     }
 }
 

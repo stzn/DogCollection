@@ -28,6 +28,10 @@ var anyData: Data {
     UIColor.red.image().pngData()!
 }
 
+var anyKey: String {
+    UUID().uuidString
+}
+
 // MARK: - UI
 
 extension UIColor {

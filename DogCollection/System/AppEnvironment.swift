@@ -10,10 +10,15 @@ import Foundation
 
 struct AppEnvironment {
     let container: DIContainer
+    let systemEventsHandler: SystemEventsHandler
 
     static func bootstrap() -> AppEnvironment {
         let appState = Store<AppState>(AppState())
-        return AppEnvironment(container: DIContainer(appState: appState, interactors: configureInteractors()))
+        let memoryCache = configuredMemoryCache()
+        return AppEnvironment(
+            container: DIContainer(appState: appState,
+                                   interactors: configureInteractors(cache: memoryCache)),
+            systemEventsHandler: LiveSystemEventsHandler(appState: appState, caches: [memoryCache]))
     }
 
     private static func configuredURLSession() -> URLSession {
@@ -26,7 +31,7 @@ struct AppEnvironment {
         return ImageDataMemoryCache(config: config)
     }
 
-    private static func configureInteractors() -> DIContainer.Interactors {
+    private static func configureInteractors(cache: ImageDataCache) -> DIContainer.Interactors {
         let session = configuredURLSession()
         let client = URLSessionWebAPIClient(session: session)
         let webAPIs = configureWebAPIs(client: client)
@@ -37,7 +42,7 @@ struct AppEnvironment {
         return .init(breedListInteractor: LiveBreedListInteractor(webAPI: webAPIs.dogWebAPI),
                      dogImageListInteractor: LiveDogImageListInteractor(webAPI: webAPIs.dogWebAPI),
                      imageDataInteractor: LiveImageDataInteractor(webAPI: webAPIs.imageWebAPI,
-                                                                  cache: configuredMemoryCache(),
+                                                                  cache: cache,
                                                                   memoryWarning: memoryWarning))
     }
 

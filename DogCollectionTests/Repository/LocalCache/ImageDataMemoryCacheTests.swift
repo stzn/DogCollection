@@ -77,8 +77,4 @@ class ImageDataMemoryCacheTests: XCTestCase {
     private func makeSUT() -> ImageDataMemoryCache {
         ImageDataMemoryCache(config: .init(expiry: .never))
     }
-
-    private var anyKey: String {
-        UUID().uuidString
-    }
 }
