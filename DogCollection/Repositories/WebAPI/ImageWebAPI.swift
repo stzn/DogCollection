@@ -10,6 +10,7 @@ import Combine
 import Foundation
 
 final class ImageWebAPI: ImageDataLoader {
+    private let queue = DispatchQueue(label: "ImageWebAPI")
     private let client: WebAPIClient
     init(client: WebAPIClient) {
         self.client = client
@@ -19,6 +20,7 @@ final class ImageWebAPI: ImageDataLoader {
         client.send(request: URLRequest(url: url))
             .map { $0.data }
             .mapError { $0 as Error }
+            .subscribe(on: queue)
             .eraseToAnyPublisher()
     }
 }
