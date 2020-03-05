@@ -10,6 +10,7 @@ import Foundation
 
 struct DogImage: Equatable, Decodable {
     let imageURL: URL
+    let isFavorite: Bool
 }
 
 extension DogImage: Identifiable {
@@ -19,7 +20,7 @@ extension DogImage: Identifiable {
 #if DEBUG
 extension DogImage {
     static var anyDogImage: DogImage {
-        DogImage(imageURL: URL(string: "https://www.image.com")!)
+        DogImage(imageURL: URL(string: "https://www.image.com")!, isFavorite: false)
     }
 }
 #endif

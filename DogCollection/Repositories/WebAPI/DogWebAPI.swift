@@ -49,7 +49,7 @@ extension DogWebAPI: DogImageListLoader {
             guard let url = URL(string: urlString) else {
                 return nil
             }
-            return DogImage(imageURL: url)
+            return DogImage(imageURL: url, isFavorite: false)
         }
         return dogImages
     }
