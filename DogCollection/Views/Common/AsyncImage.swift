@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AsyncImage<Placeholder: View>: View {
-    @State private var imageData: Loadable<Data> = .notRequested
+    @State private(set) var imageData: Loadable<Data> = .notRequested
     private let url: URL
     private let placeholder: Placeholder?
     private let interactor: ImageDataInteractor

@@ -12,7 +12,7 @@ import SwiftUI
 @testable import DogCollection
 
 class BreedListInteractorTests: XCTestCase {
-    var cencellables: Set<AnyCancellable> = []
+    var cancellables: Set<AnyCancellable> = []
     var binding: Binding<Loadable<[Breed]>>!
 
     func test_load_notRequested_to_Loaded() {
@@ -81,7 +81,7 @@ class BreedListInteractorTests: XCTestCase {
             XCTAssertEqual(updates, expected, file: file, line: line)
             webAPI.verify(file: file, line: line)
             exp.fulfill()
-        }.store(in: &cencellables)
+        }.store(in: &cancellables)
 
         sut.load(breedList: binding)
 
@@ -98,7 +98,7 @@ class BreedListInteractorTests: XCTestCase {
                 
                 publisher
                     .sink { updates.append($0) }
-                    .store(in: &self.cencellables)
+                    .store(in: &self.cancellables)
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
                     promise(.success(updates))

@@ -13,31 +13,40 @@ import SwiftUI
 
 class DogImageListInteractorTests: XCTestCase {
     var cencellables: Set<AnyCancellable> = []
-    var binding: Binding<Loadable<[DogImage]>>!
 
     func test_load_notRequested_to_Loaded() {
         let expected = [DogImage.anyDogImage]
-        let (sut, webAPI) = makeSUT()
+        let (sut, webAPI, store) = makeSUT()
         webAPI.dogImageListResponse = .success(expected)
         webAPI.actions = .init(expected: [
             .loadDogImageList
         ])
-        assert(sut, webAPI, expected: [
-            .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .loaded(expected)
+        store.favoriteDogImageURLListResponse = .success([])
+        store.actions = .init(expected: [
+            .loadFavoriteDogImageURLList
+        ])
+
+        assert(sut, webAPI, store,
+               expected: [
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .loaded(expected)
         ])
     }
 
     func test_load_loaded_to_Loaded() {
         let initial = [DogImage.anyDogImage, DogImage.anyDogImage]
         let expected = [DogImage.anyDogImage, DogImage.anyDogImage]
-        let (sut, webAPI) = makeSUT()
+        let (sut, webAPI, store) = makeSUT()
         webAPI.dogImageListResponse = .success(expected)
         webAPI.actions = .init(expected: [
             .loadDogImageList
         ])
-        assert(sut, webAPI,
+        store.favoriteDogImageURLListResponse = .success([])
+        store.actions = .init(expected: [
+            .loadFavoriteDogImageURLList
+        ])
+        assert(sut, webAPI, store,
                initialLoadable: .loaded(initial),
                expected: [
                 .loaded(initial),
@@ -46,14 +55,18 @@ class DogImageListInteractorTests: XCTestCase {
         ])
     }
 
-    func test_load_notRequested_to_Failed() {
+    func test_load_notRequested_to_WebAPIFailed() {
         let expected = WebAPIError.invalidResponse(nil)
-        let (sut, webAPI) = makeSUT()
+        let (sut, webAPI, store) = makeSUT()
         webAPI.dogImageListResponse = .failure(WebAPIError.invalidResponse(nil))
         webAPI.actions = .init(expected: [
             .loadDogImageList
         ])
-        assert(sut, webAPI,
+        store.favoriteDogImageURLListResponse = .success([])
+        store.actions = .init(expected: [
+            .loadFavoriteDogImageURLList
+        ])
+        assert(sut, webAPI, store,
                expected: [
                 .notRequested,
                 .isLoading(last: nil, cancelBag: CancelBag()),
@@ -61,16 +74,43 @@ class DogImageListInteractorTests: XCTestCase {
         ])
     }
 
+    func test_load_includeFavoriteDogImage() {
+        let favoriteDogImage = DogImage.anyDogImage
+        let expected = [DogImage.anyDogImage, favoriteDogImage]
+        let (sut, webAPI, store) = makeSUT()
+        webAPI.dogImageListResponse = .success(expected)
+        webAPI.actions = .init(expected: [
+            .loadDogImageList
+        ])
+        store.favoriteDogImageURLListResponse = .success(Set([favoriteDogImage.imageURL]))
+        store.actions = .init(expected: [
+            .loadFavoriteDogImageURLList
+        ])
+        assert(sut, webAPI, store,
+               expected: [
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .loaded(expected.map { dogImage in
+                    if dogImage.imageURL == favoriteDogImage.imageURL {
+                        return DogImage(imageURL: dogImage.imageURL, isFavorite: true)
+                    }
+                    return dogImage
+                }),
+        ])
+    }
+
     // MARK: - Helper
 
-    private func makeSUT() -> (LiveDogImageListInteractor, MockedDogImageListLoader) {
+    private func makeSUT() -> (LiveDogImageListInteractor, MockedDogImageListLoader, MockedFavoriteDogImageStore) {
         let webAPI = MockedDogImageListLoader()
-        let sut = LiveDogImageListInteractor(webAPI: webAPI)
-        return (sut, webAPI)
+        let store  = MockedFavoriteDogImageStore()
+        let sut = LiveDogImageListInteractor(webAPI: webAPI, favoriteDogImageStore: store)
+        return (sut, webAPI, store)
     }
 
     private func assert(_ sut: DogImageListInteractor,
                         _ webAPI: MockedDogImageListLoader,
+                        _ store: MockedFavoriteDogImageStore,
                         initialLoadable: Loadable<[DogImage]> = .notRequested,
                         expected: [Loadable<[DogImage]>],
                         file: StaticString = #file,
@@ -80,6 +120,7 @@ class DogImageListInteractorTests: XCTestCase {
         updatesPublisher.sink { updates in
             XCTAssertEqual(updates, expected, file: file, line: line)
             webAPI.verify(file: file, line: line)
+            store.verify(file: file, line: line)
             exp.fulfill()
         }.store(in: &cencellables)
 

@@ -27,6 +27,7 @@ extension DogWebAPI: BreedListLoader {
     func load() -> AnyPublisher<[Breed], Error> {
         call(BreedListAPIModel.self, URLRequest(url: baseURL.appendingPathComponent("breeds/list/all")))
             .map { $0.message.keys.map(Breed.init) }
+            .subscribe(on: queue)
             .eraseToAnyPublisher()
     }
 }
@@ -40,6 +41,7 @@ extension DogWebAPI: DogImageListLoader {
     func loadDogImages(of breed: String) -> AnyPublisher<[DogImage], Error> {
         call(DogImageListAPIModel.self, URLRequest(url: baseURL.appendingPathComponent("/breed/\(breed)/images")))
             .map(convert(from:))
+            .subscribe(on: queue)
             .eraseToAnyPublisher()
     }
 

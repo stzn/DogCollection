@@ -31,9 +31,10 @@
 		D64A6E71240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E70240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift */; };
 		D64A6E73240B44E500E6AE89 /* ImageDataInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E72240B44E500E6AE89 /* ImageDataInteractorTests.swift */; };
 		D64A6E75240B462300E6AE89 /* MockedLocalCaches.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E74240B462300E6AE89 /* MockedLocalCaches.swift */; };
+		D64AD3E624103D37000A7138 /* LikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64AD3E524103D37000A7138 /* LikeButton.swift */; };
+		D64AD3E824119246000A7138 /* FavoriteDogImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64AD3E724119246000A7138 /* FavoriteDogImageStore.swift */; };
 		D64C344824077DD700FDEFB9 /* WebAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344724077DD700FDEFB9 /* WebAPI.swift */; };
 		D64C344A2407A8B500FDEFB9 /* BreedListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */; };
-		D64C344C2407A8D800FDEFB9 /* DogImageListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344B2407A8D800FDEFB9 /* DogImageListLoader.swift */; };
 		D64C344E2407AA9C00FDEFB9 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */; };
 		D660FCFE240EEBD00076A331 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660FCFD240EEBD00076A331 /* AsyncImage.swift */; };
 		D6942BE9240C782400027E0F /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BE8240C782400027E0F /* SystemEventsHandler.swift */; };
@@ -57,6 +58,9 @@
 		D6D2E6182401BD84008C7239 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6D2E6172401BD84008C7239 /* Assets.xcassets */; };
 		D6D2E61B2401BD84008C7239 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6D2E61A2401BD84008C7239 /* Preview Assets.xcassets */; };
 		D6D2E61E2401BD84008C7239 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6D2E61C2401BD84008C7239 /* LaunchScreen.storyboard */; };
+		D6DAC49D2411EBDD001A5351 /* DogImageListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DAC49C2411EBDD001A5351 /* DogImageListLoader.swift */; };
+		D6DAC49F2411F115001A5351 /* MockedFavoriteDogImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DAC49E2411F115001A5351 /* MockedFavoriteDogImageStore.swift */; };
+		D6DAC4A12411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DAC4A02411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift */; };
 		D6DC71652403C181007A5C6F /* SearchBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC71642403C181007A5C6F /* SearchBarTests.swift */; };
 		D6DC716824049711007A5C6F /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC716724049711007A5C6F /* Binding+.swift */; };
 		D6DC716A2404D90C007A5C6F /* ImageWebAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC71692404D90C007A5C6F /* ImageWebAPI.swift */; };
@@ -112,9 +116,13 @@
 		D64A6E70240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataMemoryCacheTests.swift; sourceTree = "<group>"; };
 		D64A6E72240B44E500E6AE89 /* ImageDataInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataInteractorTests.swift; sourceTree = "<group>"; };
 		D64A6E74240B462300E6AE89 /* MockedLocalCaches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedLocalCaches.swift; sourceTree = "<group>"; };
+		D64AD3E524103D37000A7138 /* LikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButton.swift; sourceTree = "<group>"; };
+		D64AD3E724119246000A7138 /* FavoriteDogImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDogImageStore.swift; sourceTree = "<group>"; };
+		D64AD3EB2411DCD4000A7138 /* DogCollection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DogCollection.entitlements; sourceTree = "<group>"; };
+		D64AD3EE2411E2C2000A7138 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		D64AD3EF2411E2C2000A7138 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		D64C344724077DD700FDEFB9 /* WebAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAPI.swift; sourceTree = "<group>"; };
 		D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListLoader.swift; sourceTree = "<group>"; };
-		D64C344B2407A8D800FDEFB9 /* DogImageListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListLoader.swift; sourceTree = "<group>"; };
 		D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
 		D660FCFD240EEBD00076A331 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		D6942BE8240C782400027E0F /* SystemEventsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
@@ -142,6 +150,9 @@
 		D6D2E61F2401BD84008C7239 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6D2E6242401BD84008C7239 /* DogCollectionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogCollectionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D2E62A2401BD84008C7239 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6DAC49C2411EBDD001A5351 /* DogImageListLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DogImageListLoader.swift; sourceTree = "<group>"; };
+		D6DAC49E2411F115001A5351 /* MockedFavoriteDogImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedFavoriteDogImageStore.swift; sourceTree = "<group>"; };
+		D6DAC4A02411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListFavoriteImageStoreTests.swift; sourceTree = "<group>"; };
 		D6DC71642403C181007A5C6F /* SearchBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTests.swift; sourceTree = "<group>"; };
 		D6DC716724049711007A5C6F /* Binding+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+.swift"; sourceTree = "<group>"; };
 		D6DC71692404D90C007A5C6F /* ImageWebAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWebAPI.swift; sourceTree = "<group>"; };
@@ -224,6 +235,7 @@
 				D647CC2224085CC300F86F58 /* BreedListInteractorTests.swift */,
 				D6DF3E922409033E0003168D /* DogImageListInteractorTests.swift */,
 				D64A6E72240B44E500E6AE89 /* ImageDataInteractorTests.swift */,
+				D6DAC4A02411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -296,6 +308,23 @@
 			path = LocalCache;
 			sourceTree = "<group>";
 		};
+		D64AD3EA2411DAE1000A7138 /* FavoriteDogImageStore */ = {
+			isa = PBXGroup;
+			children = (
+				D64AD3E724119246000A7138 /* FavoriteDogImageStore.swift */,
+			);
+			path = FavoriteDogImageStore;
+			sourceTree = "<group>";
+		};
+		D64AD3ED2411E2C2000A7138 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D64AD3EE2411E2C2000A7138 /* Realm.framework */,
+				D64AD3EF2411E2C2000A7138 /* RealmSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D6942BEA240C7ED500027E0F /* Systems */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +338,7 @@
 			children = (
 				D69F49E7240342AE0006D88F /* DogImageListView.swift */,
 				D6F24A8B24036BCA00EDD0EA /* DogImageCollection.swift */,
+				D64AD3E524103D37000A7138 /* LikeButton.swift */,
 			);
 			path = DogImageList;
 			sourceTree = "<group>";
@@ -326,8 +356,9 @@
 			isa = PBXGroup;
 			children = (
 				D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */,
-				D64C344B2407A8D800FDEFB9 /* DogImageListLoader.swift */,
+				D6DAC49C2411EBDD001A5351 /* DogImageListLoader.swift */,
 				D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */,
+				D64AD3EA2411DAE1000A7138 /* FavoriteDogImageStore */,
 				D64A6E6A240AFE0700E6AE89 /* LocalCache */,
 				D636F920240636A3004C7715 /* WebAPI */,
 			);
@@ -341,6 +372,7 @@
 				D6BB014624088BC7009ACEB7 /* MockedWebAPIs.swift */,
 				D6C1077D2409E786008D266D /* URLProtocolStub.swift */,
 				D64A6E74240B462300E6AE89 /* MockedLocalCaches.swift */,
+				D6DAC49E2411F115001A5351 /* MockedFavoriteDogImageStore.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -368,6 +400,7 @@
 				D6D2E6102401BD82008C7239 /* DogCollection */,
 				D6D2E6272401BD84008C7239 /* DogCollectionTests */,
 				D6D2E60F2401BD82008C7239 /* Products */,
+				D64AD3ED2411E2C2000A7138 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -383,6 +416,7 @@
 		D6D2E6102401BD82008C7239 /* DogCollection */ = {
 			isa = PBXGroup;
 			children = (
+				D64AD3EB2411DCD4000A7138 /* DogCollection.entitlements */,
 				D6D2E6172401BD84008C7239 /* Assets.xcassets */,
 				D636F922240655AB004C7715 /* DI */,
 				D6DC716624049696007A5C6F /* Extensions */,
@@ -565,13 +599,14 @@
 				D6D2E6142401BD82008C7239 /* SceneDelegate.swift in Sources */,
 				D636F9272406566F004C7715 /* AppEnvironment.swift in Sources */,
 				D69FA2EA2401BE4500C37862 /* DogImage.swift in Sources */,
+				D64AD3E824119246000A7138 /* FavoriteDogImageStore.swift in Sources */,
 				D6DC716824049711007A5C6F /* Binding+.swift in Sources */,
 				D649C5B724024A0B0053CDD7 /* BreedRow.swift in Sources */,
 				D69FA3212401C5A700C37862 /* URLSessionWebAPIClient.swift in Sources */,
 				D649C5AD2402104A0053CDD7 /* ActivityIndicator.swift in Sources */,
 				D64C344E2407AA9C00FDEFB9 /* ImageDataLoader.swift in Sources */,
 				D6942BE9240C782400027E0F /* SystemEventsHandler.swift in Sources */,
-				D64C344C2407A8D800FDEFB9 /* DogImageListLoader.swift in Sources */,
+				D64AD3E624103D37000A7138 /* LikeButton.swift in Sources */,
 				D636F94024075FB8004C7715 /* ContentView.swift in Sources */,
 				D69FA32D2401EF5800C37862 /* DogWebAPI.swift in Sources */,
 				D649C5AB24020C800053CDD7 /* SearchBar.swift in Sources */,
@@ -586,6 +621,7 @@
 				D660FCFE240EEBD00076A331 /* AsyncImage.swift in Sources */,
 				D636F935240733B9004C7715 /* Helpers.swift in Sources */,
 				D636F93724073619004C7715 /* AppState.swift in Sources */,
+				D6DAC49D2411EBDD001A5351 /* DogImageListLoader.swift in Sources */,
 				D64A6E6E240B00F800E6AE89 /* ImageDataMemoryCache.swift in Sources */,
 				D636F93924073B7A004C7715 /* Loadable.swift in Sources */,
 				D69F49EC240344310006D88F /* DogImageListViewState.swift in Sources */,
@@ -603,6 +639,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6DAC4A12411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift in Sources */,
 				D64A6E73240B44E500E6AE89 /* ImageDataInteractorTests.swift in Sources */,
 				D6DC71652403C181007A5C6F /* SearchBarTests.swift in Sources */,
 				D6942BEC240C7F5400027E0F /* SystemEventsHandlerTests.swift in Sources */,
@@ -610,6 +647,7 @@
 				D64A6E75240B462300E6AE89 /* MockedLocalCaches.swift in Sources */,
 				D69FA2EC2401BEED00C37862 /* BreedListViewStateTests.swift in Sources */,
 				D64A6E71240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift in Sources */,
+				D6DAC49F2411F115001A5351 /* MockedFavoriteDogImageStore.swift in Sources */,
 				D6BB014724088BC7009ACEB7 /* MockedWebAPIs.swift in Sources */,
 				D6DF3E932409033E0003168D /* DogImageListInteractorTests.swift in Sources */,
 				D647CC2324085CC300F86F58 /* BreedListInteractorTests.swift in Sources */,
@@ -692,7 +730,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -746,7 +784,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -761,10 +799,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DogCollection/DogCollection.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"DogCollection/Preview Content\"";
 				DEVELOPMENT_TEAM = L8VFCZLW2Z;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = DogCollection/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -782,10 +825,15 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DogCollection/DogCollection.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"DogCollection/Preview Content\"";
 				DEVELOPMENT_TEAM = L8VFCZLW2Z;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = DogCollection/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -806,7 +854,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L8VFCZLW2Z;
 				INFOPLIST_FILE = DogCollectionTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -828,7 +876,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L8VFCZLW2Z;
 				INFOPLIST_FILE = DogCollectionTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

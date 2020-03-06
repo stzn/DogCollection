@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct DogImage: Equatable, Decodable {
+struct DogImage: Equatable, Decodable, Hashable {
     let imageURL: URL
     let isFavorite: Bool
 }
@@ -20,7 +20,7 @@ extension DogImage: Identifiable {
 #if DEBUG
 extension DogImage {
     static var anyDogImage: DogImage {
-        DogImage(imageURL: URL(string: "https://www.image.com")!, isFavorite: false)
+        DogImage(imageURL: URL(string: "https://\(UUID().uuidString).image.com")!, isFavorite: false)
     }
 }
 #endif

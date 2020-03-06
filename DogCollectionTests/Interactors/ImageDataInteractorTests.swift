@@ -13,7 +13,7 @@ import XCTest
 
 class ImageDataInteractorTests: XCTestCase {
 
-    var cencellables: Set<AnyCancellable> = []
+    var cancellables: Set<AnyCancellable> = []
 
     func test_load_fromWebAPI() {
         let expected = anyData
@@ -119,7 +119,7 @@ class ImageDataInteractorTests: XCTestCase {
             XCTAssertEqual(updates, expected, file: file, line: line)
             self.verify(webAPI, cache, file: file, line: line)
             exp.fulfill()
-        }.store(in: &cencellables)
+        }.store(in: &cancellables)
 
         sut.load(from: testURL, image: binding)
 
@@ -137,7 +137,7 @@ class ImageDataInteractorTests: XCTestCase {
 
                 publisher
                     .sink { updates.append($0) }
-                    .store(in: &self.cencellables)
+                    .store(in: &self.cancellables)
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
                     promise(.success(updates))

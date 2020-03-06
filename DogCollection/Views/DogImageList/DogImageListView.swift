@@ -19,8 +19,6 @@ struct DogImageListView: View {
         VStack(spacing: 0) {
             self.content
             Spacer()
-        }.onAppear {
-            self.loadDogImages()
         }
     }
 
