@@ -73,7 +73,7 @@ private struct RowModel: Identifiable {
 }
 
 
-struct DogImageItems_Previews: PreviewProvider {
+struct DogImageCollection_Previews: PreviewProvider {
     static var previews: some View {
         DogImageCollection(breed: "Tom", dogImages: [DogImage.anyDogImage], onTap: { _ in })
     }
