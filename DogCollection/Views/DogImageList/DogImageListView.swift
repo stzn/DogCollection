@@ -32,8 +32,8 @@ struct DogImageListView: View {
             return AnyView(notRequestedView)
         case .isLoading:
             return AnyView(LoadingView())
-        case let .loaded(value):
-            return AnyView(loadedView(value))
+        case .loaded:
+            return AnyView(loadedView)
         case let .failed(error):
             return AnyView(ErrorView(message: error.localizedDescription,
                                      retryAction: { self.loadDogImages() }))
@@ -44,8 +44,8 @@ struct DogImageListView: View {
         Text("").onAppear { self.loadDogImages() }
     }
 
-    private func loadedView(_ dogImages: [DogImage]) -> some View {
-        DogImageCollection(breed: breed, dogImages: dogImages, onTap: toggleFavorite(of:))
+    private var loadedView: some View {
+        DogImageCollection(breed: breed, dogImages: $viewModel.dogImages)
     }
 
     private func errorView(_ error: Error) -> some View {
@@ -55,22 +55,6 @@ struct DogImageListView: View {
 
     private func loadDogImages() {
         container.interactors.dogImageListInteractor.loadDogImages(of: breed, dogImages: $viewModel.dogImages)
-    }
-
-    private func toggleFavorite(of dogImage: DogImage) {
-        if !dogImage.isFavorite {
-            container.interactors.dogImageListInteractor
-                .addFavoriteDogImage(for: dogImage.imageURL, dogImages: $viewModel.dogImages)
-        } else {
-            container.interactors.dogImageListInteractor
-                .removeFavoriteDogImage(for: dogImage.imageURL, dogImages: $viewModel.dogImages)
-        }
-    }
-}
-
-extension DogImageListView {
-    var isSystemActive: AnyPublisher<Bool, Never> {
-        container.appState.updates(for: \.system.isActive)
     }
 }
 

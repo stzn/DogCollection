@@ -16,10 +16,8 @@ extension Breed: Identifiable {
     var id: String { name }
 }
 
-#if DEBUG
 extension Breed {
     static var anyBreed: Breed {
         Breed(name: "test\(UUID().uuidString)")
     }
 }
-#endif

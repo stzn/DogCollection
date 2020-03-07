@@ -9,9 +9,10 @@
 import SwiftUI
 
 struct DogImageCollection: View {
+    @Environment(\.injected) var container: DIContainer
+
     let breed: String
-    let dogImages: [DogImage]
-    let onTap: (DogImage) -> Void
+    @Binding var dogImages: Loadable<[DogImage]>
 
     var body: some View {
         GeometryReader { geometry in
@@ -32,7 +33,7 @@ struct DogImageCollection: View {
         let size = self.size(for: geometry)
         return HStack(spacing: 0) {
             ForEach(rowModel.items) { image in
-                DogImageItem(dogImage: image, size: size, onTap: self.onTap)
+                DogImageItem(dogImage: image, size: size, onTap: self.toggleFavorite(of:))
             }
         }.listRowInsets(EdgeInsets())
     }
@@ -52,14 +53,25 @@ struct DogImageCollection: View {
         }
 
         let strideSize = columnCount(for: size)
-        let rowModels = stride(from: dogImages.startIndex, to: dogImages.endIndex, by: strideSize)
+        let dogs = dogImages.value ?? []
+        let rowModels = stride(from: dogs.startIndex, to: dogs.endIndex, by: strideSize)
             .map { index -> RowModel in
-                let range = index..<min(index + strideSize, dogImages.endIndex)
-                let subItems = dogImages[range]
+                let range = index..<min(index + strideSize, dogs.endIndex)
+                let subItems = dogs[range]
                 return RowModel(items: Array(subItems))
         }
 
         return rowModels
+    }
+
+    private func toggleFavorite(of dogImage: DogImage) {
+        if !dogImage.isFavorite {
+            container.interactors.dogImageListInteractor
+                .addFavoriteDogImage(for: dogImage.imageURL, dogImages: $dogImages)
+        } else {
+            container.interactors.dogImageListInteractor
+                .removeFavoriteDogImage(for: dogImage.imageURL, dogImages: $dogImages)
+        }
     }
 }
 
@@ -75,6 +87,6 @@ private struct RowModel: Identifiable {
 
 struct DogImageCollection_Previews: PreviewProvider {
     static var previews: some View {
-        DogImageCollection(breed: "Tom", dogImages: [DogImage.anyDogImage], onTap: { _ in })
+        DogImageCollection(breed: "Tom", dogImages: .constant(.loaded([DogImage.anyDogImage])))
     }
 }
