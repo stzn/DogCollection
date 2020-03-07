@@ -22,6 +22,10 @@ struct DogImageListView: View {
         }
     }
 
+    private var dogImages: [DogImage] {
+        viewModel.dogImages.value ?? []
+    }
+
     private var content: some View {
         switch viewModel.dogImages {
         case .notRequested:
@@ -41,7 +45,7 @@ struct DogImageListView: View {
     }
 
     private func loadedView(_ dogImages: [DogImage]) -> some View {
-        DogImageCollection(breed: breed, dogImages: dogImages)
+        DogImageCollection(breed: breed, dogImages: dogImages, onTap: toggleFavorite(of:))
     }
 
     private func errorView(_ error: Error) -> some View {
@@ -51,6 +55,16 @@ struct DogImageListView: View {
 
     private func loadDogImages() {
         container.interactors.dogImageListInteractor.loadDogImages(of: breed, dogImages: $viewModel.dogImages)
+    }
+
+    private func toggleFavorite(of dogImage: DogImage) {
+        if !dogImage.isFavorite {
+            container.interactors.dogImageListInteractor
+                .addFavoriteDogImage(for: dogImage.imageURL, dogImages: $viewModel.dogImages)
+        } else {
+            container.interactors.dogImageListInteractor
+                .removeFavoriteDogImage(for: dogImage.imageURL, dogImages: $viewModel.dogImages)
+        }
     }
 }
 

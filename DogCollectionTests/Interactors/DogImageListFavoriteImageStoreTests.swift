@@ -35,10 +35,11 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
             .register(initialDogImage.imageURL),
         ])
 
-        assertAddFavorite(sut, store, initialDogImage: initialDogImage, expected: [
-            .loaded(initialDogImage),
-            .isLoading(last: initialDogImage, cancelBag: CancelBag()),
-            .loaded(DogImage(imageURL: initialDogImage.imageURL, isFavorite: true))
+        assertAddFavorite(sut, store, for: initialDogImage.imageURL,
+                          initialDogImage: [initialDogImage], expected: [
+                            .loaded([initialDogImage]),
+                            .isLoading(last: [initialDogImage], cancelBag: CancelBag()),
+                            .loaded([DogImage(imageURL: initialDogImage.imageURL, isFavorite: true)])
 
         ])
     }
@@ -51,10 +52,11 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
             .unregister(expected.imageURL),
         ])
 
-        assertRemoveFavorite(sut, store, initialDogImage: initialDogImage, expected: [
-            .loaded(initialDogImage),
-            .isLoading(last: initialDogImage, cancelBag: CancelBag()),
-            .loaded(expected)
+        assertRemoveFavorite(sut, store, for: expected.imageURL,
+                             initialDogImage: [initialDogImage], expected: [
+                                .loaded([initialDogImage]),
+                                .isLoading(last: [initialDogImage], cancelBag: CancelBag()),
+                                .loaded([expected])
         ])
     }
 
@@ -69,11 +71,12 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
     }
 
     private func assertAddFavorite(_ sut: DogImageListInteractor,
-                        _ store: MockedFavoriteDogImageStore,
-                        initialDogImage: DogImage,
-                        expected: [Loadable<DogImage>],
-                        file: StaticString = #file,
-                        line: UInt = #line) {
+                                   _ store: MockedFavoriteDogImageStore,
+                                   for url: URL,
+                                   initialDogImage: [DogImage],
+                                   expected: [Loadable<[DogImage]>],
+                                   file: StaticString = #file,
+                                   line: UInt = #line) {
         let exp = expectation(description: "wait for load")
         let (binding, updatesPublisher) = recordLoadableUpdates(initialDogImage: initialDogImage)
         updatesPublisher.sink { updates in
@@ -82,17 +85,18 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
             exp.fulfill()
         }.store(in: &cancellables)
 
-        sut.addFavoriteDogImage(binding)
+        sut.addFavoriteDogImage(for: url, dogImages: binding)
 
         wait(for: [exp], timeout: 1.0)
     }
 
     private func assertRemoveFavorite(_ sut: DogImageListInteractor,
-                        _ store: MockedFavoriteDogImageStore,
-                        initialDogImage: DogImage,
-                        expected: [Loadable<DogImage>],
-                        file: StaticString = #file,
-                        line: UInt = #line) {
+                                      _ store: MockedFavoriteDogImageStore,
+                                      for url: URL,
+                                      initialDogImage: [DogImage],
+                                      expected: [Loadable<[DogImage]>],
+                                      file: StaticString = #file,
+                                      line: UInt = #line) {
         let exp = expectation(description: "wait for load")
         let (binding, updatesPublisher) = recordLoadableUpdates(initialDogImage: initialDogImage)
         updatesPublisher.sink { updates in
@@ -101,20 +105,20 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
             exp.fulfill()
         }.store(in: &cancellables)
 
-        sut.removeFavoriteDogImage(binding)
+        sut.removeFavoriteDogImage(for: url, dogImages: binding)
 
         wait(for: [exp], timeout: 1.0)
     }
 
     private func recordLoadableUpdates(
-        initialDogImage: DogImage,
+        initialDogImage: [DogImage],
         for timeInterval: TimeInterval = 0.5)
-        -> (Binding<Loadable<DogImage>>, AnyPublisher<[Loadable<DogImage>], Never>) {
-            let initialLoadable: Loadable<DogImage> = .loaded(initialDogImage)
-            let publisher = CurrentValueSubject<Loadable<DogImage>, Never>(initialLoadable)
+        -> (Binding<Loadable<[DogImage]>>, AnyPublisher<[Loadable<[DogImage]>], Never>) {
+            let initialLoadable: Loadable<[DogImage]> = .loaded(initialDogImage)
+            let publisher = CurrentValueSubject<Loadable<[DogImage]>, Never>(initialLoadable)
             let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
-            let updatesPublisher = Future<[Loadable<DogImage>], Never> { promise in
-                var updates: [Loadable<DogImage>] = []
+            let updatesPublisher = Future<[Loadable<[DogImage]>], Never> { promise in
+                var updates: [Loadable<[DogImage]>] = []
 
                 publisher
                     .sink { updates.append($0) }

@@ -56,7 +56,7 @@ struct AsyncImage<Placeholder: View>: View {
     private var loadedView: AnyView {
         if let data = imageData.value,
             let image =  UIImage(data: data) {
-            return AnyView(Image(uiImage: image).resizable())
+            return AnyView(configuration(Image(uiImage: image)).resizable())
         } else {
             return AnyView(placeholder)
         }

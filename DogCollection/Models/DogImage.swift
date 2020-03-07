@@ -10,7 +10,7 @@ import Foundation
 
 struct DogImage: Equatable, Decodable, Hashable {
     let imageURL: URL
-    let isFavorite: Bool
+    var isFavorite: Bool
 }
 
 extension DogImage: Identifiable {

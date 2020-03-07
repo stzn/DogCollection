@@ -15,22 +15,25 @@ protocol FavoriteDogImageLoader {
     func load(of breed: String) -> AnyPublisher<Set<URL>, Error>
 }
 
-
 protocol FavoriteDogImageRegistrator {
     func register(for url: URL) -> AnyPublisher<Void, Error>
     func unregister(for url: URL) -> AnyPublisher<Void, Error>
 }
 
-final class StubFavoriteDogImageStore: FavoriteDogImageStore {
+final class FavoriteDogImageMemoryStore: FavoriteDogImageStore {
+    private var urls: Set<URL> = []
     func load(of breed: String) -> AnyPublisher<Set<URL>, Error> {
-        Just([DogImage.anyDogImage.imageURL]).setFailureType(to: Error.self).eraseToAnyPublisher()
+        print(urls)
+        return Just(urls).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     func register(for url: URL) -> AnyPublisher<Void, Error> {
-        Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+        urls.insert(url)
+        return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     func unregister(for url: URL) -> AnyPublisher<Void, Error> {
-        Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+        urls.remove(url)
+        return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 }

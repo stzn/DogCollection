@@ -1,5 +1,5 @@
 //
-//  DogImageItems.swift
+//  DogImageCollection.swift
 //  DogCollection
 //
 //  Created by Shinzan Takata on 2020/02/24.
@@ -9,35 +9,30 @@
 import SwiftUI
 
 struct DogImageCollection: View {
-    @Environment(\.injected) var container: DIContainer
-
     let breed: String
     let dogImages: [DogImage]
+    let onTap: (DogImage) -> Void
 
     var body: some View {
         GeometryReader { geometry in
             List {
-                ForEach(self.dataCollection(items: self.dogImages, size: geometry.size)) { rowModel in
+                ForEach(self.dataCollection(size: geometry.size)) { rowModel in
                     self.createDogImageItems(for: geometry, with: rowModel)
                 }
-            }
-            .navigationBarTitle(self.breed)
-            .edgesIgnoringSafeArea([.bottom])
-            .onAppear {
-                UITableView.appearance().separatorStyle = .none
+            }.id(UUID())// これがないとレイアウトが崩れる
+                .navigationBarTitle(self.breed)
+                .edgesIgnoringSafeArea([.bottom])
+                .onAppear {
+                    UITableView.appearance().separatorStyle = .none
             }
         }
     }
 
     private func createDogImageItems(for geometry: GeometryProxy, with rowModel: RowModel) -> some View {
-        HStack(spacing: 0) {
+        let size = self.size(for: geometry)
+        return HStack(spacing: 0) {
             ForEach(rowModel.items) { image in
-                AsyncImage<Image>(url: image.imageURL,
-                                  interactor: self.container.interactors.imageDataInteractor,
-                                  placeholder: Image(uiImage: UIImage(systemName: "photo")!))
-                    .frame(width: self.size(for: geometry).width, height: self.size(for: geometry).height, alignment: .center)
-                    .aspectRatio(contentMode: .fill)
-                    .clipped()
+                DogImageItem(dogImage: image, size: size, onTap: self.onTap)
             }
         }.listRowInsets(EdgeInsets())
     }
@@ -51,17 +46,16 @@ struct DogImageCollection: View {
         Int(ceil(size.width / 138))
     }
 
-    private func dataCollection(items: [DogImage], size: CGSize) -> [RowModel] {
+    private func dataCollection(size: CGSize) -> [RowModel] {
         guard size != .zero else {
             return []
         }
 
         let strideSize = columnCount(for: size)
-
-        let rowModels = stride(from: items.startIndex, to: items.endIndex, by: strideSize)
+        let rowModels = stride(from: dogImages.startIndex, to: dogImages.endIndex, by: strideSize)
             .map { index -> RowModel in
-                let range = index..<min(index + strideSize, items.endIndex)
-                let subItems = items[range]
+                let range = index..<min(index + strideSize, dogImages.endIndex)
+                let subItems = dogImages[range]
                 return RowModel(items: Array(subItems))
         }
 
@@ -81,6 +75,6 @@ private struct RowModel: Identifiable {
 
 struct DogImageItems_Previews: PreviewProvider {
     static var previews: some View {
-        DogImageCollection(breed: "Tom", dogImages: [DogImage.anyDogImage])
+        DogImageCollection(breed: "Tom", dogImages: [DogImage.anyDogImage], onTap: { _ in })
     }
 }

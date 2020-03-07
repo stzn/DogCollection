@@ -1,5 +1,5 @@
 //
-//  DogImageRowViewModel.swift
+//  DogImageItemViewState.swift
 //  DogCollection
 //
 //  Created by Shinzan Takata on 2020/02/24.
@@ -10,6 +10,6 @@ import Combine
 import Foundation
 import UIKit
 
-struct DogImageRowViewState {
+struct DogImageItemViewState {
     var imageData: Loadable<Data> = .notRequested
 }

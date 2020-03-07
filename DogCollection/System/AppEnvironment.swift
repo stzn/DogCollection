@@ -35,7 +35,7 @@ struct AppEnvironment {
         let session = configuredURLSession()
         let client = URLSessionWebAPIClient(session: session)
         let webAPIs = configureWebAPIs(client: client)
-        let favoriteDogImageStore = StubFavoriteDogImageStore()
+        let favoriteDogImageStore = FavoriteDogImageMemoryStore()
         let memoryWarning = NotificationCenter.default
             .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
             .map { _ in }
