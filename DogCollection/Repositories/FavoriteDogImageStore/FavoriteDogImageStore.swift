@@ -23,7 +23,6 @@ protocol FavoriteDogImageRegistrator {
 final class FavoriteDogImageMemoryStore: FavoriteDogImageStore {
     private var urls: Set<URL> = []
     func load(of breed: String) -> AnyPublisher<Set<URL>, Error> {
-        print(urls)
         return Just(urls).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 

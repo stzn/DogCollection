@@ -54,7 +54,6 @@ final class LiveDogImageListInteractor: DogImageListInteractor {
                 return
         }
         let cancelBag = CancelBag()
-        dogImages.wrappedValue = .isLoading(last: dogs, cancelBag: cancelBag)
         favoriteDogImageStore.register(for: url)
             .sinkToResult { result in
                 switch result {
@@ -74,7 +73,6 @@ final class LiveDogImageListInteractor: DogImageListInteractor {
                 return
         }
         let cancelBag = CancelBag()
-        dogImages.wrappedValue = .isLoading(last: dogs, cancelBag: cancelBag)
         favoriteDogImageStore.unregister(for: url)
             .sinkToResult { result in
                 switch result {

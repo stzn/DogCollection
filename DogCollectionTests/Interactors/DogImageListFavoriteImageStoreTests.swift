@@ -38,7 +38,6 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
         assertAddFavorite(sut, store, for: initialDogImage.imageURL,
                           initialDogImage: [initialDogImage], expected: [
                             .loaded([initialDogImage]),
-                            .isLoading(last: [initialDogImage], cancelBag: CancelBag()),
                             .loaded([DogImage(imageURL: initialDogImage.imageURL, isFavorite: true)])
 
         ])
@@ -55,7 +54,6 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
         assertRemoveFavorite(sut, store, for: expected.imageURL,
                              initialDogImage: [initialDogImage], expected: [
                                 .loaded([initialDogImage]),
-                                .isLoading(last: [initialDogImage], cancelBag: CancelBag()),
                                 .loaded([expected])
         ])
     }

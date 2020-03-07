@@ -36,7 +36,6 @@
 		D64C344824077DD700FDEFB9 /* WebAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344724077DD700FDEFB9 /* WebAPI.swift */; };
 		D64C344A2407A8B500FDEFB9 /* BreedListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */; };
 		D64C344E2407AA9C00FDEFB9 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */; };
-		D655EE7724133ACE00E33C98 /* DogImageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655EE7624133ACE00E33C98 /* DogImageDataProvider.swift */; };
 		D660FCFE240EEBD00076A331 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660FCFD240EEBD00076A331 /* AsyncImage.swift */; };
 		D6942BE9240C782400027E0F /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BE8240C782400027E0F /* SystemEventsHandler.swift */; };
 		D6942BEC240C7F5400027E0F /* SystemEventsHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */; };
@@ -126,7 +125,6 @@
 		D64C344724077DD700FDEFB9 /* WebAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAPI.swift; sourceTree = "<group>"; };
 		D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListLoader.swift; sourceTree = "<group>"; };
 		D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
-		D655EE7624133ACE00E33C98 /* DogImageDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageDataProvider.swift; sourceTree = "<group>"; };
 		D660FCFD240EEBD00076A331 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		D6942BE8240C782400027E0F /* SystemEventsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
 		D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandlerTests.swift; sourceTree = "<group>"; };
@@ -344,7 +342,6 @@
 				D6F24A8B24036BCA00EDD0EA /* DogImageCollection.swift */,
 				D64AD3E524103D37000A7138 /* FavoriteBadge.swift */,
 				D6FC0B9A24123E410002AD65 /* DogImageItem.swift */,
-				D655EE7624133ACE00E33C98 /* DogImageDataProvider.swift */,
 			);
 			path = DogImageList;
 			sourceTree = "<group>";
@@ -623,7 +620,6 @@
 				D649C5B2240213090053CDD7 /* LoadingView.swift in Sources */,
 				D649C5A824020BF30053CDD7 /* BreedListView.swift in Sources */,
 				D6FC0B9B24123E410002AD65 /* DogImageItem.swift in Sources */,
-				D655EE7724133ACE00E33C98 /* DogImageDataProvider.swift in Sources */,
 				D69FA32B2401C6C300C37862 /* Breed.swift in Sources */,
 				D649C5B0240211850053CDD7 /* ErrorView.swift in Sources */,
 				D660FCFE240EEBD00076A331 /* AsyncImage.swift in Sources */,
@@ -812,10 +808,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DogCollection/Preview Content\"";
 				DEVELOPMENT_TEAM = L8VFCZLW2Z;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = DogCollection/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -838,10 +831,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DogCollection/Preview Content\"";
 				DEVELOPMENT_TEAM = L8VFCZLW2Z;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = DogCollection/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
