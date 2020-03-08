@@ -42,6 +42,7 @@ struct DogImageItem: View {
     private var isLoadingView: some View {
         LoadingView(message: "")
             .frame(width: size.width, height: size.height)
+            .animation(.none)
     }
 
     private func loadedView(_ data: Data) -> AnyView {
