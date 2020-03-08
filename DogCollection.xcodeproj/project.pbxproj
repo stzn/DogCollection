@@ -36,6 +36,7 @@
 		D64C344824077DD700FDEFB9 /* WebAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344724077DD700FDEFB9 /* WebAPI.swift */; };
 		D64C344A2407A8B500FDEFB9 /* BreedListLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */; };
 		D64C344E2407AA9C00FDEFB9 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */; };
+		D655EE7B2414641200E33C98 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D655EE7A2414641200E33C98 /* CollectionView.swift */; };
 		D660FCFE240EEBD00076A331 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660FCFD240EEBD00076A331 /* AsyncImage.swift */; };
 		D6942BE9240C782400027E0F /* SystemEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BE8240C782400027E0F /* SystemEventsHandler.swift */; };
 		D6942BEC240C7F5400027E0F /* SystemEventsHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */; };
@@ -125,6 +126,7 @@
 		D64C344724077DD700FDEFB9 /* WebAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAPI.swift; sourceTree = "<group>"; };
 		D64C34492407A8B500FDEFB9 /* BreedListLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListLoader.swift; sourceTree = "<group>"; };
 		D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
+		D655EE7A2414641200E33C98 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		D660FCFD240EEBD00076A331 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		D6942BE8240C782400027E0F /* SystemEventsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemEventsHandler.swift; sourceTree = "<group>"; };
 		D6942BEB240C7F5400027E0F /* SystemEventsHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsHandlerTests.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				D649C5AF240211850053CDD7 /* ErrorView.swift */,
 				D649C5B1240213090053CDD7 /* LoadingView.swift */,
 				D660FCFD240EEBD00076A331 /* AsyncImage.swift */,
+				D655EE7A2414641200E33C98 /* CollectionView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				D660FCFE240EEBD00076A331 /* AsyncImage.swift in Sources */,
 				D636F935240733B9004C7715 /* Helpers.swift in Sources */,
 				D636F93724073619004C7715 /* AppState.swift in Sources */,
+				D655EE7B2414641200E33C98 /* CollectionView.swift in Sources */,
 				D6DAC49D2411EBDD001A5351 /* DogImageListLoader.swift in Sources */,
 				D64A6E6E240B00F800E6AE89 /* ImageDataMemoryCache.swift in Sources */,
 				D636F93924073B7A004C7715 /* Loadable.swift in Sources */,
