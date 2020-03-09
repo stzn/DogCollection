@@ -23,7 +23,7 @@ class ImageDataInteractorTests: XCTestCase {
 
         expect(webAPI, cache,
                webAPIExp: [.loadImage(testURL)],
-               cacheExp: [.loadData(testURL.absoluteString)])
+               cacheExp: [.loadData(testURL)])
         assert(sut, webAPI, cache, expected: [
             .notRequested,
             .isLoading(last: nil, cancelBag: CancelBag()),
@@ -39,9 +39,9 @@ class ImageDataInteractorTests: XCTestCase {
 
         expect(webAPI, cache,
                webAPIExp: [],
-               cacheExp: [.loadData(testURL.absoluteString)])
+               cacheExp: [.loadData(testURL)])
 
-        cache.cache(data: expected, key: testURL.absoluteString, expiry: nil)
+        cache.cache(expected, key: testURL, expiry: .seconds(0))
 
         assert(sut, webAPI, cache, expected: [
             .notRequested,
@@ -58,7 +58,7 @@ class ImageDataInteractorTests: XCTestCase {
 
         expect(webAPI, cache,
                webAPIExp: [.loadImage(testURL)],
-               cacheExp: [.loadData(testURL.absoluteString)])
+               cacheExp: [.loadData(testURL)])
 
         assert(sut, webAPI, cache, expected: [
             .notRequested,
@@ -71,7 +71,7 @@ class ImageDataInteractorTests: XCTestCase {
         let expected = anyData
         let (sut, _, cache, memoryWarning) = makeSUT()
         _ = sut // this is to stop warning
-        cache.cache(data: expected, key: testURL.absoluteString, expiry: nil)
+        cache.cache(expected, key: testURL, expiry: .seconds(0))
         XCTAssertFalse(cache.didPurgeCalled)
         memoryWarning.send(())
         XCTAssertTrue(cache.didPurgeCalled)
@@ -85,6 +85,7 @@ class ImageDataInteractorTests: XCTestCase {
             let cache = MockedImageDataCache()
             let memoryWarning = PassthroughSubject<Void, Never>()
             let sut = LiveImageDataInteractor(loader: webAPI, cache: cache,
+                                              cachePolicy: CachePolicy(expiry: .never),
                                               memoryWarning: memoryWarning.eraseToAnyPublisher())
             return (sut, webAPI, cache, memoryWarning)
     }

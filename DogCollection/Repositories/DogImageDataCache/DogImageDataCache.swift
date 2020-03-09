@@ -10,13 +10,10 @@ import Combine
 import Foundation
 
 protocol DogImageDataCache {
-    typealias Key = String
-    func cache(data: Data, key: Key, expiry: Expiry?)
-    func cachedImage(for key: Key) -> AnyPublisher<Data, DogImageDataCacheError>
+    typealias Key = URL
+    typealias Value = Data
+    func cache(_ value: Value, key: Key, expiry: Expiry)
+    func cachedImage(for key: Key) -> AnyPublisher<Value, CacheError>
     func purge()
     func purgeExpired()
-}
-
-enum DogImageDataCacheError: Error {
-    case isMissing
 }

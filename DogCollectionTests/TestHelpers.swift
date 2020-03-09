@@ -32,8 +32,8 @@ var anyBreedType: BreedType {
     "test \(UUID().uuidString)"
 }
 
-var anyKey: String {
-    UUID().uuidString
+var anyKey: URL {
+    URL(string: "https://www.\(UUID().uuidString).com")!
 }
 
 // MARK: - UI

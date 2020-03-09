@@ -27,8 +27,7 @@ struct AppEnvironment {
     }
 
     private static func configuredMemoryCache(expiry: Expiry = .seconds(60*60*2)) -> DogImageDataMemoryCache {
-        let config = DogImageDataMemoryCache.Config(expiry: expiry)
-        return DogImageDataMemoryCache(config: config)
+        return DogImageDataMemoryCache()
     }
 
     private static func configureInteractors(cache: DogImageDataCache) -> DIContainer.Interactors {
@@ -45,6 +44,7 @@ struct AppEnvironment {
                                                                         favoriteDogImageStore: favoriteDogImageStore),
                      imageDataInteractor: LiveImageDataInteractor(loader: webAPIs.imageWebAPI,
                                                                   cache: cache,
+                                                                  cachePolicy: CachePolicy(expiry: .seconds(10)),
                                                                   memoryWarning: memoryWarning))
     }
 

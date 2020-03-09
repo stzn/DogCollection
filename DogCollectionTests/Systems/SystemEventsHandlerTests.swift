@@ -24,8 +24,8 @@ class SystemEventsHandlerTests: XCTestCase {
 
     func test_didBecomeActive_withCache() {
         let (sut, cache) = makeSUT()
-        cache.cache(data: anyData, key: anyKey, expiry: .never)
-        cache.cache(data: anyData, key: anyKey, expiry: .seconds(-1))
+        cache.cache(anyData, key: anyKey, expiry: .never)
+        cache.cache(anyData, key: anyKey, expiry: .seconds(-1))
 
         XCTAssertEqual(cache.cache.count, 2)
         XCTAssertFalse(sut.appState[\.system].isActive)

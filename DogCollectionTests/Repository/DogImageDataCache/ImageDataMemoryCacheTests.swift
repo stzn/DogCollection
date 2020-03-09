@@ -16,65 +16,53 @@ class ImageDataMemoryCacheTests: XCTestCase {
 
     func test_cachedImage_IsMissing() {
         let sut = makeSUT()
-        let exp = expectation(description: "wait for cache")
-        sut.cachedImage(for: anyKey)
-            .sinkToResult { result in
-                XCTAssertEqual(result, .failure(.isMissing))
-                exp.fulfill()
-        }.store(in: &cancellables)
-        wait(for: [exp], timeout: 1.0)
+
+        expect(sut, .failure(.isMissing), for: anyKey)
     }
 
     func test_cachedImage_CacheImage() {
         let sut = makeSUT()
         let key = anyKey
         let data = anyData
-        sut.cache(data: data, key: key)
 
-        let exp = expectation(description: "wait for cache")
-        sut.cachedImage(for: key)
-            .sinkToResult { result in
-                XCTAssertEqual(result, .success(data))
-                exp.fulfill()
-        }.store(in: &cancellables)
-        wait(for: [exp], timeout: 1.0)
+        sut.cache(data, key: key, expiry: .never)
+
+        expect(sut, .success(data), for: key)
     }
 
     func test_cachedImage_purge() {
         let sut = makeSUT()
         let key = anyKey
-        let data = anyData
-        sut.cache(data: data, key: key)
+        sut.cache(anyData, key: key, expiry: .seconds(0))
+
         sut.purge()
 
-        let exp = expectation(description: "wait for cache")
-        sut.cachedImage(for: key)
-            .sinkToResult { result in
-                XCTAssertEqual(result, .failure(.isMissing))
-                exp.fulfill()
-        }.store(in: &cancellables)
-        wait(for: [exp], timeout: 1.0)
+        expect(sut, .failure(.isMissing), for: key)
     }
 
     func test_cachedImage_purgeExpired() {
         let sut = makeSUT()
         let key = anyKey
-        let data = anyData
-        sut.cache(data: data, key: key, expiry: .seconds(-1))
+        sut.cache(anyData, key: key, expiry: .seconds(-1))
+
         sut.purgeExpired()
 
-        let exp = expectation(description: "wait for cache")
-        sut.cachedImage(for: key)
-            .sinkToResult { result in
-                XCTAssertEqual(result, .failure(.isMissing))
-                exp.fulfill()
-        }.store(in: &cancellables)
-        wait(for: [exp], timeout: 1.0)
+        expect(sut, .failure(.isMissing), for: key)
     }
 
     // MARK: - Helper
 
     private func makeSUT() -> DogImageDataMemoryCache {
-        DogImageDataMemoryCache(config: .init(expiry: .never))
+        DogImageDataMemoryCache()
+    }
+
+    private func expect(_ sut: DogImageDataMemoryCache, _ expected: Result<Data, CacheError>, for key: URL) {
+        let exp = expectation(description: "wait for cache")
+        sut.cachedImage(for: key)
+            .sinkToResult { result in
+                XCTAssertEqual(result, expected)
+                exp.fulfill()
+        }.store(in: &cancellables)
+        wait(for: [exp], timeout: 1.0)
     }
 }

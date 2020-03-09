@@ -16,16 +16,16 @@ final class MockedImageDataCache: DogImageDataCache, Mock {
     }
 
     var actions = MockActions<Action>(expected: [])
-    var imageResponse: Result<Data, DogImageDataCacheError> = .failure(.isMissing)
-    private(set) var cache: [DogImageDataCache.Key: (Data, Expiry?)] = [:]
+    var imageResponse: Result<Data, CacheError> = .failure(.isMissing)
+    private(set) var cache: [DogImageDataCache.Key: (value: Data, expirationDate: Date)] = [:]
     private(set) var didPurgeCalled = false
     private(set) var didPurgeExpiredCalled = false
 
-    func cache(data: Data, key: Key, expiry: Expiry?) {
-        cache[key] = (data, expiry)
+    func cache(_ value: Value, key: Key, expiry: Expiry) {
+        cache[key] = (value, expiry.date)
     }
 
-    func cachedImage(for key: Key) -> AnyPublisher<Data, DogImageDataCacheError> {
+    func cachedImage(for key: Key) -> AnyPublisher<Value, CacheError> {
         register(.loadData(key))
         return imageResponse.publish()
     }
@@ -38,8 +38,7 @@ final class MockedImageDataCache: DogImageDataCache, Mock {
     func purgeExpired() {
         didPurgeExpiredCalled = true
         cache.forEach { (key, value) in
-            let (_, expiry) = value
-            if expiry?.isExpired ?? false {
+            if value.expirationDate.timeIntervalSinceNow < 0 {
                 cache[key] = nil
             }
         }
