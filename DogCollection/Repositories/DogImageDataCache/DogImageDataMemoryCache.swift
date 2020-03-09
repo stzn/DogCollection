@@ -11,8 +11,8 @@ import Foundation
 
 typealias DogImageDataMemoryCache = MemoryCache<DogImageDataCache.Key, DogImageDataCache.Value>
 
-extension MemoryCache: DogImageDataCache where Key == URL, Value == Data {
-    func cache(_ value: Data, key: Key, expiry: Expiry) {
+extension DogImageDataMemoryCache: DogImageDataCache {
+    func cache(_ value: Value, key: Key, expiry: Expiry) {
         self.insert(value, for: key, expiry: expiry)
     }
 

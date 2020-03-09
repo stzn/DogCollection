@@ -17,10 +17,10 @@ protocol ImageDataInteractor {
 struct LiveImageDataInteractor: ImageDataInteractor {
     private let loader: ImageDataLoader
     private let cache: DogImageDataCache
-    private let cachePolicy: CachePolicy
+    private let cachePolicy: ImageDataCachePolicy
     private var cancellabels: Set<AnyCancellable> = []
     init(loader: ImageDataLoader, cache: DogImageDataCache,
-         cachePolicy: CachePolicy,
+         cachePolicy: ImageDataCachePolicy,
          memoryWarning: AnyPublisher<Void, Never>) {
         self.loader = loader
         self.cache = cache

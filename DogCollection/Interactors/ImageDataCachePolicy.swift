@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct CachePolicy {
+struct ImageDataCachePolicy {
     let expiry: Expiry
 }

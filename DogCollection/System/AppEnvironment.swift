@@ -44,7 +44,7 @@ struct AppEnvironment {
                                                                         favoriteDogImageStore: favoriteDogImageStore),
                      imageDataInteractor: LiveImageDataInteractor(loader: webAPIs.imageWebAPI,
                                                                   cache: cache,
-                                                                  cachePolicy: CachePolicy(expiry: .seconds(10)),
+                                                                  cachePolicy: ImageDataCachePolicy(expiry: .seconds(10)),
                                                                   memoryWarning: memoryWarning))
     }
 

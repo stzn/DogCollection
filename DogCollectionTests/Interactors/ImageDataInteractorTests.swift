@@ -85,7 +85,7 @@ class ImageDataInteractorTests: XCTestCase {
             let cache = MockedImageDataCache()
             let memoryWarning = PassthroughSubject<Void, Never>()
             let sut = LiveImageDataInteractor(loader: webAPI, cache: cache,
-                                              cachePolicy: CachePolicy(expiry: .never),
+                                              cachePolicy: ImageDataCachePolicy(expiry: .never),
                                               memoryWarning: memoryWarning.eraseToAnyPublisher())
             return (sut, webAPI, cache, memoryWarning)
     }
