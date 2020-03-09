@@ -11,30 +11,27 @@ import Foundation
 import SwiftUI
 
 protocol DogImageListInteractor {
-    func loadDogImages(of breed: String, dogImages: Binding<Loadable<[DogImage]>>)
-    func addFavoriteDogImage(for url: URL, dogImages: Binding<Loadable<[DogImage]>>)
-    func removeFavoriteDogImage(for url: URL, dogImages: Binding<Loadable<[DogImage]>>)
+    func loadDogImages(of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
+    func addFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
+    func removeFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
 }
 
-final class LiveDogImageListInteractor: DogImageListInteractor {
-    let webAPI: DogImageListLoader
-    let favoriteDogImageStore: FavoriteDogImageStore
-    init(webAPI: DogImageListLoader, favoriteDogImageStore: FavoriteDogImageStore) {
-        self.webAPI = webAPI
+struct LiveDogImageListInteractor: DogImageListInteractor {
+    let loader: DogImageListLoader
+    let favoriteDogImageStore: FavoriteDogImageURLsStore
+    init(loader: DogImageListLoader, favoriteDogImageStore: FavoriteDogImageURLsStore) {
+        self.loader = loader
         self.favoriteDogImageStore = favoriteDogImageStore
     }
     
-    func loadDogImages(of breed: String, dogImages: Binding<Loadable<[DogImage]>>) {
+    func loadDogImages(of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
         let cancelBag = CancelBag()
         dogImages.wrappedValue = .isLoading(last: dogImages.wrappedValue.value, cancelBag: cancelBag)
         
         Publishers.Zip(favoriteDogImageStore.load(of: breed),
-                       webAPI.loadDogImages(of: breed))
+                       loader.load(of: breed))
             .receive(on: DispatchQueue.main)
-            .sinkToLoadable { [weak self] loadable in
-                guard let self = self else {
-                    return
-                }
+            .sinkToLoadable { loadable in
                 dogImages.wrappedValue = loadable.map(self.convertToFavoriteDogImage(favoriteURLs:dogImages:))
         } .store(in: cancelBag)
     }
@@ -48,13 +45,13 @@ final class LiveDogImageListInteractor: DogImageListInteractor {
         }
     }
 
-    func addFavoriteDogImage(for url: URL, dogImages: Binding<Loadable<[DogImage]>>) {
+    func addFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
         guard var dogs = dogImages.wrappedValue.value,
             let index = dogs.firstIndex(where: { $0.imageURL == url }) else {
                 return
         }
         let cancelBag = CancelBag()
-        favoriteDogImageStore.register(for: url)
+        favoriteDogImageStore.register(url: url, for: breed)
             .sinkToResult { result in
                 switch result {
                 case .success:
@@ -67,13 +64,13 @@ final class LiveDogImageListInteractor: DogImageListInteractor {
         }.store(in: cancelBag)
     }
 
-    func removeFavoriteDogImage(for url: URL, dogImages: Binding<Loadable<[DogImage]>>) {
+    func removeFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
         guard var dogs = dogImages.wrappedValue.value,
             let index = dogs.firstIndex(where: { $0.imageURL == url }) else {
                 return
         }
         let cancelBag = CancelBag()
-        favoriteDogImageStore.unregister(for: url)
+        favoriteDogImageStore.unregister(url: url, for: breed)
             .sinkToResult { result in
                 switch result {
                 case .success:
@@ -87,12 +84,8 @@ final class LiveDogImageListInteractor: DogImageListInteractor {
     }
 }
 
-final class StubDogImageListInteractor: DogImageListInteractor {
-    func addFavoriteDogImage(for url: URL, dogImages: Binding<Loadable<[DogImage]>>) {
-    }
-
-    func removeFavoriteDogImage(for url: URL, dogImages: Binding<Loadable<[DogImage]>>) {
-    }
-
-    func loadDogImages(of breed: String, dogImages: Binding<Loadable<[DogImage]>>) {}
+struct StubDogImageListInteractor: DogImageListInteractor {
+    func addFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
+    func loadDogImages(of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
+    func removeFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
 }

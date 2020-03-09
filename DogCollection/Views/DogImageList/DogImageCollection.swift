@@ -11,7 +11,7 @@ import SwiftUI
 struct DogImageCollection: View {
     @Environment(\.injected) var container: DIContainer
     
-    let breed: String
+    let breed: BreedType
     @Binding var dogImages: Loadable<[DogImage]>
     
     var body: some View {
@@ -85,10 +85,10 @@ struct DogImageCollection: View {
     private func toggleFavorite(of dogImage: DogImage) {
         if !dogImage.isFavorite {
             container.interactors.dogImageListInteractor
-                .addFavoriteDogImage(for: dogImage.imageURL, dogImages: $dogImages)
+                .addFavoriteDogImage(dogImage.imageURL, for: breed, dogImages: $dogImages)
         } else {
             container.interactors.dogImageListInteractor
-                .removeFavoriteDogImage(for: dogImage.imageURL, dogImages: $dogImages)
+                .removeFavoriteDogImage(dogImage.imageURL, for: breed, dogImages: $dogImages)
         }
     }
 }

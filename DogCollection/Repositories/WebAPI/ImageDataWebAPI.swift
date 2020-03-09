@@ -9,10 +9,10 @@
 import Combine
 import Foundation
 
-final class ImageWebAPI: ImageDataLoader {
+final class ImageDataWebAPI: ImageDataLoader {
     private let queue = DispatchQueue(label: "ImageWebAPI")
-    private let client: WebAPIClient
-    init(client: WebAPIClient) {
+    private let client: HTTPClient
+    init(client: HTTPClient) {
         self.client = client
     }
 

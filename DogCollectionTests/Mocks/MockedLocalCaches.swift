@@ -10,14 +10,14 @@ import Combine
 import Foundation
 @testable import DogCollection
 
-final class MockedImageDataCache: ImageDataCache, Mock {
+final class MockedImageDataCache: DogImageDataCache, Mock {
     enum Action: Equatable {
-        case loadData(ImageDataCache.Key)
+        case loadData(DogImageDataCache.Key)
     }
 
     var actions = MockActions<Action>(expected: [])
-    var imageResponse: Result<Data, ImageDataCacheError> = .failure(.isMissing)
-    private(set) var cache: [ImageDataCache.Key: (Data, Expiry?)] = [:]
+    var imageResponse: Result<Data, DogImageDataCacheError> = .failure(.isMissing)
+    private(set) var cache: [DogImageDataCache.Key: (Data, Expiry?)] = [:]
     private(set) var didPurgeCalled = false
     private(set) var didPurgeExpiredCalled = false
 
@@ -25,7 +25,7 @@ final class MockedImageDataCache: ImageDataCache, Mock {
         cache[key] = (data, expiry)
     }
 
-    func cachedImage(for key: Key) -> AnyPublisher<Data, ImageDataCacheError> {
+    func cachedImage(for key: Key) -> AnyPublisher<Data, DogImageDataCacheError> {
         register(.loadData(key))
         return imageResponse.publish()
     }

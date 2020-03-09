@@ -74,7 +74,7 @@ class ImageDataMemoryCacheTests: XCTestCase {
 
     // MARK: - Helper
 
-    private func makeSUT() -> ImageDataMemoryCache {
-        ImageDataMemoryCache(config: .init(expiry: .never))
+    private func makeSUT() -> DogImageDataMemoryCache {
+        DogImageDataMemoryCache(config: .init(expiry: .never))
     }
 }

@@ -10,28 +10,34 @@ import Combine
 import Foundation
 @testable import DogCollection
 
-final class MockedFavoriteDogImageStore: FavoriteDogImageStore, Mock {
+final class MockedFavoriteDogImageStore: FavoriteDogImageURLsStore, Mock {
+
+    struct StoredData: Equatable {
+        let breed: BreedType
+        let url: URL
+    }
+
     enum Action: Equatable {
         case loadFavoriteDogImageURLList
-        case register(URL)
-        case unregister(URL)
+        case register(StoredData)
+        case unregister(StoredData)
     }
 
     var actions = MockActions<Action>(expected: [])
     var favoriteDogImageURLListResponse: Result<Set<URL>, Error> = .failure(MockError.valueNotSet)
 
-    func load(of breed: String) -> AnyPublisher<Set<URL>, Error> {
+    func load(of breed: BreedType) -> AnyPublisher<Set<URL>, Error> {
         actions.factual.append(.loadFavoriteDogImageURLList)
         return favoriteDogImageURLListResponse.publish()
     }
 
-    func register(for url: URL) -> AnyPublisher<Void, Error> {
-        actions.factual.append(.register(url))
+    func register(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
+        actions.factual.append(.register(StoredData(breed: breed, url: url)))
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
-    func unregister(for url: URL) -> AnyPublisher<Void, Error> {
-        actions.factual.append(.unregister(url))
+    func unregister(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
+        actions.factual.append(.unregister(StoredData(breed: breed, url: url)))
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 }

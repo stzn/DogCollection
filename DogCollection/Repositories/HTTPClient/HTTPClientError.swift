@@ -1,35 +1,24 @@
 //
-//  APIClient.swift
-//  Networking
+//  HTTPClientError.swift
+//  DogCollection
 //
-//  Created by Shinzan Takata on 2020/02/01.
+//  Created by Shinzan Takata on 2020/03/09.
 //  Copyright © 2020 shiz. All rights reserved.
 //
 
-import Combine
 import Foundation
 
-protocol WebAPIClient {
-    func send(request: URLRequest) -> AnyPublisher<Response, WebAPIError>
-}
-
-struct Response {
-    let data: Data
-    let response: HTTPURLResponse
-}
-
-enum WebAPIError : Error {
+enum HTTPClientError : Error {
     case unhandledResponse
     case invalidResponse(URLResponse?)
     case requestError(Int)
     case serverError(Int)
-    case decodingError(DecodingError)
     case unknown(Error)
 
 }
 
-extension WebAPIError {
-    static func error(from response: HTTPURLResponse) -> WebAPIError? {
+extension HTTPClientError {
+    static func error(from response: HTTPURLResponse) -> HTTPClientError? {
         switch response.statusCode {
         case 200...299:
             return nil
@@ -42,4 +31,3 @@ extension WebAPIError {
         }
     }
 }
-

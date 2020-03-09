@@ -11,9 +11,9 @@ import Foundation
 
 final class DogWebAPI: WebAPI {
     let baseURL = URL(string: "https://dog.ceo/api")!
-    let client: WebAPIClient
+    let client: HTTPClient
     let queue = DispatchQueue(label: "DogWebAPI")
-    init(client: WebAPIClient) {
+    init(client: HTTPClient) {
         self.client = client
     }
 }
@@ -38,7 +38,7 @@ extension DogWebAPI: DogImageListLoader {
         let status: String
     }
 
-    func loadDogImages(of breed: String) -> AnyPublisher<[DogImage], Error> {
+    func load(of breed: BreedType) -> AnyPublisher<[DogImage], Error> {
         call(DogImageListAPIModel.self, URLRequest(url: baseURL.appendingPathComponent("/breed/\(breed)/images")))
             .map(convert(from:))
             .subscribe(on: queue)

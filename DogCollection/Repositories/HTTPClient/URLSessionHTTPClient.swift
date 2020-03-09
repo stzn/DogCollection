@@ -9,25 +9,25 @@
 import Combine
 import Foundation
 
-final class URLSessionWebAPIClient: WebAPIClient {
+struct URLSessionHTTPClient: HTTPClient {
     private let session: URLSession
     init(session: URLSession) {
         self.session = session
     }
 
-    func send(request: URLRequest) -> AnyPublisher<Response, WebAPIError> {
+    func send(request: URLRequest) -> AnyPublisher<Response, HTTPClientError> {
         session.dataTaskPublisher(for: request)
             .tryMap { (data, response) in
                 guard let httpResponse = response as? HTTPURLResponse else {
-                    throw WebAPIError.invalidResponse(response)
+                    throw HTTPClientError.invalidResponse(response)
                 }
-                if let apiError = WebAPIError.error(from: httpResponse) {
+                if let apiError = HTTPClientError.error(from: httpResponse) {
                     throw apiError
                 } else {
                     return Response(data: data, response: httpResponse)
                 }
         }.mapError {
-            if let error = $0 as? WebAPIError {
+            if let error = $0 as? HTTPClientError {
                 return error
             }
             return .unknown($0)

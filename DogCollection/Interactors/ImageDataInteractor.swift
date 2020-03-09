@@ -14,13 +14,13 @@ protocol ImageDataInteractor {
     func load(from url: URL, image: Binding<Loadable<Data>>)
 }
 
-final class LiveImageDataInteractor: ImageDataInteractor {
-    private let webAPI: ImageDataLoader
-    private let cache: ImageDataCache
+struct LiveImageDataInteractor: ImageDataInteractor {
+    private let loader: ImageDataLoader
+    private let cache: DogImageDataCache
     private var cancellabels: Set<AnyCancellable> = []
-    init(webAPI: ImageDataLoader, cache: ImageDataCache,
+    init(loader: ImageDataLoader, cache: DogImageDataCache,
          memoryWarning: AnyPublisher<Void, Never>) {
-        self.webAPI = webAPI
+        self.loader = loader
         self.cache = cache
         memoryWarning.sink { [cache] in
             cache.purge()
@@ -28,13 +28,13 @@ final class LiveImageDataInteractor: ImageDataInteractor {
     }
 
     func load(from url: URL, image: Binding<Loadable<Data>>) {
-        let webAPI = self.webAPI
+        let loader = self.loader
         let cache = self.cache
         let cancelBag = CancelBag()
         image.wrappedValue = .isLoading(last: image.wrappedValue.value, cancelBag: cancelBag)
         loadFromCache(from: url)
             .catch { _ in
-                webAPI.load(from: url)
+                loader.load(from: url)
         }
         .receive(on: DispatchQueue.main)
         .sinkToLoadable { loadable in
@@ -46,11 +46,11 @@ final class LiveImageDataInteractor: ImageDataInteractor {
         .store(in: cancelBag)
     }
 
-    func loadFromCache(from url: URL) -> AnyPublisher<Data, ImageDataCacheError> {
+    func loadFromCache(from url: URL) -> AnyPublisher<Data, DogImageDataCacheError> {
         cache.cachedImage(for: url.absoluteString)
     }
 }
 
-final class StubImageDataInteractor: ImageDataInteractor {
+struct StubImageDataInteractor: ImageDataInteractor {
     func load(from url: URL, image: Binding<Loadable<Data>>) {}
 }

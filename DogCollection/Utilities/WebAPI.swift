@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 protocol WebAPI {
-    var client: WebAPIClient { get }
+    var client: HTTPClient { get }
     var baseURL: URL { get }
     var queue: DispatchQueue { get }
 }
@@ -21,12 +21,6 @@ extension WebAPI {
             .receive(on: queue)
             .map(\.data)
             .decode(type: M.self, decoder: JSONDecoder())
-            .mapError { error in
-                if let error = error as? DecodingError {
-                    return WebAPIError.decodingError(error)
-                }
-                return  error
-        }
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
 }

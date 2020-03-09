@@ -12,6 +12,8 @@ import SwiftUI
 @testable import DogCollection
 
 class DogImageListFavoriteImageStoreTests: XCTestCase {
+    typealias StoredData = MockedFavoriteDogImageStore.StoredData
+
     var cancellables: Set<AnyCancellable> = []
 
     func test_init_doesNotStoreAny() {
@@ -30,12 +32,13 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
 
     func test_addFavoriteDogImage_store() {
         let initialDogImage = DogImage.anyDogImage
+        let storeData = StoredData(breed: anyBreedType, url: initialDogImage.imageURL)
         let (sut, store) = makeSUT()
         store.actions = .init(expected: [
-            .register(initialDogImage.imageURL),
+            .register(storeData),
         ])
 
-        assertAddFavorite(sut, store, for: initialDogImage.imageURL,
+        assertAddFavorite(sut, store, for: storeData,
                           initialDogImage: [initialDogImage], expected: [
                             .loaded([initialDogImage]),
                             .loaded([DogImage(imageURL: initialDogImage.imageURL, isFavorite: true)])
@@ -44,17 +47,18 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
     }
 
     func test_removeFavoriteDogImage_store() {
-        let expected = DogImage.anyDogImage
-        let initialDogImage = DogImage(imageURL: expected.imageURL, isFavorite: true)
+        let removeDogImageURL = DogImage.anyDogImage.imageURL
+        let storedData = StoredData(breed: anyBreedType, url: removeDogImageURL)
+        let initialDogImage = DogImage(imageURL: removeDogImageURL, isFavorite: true)
         let (sut, store) = makeSUT()
         store.actions = .init(expected: [
-            .unregister(expected.imageURL),
+            .unregister(storedData),
         ])
 
-        assertRemoveFavorite(sut, store, for: expected.imageURL,
+        assertRemoveFavorite(sut, store, for: storedData,
                              initialDogImage: [initialDogImage], expected: [
                                 .loaded([initialDogImage]),
-                                .loaded([expected])
+                                .loaded([DogImage(imageURL: removeDogImageURL, isFavorite: false)])
         ])
     }
 
@@ -64,13 +68,13 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
         let webAPI = MockedDogImageListLoader()
         webAPI.dogImageListResponse = .success([])
         let store  = MockedFavoriteDogImageStore()
-        let sut = LiveDogImageListInteractor(webAPI: webAPI, favoriteDogImageStore: store)
+        let sut = LiveDogImageListInteractor(loader: webAPI, favoriteDogImageStore: store)
         return (sut, store)
     }
 
     private func assertAddFavorite(_ sut: DogImageListInteractor,
                                    _ store: MockedFavoriteDogImageStore,
-                                   for url: URL,
+                                   for data: StoredData,
                                    initialDogImage: [DogImage],
                                    expected: [Loadable<[DogImage]>],
                                    file: StaticString = #file,
@@ -83,14 +87,14 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
             exp.fulfill()
         }.store(in: &cancellables)
 
-        sut.addFavoriteDogImage(for: url, dogImages: binding)
+        sut.addFavoriteDogImage(data.url, for: data.breed, dogImages: binding)
 
         wait(for: [exp], timeout: 1.0)
     }
 
     private func assertRemoveFavorite(_ sut: DogImageListInteractor,
                                       _ store: MockedFavoriteDogImageStore,
-                                      for url: URL,
+                                      for data: StoredData,
                                       initialDogImage: [DogImage],
                                       expected: [Loadable<[DogImage]>],
                                       file: StaticString = #file,
@@ -103,7 +107,7 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
             exp.fulfill()
         }.store(in: &cancellables)
 
-        sut.removeFavoriteDogImage(for: url, dogImages: binding)
+        sut.removeFavoriteDogImage(data.url, for: data.breed, dogImages: binding)
 
         wait(for: [exp], timeout: 1.0)
     }

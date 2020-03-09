@@ -15,8 +15,8 @@ protocol SystemEventsHandler {
 
 struct LiveSystemEventsHandler: SystemEventsHandler {
     let appState: Store<AppState>
-    let caches: [ImageDataCache]
-    init(appState: Store<AppState>, caches: [ImageDataCache]) {
+    let caches: [DogImageDataCache]
+    init(appState: Store<AppState>, caches: [DogImageDataCache]) {
         self.appState = appState
         self.caches = caches
     }

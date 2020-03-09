@@ -10,29 +10,29 @@ import XCTest
 import Combine
 @testable import DogCollection
 
-final class WebAPIClientStub: WebAPIClient {
-    var publisher: AnyPublisher<Response, WebAPIError>!
-    private init(publisher: AnyPublisher<Response, WebAPIError>) {
+final class WebAPIClientStub: HTTPClient {
+    var publisher: AnyPublisher<Response, HTTPClientError>!
+    private init(publisher: AnyPublisher<Response, HTTPClientError>) {
         self.publisher = publisher
     }
 
-    static func output(response: Response) -> WebAPIClient {
-        let publisher = Just(response).setFailureType(to: WebAPIError.self).eraseToAnyPublisher()
+    static func output(response: Response) -> HTTPClient {
+        let publisher = Just(response).setFailureType(to: HTTPClientError.self).eraseToAnyPublisher()
         return Self(publisher: publisher)
     }
 
-    static func failure(error: WebAPIError) -> WebAPIClient {
-        let publisher = Fail<Response, WebAPIError>(error: error).eraseToAnyPublisher()
+    static func failure(error: HTTPClientError) -> HTTPClient {
+        let publisher = Fail<Response, HTTPClientError>(error: error).eraseToAnyPublisher()
         return Self(publisher: publisher)
     }
 
-    func send(request: URLRequest) -> AnyPublisher<Response, WebAPIError> {
+    func send(request: URLRequest) -> AnyPublisher<Response, HTTPClientError> {
         publisher
     }
 }
 
 class TestWebAPI: WebAPI {
-    var client: WebAPIClient = WebAPIClientStub.output(response: Response(data: Data(), response: okResponse))
+    var client: HTTPClient = WebAPIClientStub.output(response: Response(data: Data(), response: okResponse))
     let baseURL: URL = testURL
     let queue = DispatchQueue(label: "test")
 }
@@ -59,13 +59,13 @@ final class MockedDogImageListLoader: TestWebAPI, Mock, DogImageListLoader {
 
     var dogImageListResponse: Result<[DogImage], Error> = .failure(MockError.valueNotSet)
 
-    func loadDogImages(of breed: String) -> AnyPublisher<[DogImage], Error> {
+    func load(of breed: BreedType) -> AnyPublisher<[DogImage], Error> {
         register(.loadDogImageList)
         return dogImageListResponse.publish()
     }
 }
 
-final class MockedImageDataWebAPILoader: TestWebAPI, Mock, ImageDataLoader {
+final class MockedImageDataLoader: Mock, ImageDataLoader {
     enum Action: Equatable {
         case loadImage(URL)
     }

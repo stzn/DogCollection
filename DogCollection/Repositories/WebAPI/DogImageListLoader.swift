@@ -10,5 +10,5 @@ import Combine
 import Foundation
 
 protocol DogImageListLoader {
-    func loadDogImages(of breed: String) -> AnyPublisher<[DogImage], Error>
+    func load(of breed: BreedType) -> AnyPublisher<[DogImage], Error>
 }

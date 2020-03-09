@@ -47,9 +47,9 @@ class BreedListInteractorTests: XCTestCase {
     }
 
     func test_load_notRequested_to_Failed() {
-        let expected = WebAPIError.invalidResponse(nil)
+        let expected = HTTPClientError.invalidResponse(nil)
         let (sut, webAPI) = makeSUT()
-        webAPI.breedListResponse = .failure(WebAPIError.invalidResponse(nil))
+        webAPI.breedListResponse = .failure(HTTPClientError.invalidResponse(nil))
         webAPI.actions = .init(expected: [
             .loadBreedList
         ])
@@ -65,7 +65,7 @@ class BreedListInteractorTests: XCTestCase {
 
     private func makeSUT() -> (LiveBreedListInteractor, MockedBreedListLoader) {
         let webAPI = MockedBreedListLoader()
-        let sut = LiveBreedListInteractor(webAPI: webAPI)
+        let sut = LiveBreedListInteractor(loader: webAPI)
         return (sut, webAPI)
     }
 

@@ -10,7 +10,7 @@ import Combine
 import XCTest
 @testable import DogCollection
 
-class URLSessionWebAPIClientTests: XCTestCase {
+class URLSessionHTTPClientTests: XCTestCase {
     private var cancellables: Set<AnyCancellable> = []
 
     override func tearDown() {
@@ -39,18 +39,18 @@ class URLSessionWebAPIClientTests: XCTestCase {
         XCTAssertEqual(response.response.statusCode, okResponse.statusCode)
     }
 
-    func test_WebAPIError_unknown() {
+    func test_HTTPClientError_unknown() {
         let expected = anyError
         URLProtocolStub.stub(data: nil, response: nil, error: expected)
 
-        assert(error: WebAPIError.unknown(expected))
+        assert(error: HTTPClientError.unknown(expected))
     }
 
-    func test_WebAPIError_httpStatusCode() {
-        let testCases: [(line: UInt, response: HTTPURLResponse, error: WebAPIError)] = [
-            (#line, errorResponse(statusCode: 300), WebAPIError.unhandledResponse),
-            (#line, errorResponse(statusCode: 400), WebAPIError.requestError(400)),
-            (#line, errorResponse(statusCode: 500), WebAPIError.serverError(500)),
+    func test_HTTPClientError_httpStatusCode() {
+        let testCases: [(line: UInt, response: HTTPURLResponse, error: HTTPClientError)] = [
+            (#line, errorResponse(statusCode: 300), HTTPClientError.unhandledResponse),
+            (#line, errorResponse(statusCode: 400), HTTPClientError.requestError(400)),
+            (#line, errorResponse(statusCode: 500), HTTPClientError.serverError(500)),
         ]
 
         for testCase in testCases {
@@ -59,26 +59,26 @@ class URLSessionWebAPIClientTests: XCTestCase {
         }
     }
 
-    func test_WebAPIError_invalidResponse() {
+    func test_HTTPClientError_invalidResponse() {
         let invalidURLResponse = URLResponse()
         URLProtocolStub.stub(data: Data(), response: invalidURLResponse, error: nil)
-        assert(error: WebAPIError.invalidResponse(invalidURLResponse))
+        assert(error: HTTPClientError.invalidResponse(invalidURLResponse))
     }
 
     // MARK: - Helper
 
-    private func makeSUT() -> URLSessionWebAPIClient {
+    private func makeSUT() -> URLSessionHTTPClient {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [URLProtocolStub.self]
         let session = URLSession(configuration: configuration)
-        return URLSessionWebAPIClient(session: session)
+        return URLSessionHTTPClient(session: session)
     }
 
     private var anyURLRequest: URLRequest {
         URLRequest(url: testURL)
     }
 
-    private func assert(error expected: WebAPIError, file: StaticString = #file, line: UInt = #line) {
+    private func assert(error expected: HTTPClientError, file: StaticString = #file, line: UInt = #line) {
         let (response, completion) = send()
 
         if let response = response {
@@ -95,11 +95,11 @@ class URLSessionWebAPIClientTests: XCTestCase {
                        file: file, line: line)
     }
 
-    private func send() -> (Response?, Subscribers.Completion<WebAPIError>?) {
+    private func send() -> (Response?, Subscribers.Completion<HTTPClientError>?) {
         let sut = makeSUT()
         let exp = expectation(description: "wait for send")
         var response: Response?
-        var completion: Subscribers.Completion<WebAPIError>?
+        var completion: Subscribers.Completion<HTTPClientError>?
         sut.send(request: anyURLRequest)
             .sink(receiveCompletion: {
                 completion = $0

@@ -79,27 +79,27 @@ class ImageDataInteractorTests: XCTestCase {
 
     // MARK: - Helper
 
-    private func makeSUT() -> (LiveImageDataInteractor, MockedImageDataWebAPILoader,
+    private func makeSUT() -> (LiveImageDataInteractor, MockedImageDataLoader,
         MockedImageDataCache, PassthroughSubject<Void, Never>) {
-            let webAPI = MockedImageDataWebAPILoader()
+            let webAPI = MockedImageDataLoader()
             let cache = MockedImageDataCache()
             let memoryWarning = PassthroughSubject<Void, Never>()
-            let sut = LiveImageDataInteractor(webAPI: webAPI, cache: cache,
+            let sut = LiveImageDataInteractor(loader: webAPI, cache: cache,
                                               memoryWarning: memoryWarning.eraseToAnyPublisher())
             return (sut, webAPI, cache, memoryWarning)
     }
 
     private func expect(
-        _ webAPI: MockedImageDataWebAPILoader,
+        _ webAPI: MockedImageDataLoader,
         _ cache: MockedImageDataCache,
-        webAPIExp: [MockedImageDataWebAPILoader.Action],
+        webAPIExp: [MockedImageDataLoader.Action],
         cacheExp: [MockedImageDataCache.Action]) {
 
         webAPI.actions = .init(expected: webAPIExp)
         cache.actions = .init(expected: cacheExp)
     }
 
-    private func verify(_ webAPI: MockedImageDataWebAPILoader,
+    private func verify(_ webAPI: MockedImageDataLoader,
                         _ cache: MockedImageDataCache,
                         file: StaticString = #file, line: UInt = #line) {
         webAPI.verify(file: file, line: line)
@@ -107,7 +107,7 @@ class ImageDataInteractorTests: XCTestCase {
     }
 
     private func assert(_ sut: LiveImageDataInteractor,
-                        _ webAPI: MockedImageDataWebAPILoader,
+                        _ webAPI: MockedImageDataLoader,
                         _ cache: MockedImageDataCache,
                         initialLoadable: Loadable<Data> = .notRequested,
                         expected: [Loadable<Data>],

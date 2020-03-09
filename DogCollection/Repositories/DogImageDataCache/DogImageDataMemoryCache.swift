@@ -9,7 +9,7 @@
 import Combine
 import Foundation
 
-final class ImageDataMemoryCache: ImageDataCache {
+final class DogImageDataMemoryCache: DogImageDataCache {
     private let cache = NSCache<NSString, CacheObject>()
     private var keys: Set<String> = []
     private let config: Config
@@ -20,19 +20,19 @@ final class ImageDataMemoryCache: ImageDataCache {
         self.cache.totalCostLimit = Int(config.totalCostLimit)
     }
 
-    func cache(data: Data, key: ImageDataCache.Key, expiry: Expiry? = nil) {
+    func cache(data: Data, key: DogImageDataCache.Key, expiry: Expiry? = nil) {
         let cacheObject = CacheObject(value: data, expiry: expiry ?? config.expiry)
         cache.setObject(cacheObject, forKey: NSString(string: key), cost: data.count)
         keys.insert(key)
     }
 
-    func cachedImage(for key: ImageDataCache.Key) -> AnyPublisher<Data, ImageDataCacheError> {
+    func cachedImage(for key: DogImageDataCache.Key) -> AnyPublisher<Data, DogImageDataCacheError> {
         guard let cache = cache.object(forKey: NSString(string: key)),
             !cache.expiry.isExpired,
             let data = cache.object as? Data else {
                 return Fail(error: .isMissing).eraseToAnyPublisher()
         }
-        return Just(data).setFailureType(to: ImageDataCacheError.self).eraseToAnyPublisher()
+        return Just(data).setFailureType(to: DogImageDataCacheError.self).eraseToAnyPublisher()
     }
 
     func purgeExpired() {

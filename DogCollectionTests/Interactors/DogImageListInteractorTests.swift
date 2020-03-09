@@ -56,9 +56,9 @@ class DogImageListInteractorTests: XCTestCase {
     }
 
     func test_load_notRequested_to_WebAPIFailed() {
-        let expected = WebAPIError.invalidResponse(nil)
+        let expected = HTTPClientError.invalidResponse(nil)
         let (sut, webAPI, store) = makeSUT()
-        webAPI.dogImageListResponse = .failure(WebAPIError.invalidResponse(nil))
+        webAPI.dogImageListResponse = .failure(HTTPClientError.invalidResponse(nil))
         webAPI.actions = .init(expected: [
             .loadDogImageList
         ])
@@ -104,7 +104,7 @@ class DogImageListInteractorTests: XCTestCase {
     private func makeSUT() -> (LiveDogImageListInteractor, MockedDogImageListLoader, MockedFavoriteDogImageStore) {
         let webAPI = MockedDogImageListLoader()
         let store  = MockedFavoriteDogImageStore()
-        let sut = LiveDogImageListInteractor(webAPI: webAPI, favoriteDogImageStore: store)
+        let sut = LiveDogImageListInteractor(loader: webAPI, favoriteDogImageStore: store)
         return (sut, webAPI, store)
     }
 

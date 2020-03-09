@@ -28,6 +28,10 @@ var anyData: Data {
     UIColor.red.image().pngData()!
 }
 
+var anyBreedType: BreedType {
+    "test \(UUID().uuidString)"
+}
+
 var anyKey: String {
     UUID().uuidString
 }
