@@ -14,6 +14,7 @@ typealias BreedType = String
 
 protocol FavoriteDogImageURLsLoader {
     func load(of breed: BreedType) -> AnyPublisher<Set<URL>, Error>
+    func loadAll() -> AnyPublisher<[BreedType: Set<URL>], Error>
 }
 
 protocol FavoriteDogImageURLsRegistrator {

@@ -19,6 +19,10 @@ final class FavoriteDogImageURLsMemoryStore: FavoriteDogImageURLsStore {
         return Just(urls).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
+    func loadAll() -> AnyPublisher<[BreedType : Set<URL>], Error> {
+        return Just(urlsPerBreedType).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
+
     func register(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
         urlsPerBreedType[breed, default: []].insert(url)
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
