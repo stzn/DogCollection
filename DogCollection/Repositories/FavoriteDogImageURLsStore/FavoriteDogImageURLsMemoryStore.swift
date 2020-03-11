@@ -20,11 +20,7 @@ final class FavoriteDogImageURLsMemoryStore: FavoriteDogImageURLsStore {
     }
 
     func register(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
-        if var urls = urlsPerBreedType[breed] {
-            urls.insert(url)
-        } else {
-            urlsPerBreedType[breed] = Set([url])
-        }
+        urlsPerBreedType[breed, default: []].insert(url)
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
