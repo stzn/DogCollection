@@ -11,8 +11,8 @@ import XCTest
 import SwiftUI
 @testable import DogCollection
 
-class DogImageListInteractorTests: XCTestCase {
-    var cencellables: Set<AnyCancellable> = []
+class DogImageListInteractorTests: XCTestCase, PublisherTestCase {
+    var cancellables: Set<AnyCancellable> = []
 
     func test_load_notRequested_to_Loaded() {
         let expected = [DogImage.anyDogImage]
@@ -122,31 +122,10 @@ class DogImageListInteractorTests: XCTestCase {
             webAPI.verify(file: file, line: line)
             store.verify(file: file, line: line)
             exp.fulfill()
-        }.store(in: &cencellables)
+        }.store(in: &cancellables)
 
         sut.loadDogImages(of: "test", dogImages: binding)
 
         wait(for: [exp], timeout: 1.0)
-    }
-
-    private func recordLoadableUpdates(
-        initialLoadable: Loadable<[DogImage]> = .notRequested,
-        for timeInterval: TimeInterval = 0.5)
-        -> (Binding<Loadable<[DogImage]>>, AnyPublisher<[Loadable<[DogImage]>], Never>) {
-            let publisher = CurrentValueSubject<Loadable<[DogImage]>, Never>(initialLoadable)
-            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
-            let updatesPublisher = Future<[Loadable<[DogImage]>], Never> { promise in
-                var updates: [Loadable<[DogImage]>] = []
-
-                publisher
-                    .sink { updates.append($0) }
-                    .store(in: &self.cencellables)
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-                    promise(.success(updates))
-                }
-            }.eraseToAnyPublisher()
-
-            return (binding, updatesPublisher)
     }
 }

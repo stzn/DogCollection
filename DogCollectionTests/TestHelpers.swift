@@ -58,3 +58,31 @@ extension Result {
             .eraseToAnyPublisher()
     }
 }
+
+// MARK: - PublisherTestCase
+
+protocol PublisherTestCase: AnyObject {
+    var cancellables: Set<AnyCancellable> { get set }
+}
+
+extension PublisherTestCase {
+    func recordLoadableUpdates<Value>(initialLoadable: Loadable<Value> = .notRequested,
+                                      for timeInterval: TimeInterval = 0.5)
+        -> (Binding<Loadable<Value>>, AnyPublisher<[Loadable<Value>], Never>) {
+            let publisher = CurrentValueSubject<Loadable<Value>, Never>(initialLoadable)
+            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
+            let updatesPublisher = Future<[Loadable<Value>], Never> { promise in
+                var updates: [Loadable<Value>] = []
+
+                publisher
+                    .sink { updates.append($0) }
+                    .store(in: &self.cancellables)
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
+                    promise(.success(updates))
+                }
+            }.eraseToAnyPublisher()
+
+            return (binding, updatesPublisher)
+    }
+}

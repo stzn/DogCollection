@@ -11,7 +11,7 @@ import XCTest
 import SwiftUI
 @testable import DogCollection
 
-class DogImageListFavoriteImageStoreTests: XCTestCase {
+class DogImageListFavoriteImageStoreTests: XCTestCase, PublisherTestCase {
     typealias StoredData = MockedFavoriteDogImageStore.StoredData
 
     var cancellables: Set<AnyCancellable> = []
@@ -80,7 +80,7 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
                                    file: StaticString = #file,
                                    line: UInt = #line) {
         let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialDogImage: initialDogImage)
+        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: .loaded(initialDogImage))
         updatesPublisher.sink { updates in
             XCTAssertEqual(updates, expected, file: file, line: line)
             store.verify(file: file, line: line)
@@ -100,7 +100,7 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
                                       file: StaticString = #file,
                                       line: UInt = #line) {
         let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialDogImage: initialDogImage)
+        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: .loaded(initialDogImage))
         updatesPublisher.sink { updates in
             XCTAssertEqual(updates, expected, file: file, line: line)
             store.verify(file: file, line: line)
@@ -110,27 +110,5 @@ class DogImageListFavoriteImageStoreTests: XCTestCase {
         sut.removeFavoriteDogImage(data.url, for: data.breed, dogImages: binding)
 
         wait(for: [exp], timeout: 1.0)
-    }
-
-    private func recordLoadableUpdates(
-        initialDogImage: [DogImage],
-        for timeInterval: TimeInterval = 0.5)
-        -> (Binding<Loadable<[DogImage]>>, AnyPublisher<[Loadable<[DogImage]>], Never>) {
-            let initialLoadable: Loadable<[DogImage]> = .loaded(initialDogImage)
-            let publisher = CurrentValueSubject<Loadable<[DogImage]>, Never>(initialLoadable)
-            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
-            let updatesPublisher = Future<[Loadable<[DogImage]>], Never> { promise in
-                var updates: [Loadable<[DogImage]>] = []
-
-                publisher
-                    .sink { updates.append($0) }
-                    .store(in: &self.cancellables)
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-                    promise(.success(updates))
-                }
-            }.eraseToAnyPublisher()
-
-            return (binding, updatesPublisher)
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 import XCTest
 @testable import DogCollection
 
-class ImageDataInteractorTests: XCTestCase {
+class ImageDataInteractorTests: XCTestCase, PublisherTestCase {
 
     var cancellables: Set<AnyCancellable> = []
 
@@ -126,26 +126,4 @@ class ImageDataInteractorTests: XCTestCase {
 
         wait(for: [exp], timeout: 1.0)
     }
-
-    private func recordLoadableUpdates(
-        initialLoadable: Loadable<Data> = .notRequested,
-        for timeInterval: TimeInterval = 0.5)
-        -> (Binding<Loadable<Data>>, AnyPublisher<[Loadable<Data>], Never>) {
-            let publisher = CurrentValueSubject<Loadable<Data>, Never>(initialLoadable)
-            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
-            let updatesPublisher = Future<[Loadable<Data>], Never> { promise in
-                var updates: [Loadable<Data>] = []
-
-                publisher
-                    .sink { updates.append($0) }
-                    .store(in: &self.cancellables)
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-                    promise(.success(updates))
-                }
-            }.eraseToAnyPublisher()
-
-            return (binding, updatesPublisher)
-    }
-
 }

@@ -32,8 +32,8 @@ class LiveFavoriteDogImageListInteractor: FavoriteDogImageListInteractor {
     }
 }
 
-class FavoriteDogImageListInteractorTests: XCTestCase {
-    private var cancellables: Set<AnyCancellable> = []
+class FavoriteDogImageListInteractorTests: XCTestCase, PublisherTestCase {
+    var cancellables: Set<AnyCancellable> = []
     func test_init_noDataLoad() {
         let (_, store) = makeSUT()
         XCTAssertEqual(store.actions.factual.count, 0)
@@ -95,52 +95,6 @@ class FavoriteDogImageListInteractorTests: XCTestCase {
 
         wait(for: [exp], timeout: 1.0)
     }
-
-    private func recordLoadableUpdates(initialLoadable: Loadable<[BreedType:[DogImage]]> = .notRequested,
-                                       for timeInterval: TimeInterval = 0.5)
-        -> (Binding<Loadable<[BreedType:[DogImage]]>>, AnyPublisher<[Loadable<[BreedType:[DogImage]]>], Never>) {
-            let publisher = CurrentValueSubject<Loadable<[BreedType:[DogImage]]>, Never>(initialLoadable)
-            let binding = Binding(get: { initialLoadable }, set: { publisher.send($0) })
-            let updatesPublisher = Future<[Loadable<[BreedType:[DogImage]]>], Never> { promise in
-                var updates: [Loadable<[BreedType:[DogImage]]>] = []
-
-                publisher
-                    .sink { updates.append($0) }
-                    .store(in: &self.cancellables)
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-                    promise(.success(updates))
-                }
-            }.eraseToAnyPublisher()
-
-            return (binding, updatesPublisher)
-    }
-
-    //    private func assert(_ sut: LiveFavoriteDogImageListInteractor,
-    //                        _ store: MockedFavoriteDogImageStore,
-    //                        expectedActions: [MockedFavoriteDogImageStore.Action],
-    //                        expectedResult: Result<[BreedType: [DogImage]], Error>,
-    //                        file: StaticString = #file, line: UInt = #line) {
-    //        let exp = expectation(description: "wait for load")
-    //        sut.load().sinkToResult { result in
-    //            defer {
-    //                exp.fulfill()
-    //            }
-    //
-    //            XCTAssertEqual(store.actions.factual, expectedActions, file: file, line: line)
-    //
-    //            switch (result, expectedResult) {
-    //            case (.success(let received), .success(let expected)):
-    //                XCTAssertEqual(received, expected, file: file, line: line)
-    //            case (.failure(let received), .failure(let expected)):
-    //                XCTAssertEqual(received.localizedDescription, expected.localizedDescription, file: file, line: line)
-    //            default:
-    //                XCTFail("expected: \(expectedResult), but got \(result)", file: file, line: line)
-    //            }
-    //        }.store(in: &cancellables)
-    //
-    //        wait(for: [exp], timeout: 1.0)
-    //    }
 }
 
 private extension URL {
