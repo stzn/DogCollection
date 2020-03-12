@@ -11,27 +11,6 @@ import SwiftUI
 import XCTest
 @testable import DogCollection
 
-class LiveFavoriteDogImageListInteractor: FavoriteDogImageListInteractor {
-    let favoriteDogImageStore: FavoriteDogImageURLsStore
-    init(favoriteDogImageStore: FavoriteDogImageURLsStore) {
-        self.favoriteDogImageStore = favoriteDogImageStore
-    }
-
-    func load(dogImages: Binding<Loadable<[BreedType : [DogImage]]>>) {
-        let cancelBag = CancelBag()
-        dogImages.wrappedValue = .isLoading(last: dogImages.wrappedValue.value, cancelBag: cancelBag)
-        favoriteDogImageStore.loadAll()
-            .sinkToLoadable { loadable in
-                dogImages.wrappedValue = loadable
-                    .map { urlsPerBreedType in
-                        urlsPerBreedType.mapValues { urls in
-                            urls.map { DogImage(imageURL: $0, isFavorite: true) }
-                        }
-                }
-        }.store(in: cancelBag)
-    }
-}
-
 class FavoriteDogImageListInteractorTests: XCTestCase, PublisherTestCase {
     var cancellables: Set<AnyCancellable> = []
     func test_init_noDataLoad() {

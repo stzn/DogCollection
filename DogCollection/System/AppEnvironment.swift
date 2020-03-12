@@ -26,38 +26,38 @@ struct AppEnvironment {
         return URLSession(configuration: configuration)
     }
 
-    private static func configuredMemoryCache(expiry: Expiry = .seconds(60*60*2)) -> DogImageDataMemoryCache {
+    private static func configuredMemoryCache() -> DogImageDataMemoryCache {
         return DogImageDataMemoryCache()
     }
 
     private static func configureInteractors(cache: DogImageDataCache) -> DIContainer.Interactors {
         let session = configuredURLSession()
         let client = URLSessionHTTPClient(session: session)
-        let webAPIs = configureWebAPIs(client: client)
+        let webComponents = configureWebComponents(client: client)
         let favoriteDogImageStore = FavoriteDogImageURLsMemoryStore()
         let memoryWarning = NotificationCenter.default
             .publisher(for: UIApplication.didReceiveMemoryWarningNotification)
             .map { _ in }
             .eraseToAnyPublisher()
-        return .init(breedListInteractor: LiveBreedListInteractor(loader: webAPIs.dogWebAPI),
-                     dogImageListInteractor: LiveDogImageListInteractor(loader: webAPIs.dogWebAPI,
+        return .init(breedListInteractor: LiveBreedListInteractor(loader: webComponents.dogWebAPI),
+                     dogImageListInteractor: LiveDogImageListInteractor(loader: webComponents.dogWebAPI,
                                                                         favoriteDogImageStore: favoriteDogImageStore),
-                     imageDataInteractor: LiveImageDataInteractor(loader: webAPIs.imageWebAPI,
+                     imageDataInteractor: LiveImageDataInteractor(loader: webComponents.imageWebLoader,
                                                                   cache: cache,
                                                                   cachePolicy: ImageDataCachePolicy(expiry: .seconds(10)),
                                                                   memoryWarning: memoryWarning))
     }
 
-    private static func configureWebAPIs(client: URLSessionHTTPClient) -> WebAPIContainer {
+    private static func configureWebComponents(client: URLSessionHTTPClient) -> WebComponentContainer {
         let dogWebAPI = DogWebAPI(client: client)
-        let imageWebAPI = ImageDataWebAPI(client: client)
-        return .init(dogWebAPI: dogWebAPI, imageWebAPI: imageWebAPI)
+        let imageWebLoader = ImageDataWebLoader(client: client)
+        return .init(dogWebAPI: dogWebAPI, imageWebLoader: imageWebLoader)
     }
 }
 
 private extension AppEnvironment {
-    struct WebAPIContainer {
+    struct WebComponentContainer {
         let dogWebAPI: DogWebAPI
-        let imageWebAPI: ImageDataWebAPI
+        let imageWebLoader: ImageDataWebLoader
     }
 }

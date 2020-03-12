@@ -72,7 +72,7 @@
 		D6DAC4A12411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DAC4A02411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift */; };
 		D6DC71652403C181007A5C6F /* SearchBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC71642403C181007A5C6F /* SearchBarTests.swift */; };
 		D6DC716824049711007A5C6F /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC716724049711007A5C6F /* Binding+.swift */; };
-		D6DC716A2404D90C007A5C6F /* ImageDataWebAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC71692404D90C007A5C6F /* ImageDataWebAPI.swift */; };
+		D6DC716A2404D90C007A5C6F /* ImageDataWebLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC71692404D90C007A5C6F /* ImageDataWebLoader.swift */; };
 		D6DF3E932409033E0003168D /* DogImageListInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DF3E922409033E0003168D /* DogImageListInteractorTests.swift */; };
 		D6F24A8C24036BCA00EDD0EA /* DogImageCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F24A8B24036BCA00EDD0EA /* DogImageCollection.swift */; };
 		D6FC0B9B24123E410002AD65 /* DogImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FC0B9A24123E410002AD65 /* DogImageItem.swift */; };
@@ -174,7 +174,7 @@
 		D6DAC4A02411F2E0001A5351 /* DogImageListFavoriteImageStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListFavoriteImageStoreTests.swift; sourceTree = "<group>"; };
 		D6DC71642403C181007A5C6F /* SearchBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTests.swift; sourceTree = "<group>"; };
 		D6DC716724049711007A5C6F /* Binding+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+.swift"; sourceTree = "<group>"; };
-		D6DC71692404D90C007A5C6F /* ImageDataWebAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataWebAPI.swift; sourceTree = "<group>"; };
+		D6DC71692404D90C007A5C6F /* ImageDataWebLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataWebLoader.swift; sourceTree = "<group>"; };
 		D6DF3E922409033E0003168D /* DogImageListInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageListInteractorTests.swift; sourceTree = "<group>"; };
 		D6F24A8B24036BCA00EDD0EA /* DogImageCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageCollection.swift; sourceTree = "<group>"; };
 		D6FC0B9A24123E410002AD65 /* DogImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageItem.swift; sourceTree = "<group>"; };
@@ -205,7 +205,8 @@
 				D6DAC49C2411EBDD001A5351 /* DogImageListLoader.swift */,
 				D69FA32C2401EF5800C37862 /* DogWebAPI.swift */,
 				D64C344D2407AA9C00FDEFB9 /* ImageDataLoader.swift */,
-				D6DC71692404D90C007A5C6F /* ImageDataWebAPI.swift */,
+				D6DC71692404D90C007A5C6F /* ImageDataWebLoader.swift */,
+				D64C344724077DD700FDEFB9 /* WebAPI.swift */,
 			);
 			path = WebAPI;
 			sourceTree = "<group>";
@@ -247,7 +248,6 @@
 			children = (
 				D636F934240733B9004C7715 /* Helpers.swift */,
 				D636F93824073B7A004C7715 /* Loadable.swift */,
-				D64C344724077DD700FDEFB9 /* WebAPI.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -264,6 +264,13 @@
 			path = Interactors;
 			sourceTree = "<group>";
 		};
+		D6385229241AFCB0007BE362 /* FavoriteDogImageList */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FavoriteDogImageList;
+			sourceTree = "<group>";
+		};
 		D649C5A124020AED0053CDD7 /* ViewState */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +284,7 @@
 		D649C5A624020BDD0053CDD7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D6385229241AFCB0007BE362 /* FavoriteDogImageList */,
 				D69F49E6240342970006D88F /* DogImageList */,
 				D649C5B3240249B10053CDD7 /* BreedList */,
 				D649C5AE2402114C0053CDD7 /* Common */,
@@ -679,7 +687,7 @@
 				D69F49EC240344310006D88F /* DogImageListViewState.swift in Sources */,
 				D69F49F024034D330006D88F /* DogImageItemViewState.swift in Sources */,
 				D64A6E6C240AFE3C00E6AE89 /* DogImageDataCache.swift in Sources */,
-				D6DC716A2404D90C007A5C6F /* ImageDataWebAPI.swift in Sources */,
+				D6DC716A2404D90C007A5C6F /* ImageDataWebLoader.swift in Sources */,
 				D649C5A324020B040053CDD7 /* BreedListViewState.swift in Sources */,
 				D6D91D3A2415D04B00A006CB /* Response.swift in Sources */,
 				D636F93B24073DE5004C7715 /* BreedListInteractor.swift in Sources */,
