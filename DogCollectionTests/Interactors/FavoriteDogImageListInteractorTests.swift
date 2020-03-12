@@ -45,13 +45,13 @@ class FavoriteDogImageListInteractorTests: XCTestCase, PublisherTestCase {
         store.actions = .init(expected: [.loadAllFavoriteDogImageURLList])
         store.favoriteAllDogImageURLListResponse = .success([storeData.breed: [storeData.url]])
 
-        assert(sut, store,
-               initialLoadable: .notRequested,
-               expected: [
+        assert(expected: [
                 .notRequested,
                 .isLoading(last: nil, cancelBag: CancelBag()),
                 .loaded([storeData.breed: [storeData.url.toFavoriteDogImage()]])
-            ])
+        ], when: { sut.load(dogImages: $0) })
+
+        store.verify()
     }
 
     func test_notRequested_toFailed() {
@@ -60,13 +60,13 @@ class FavoriteDogImageListInteractorTests: XCTestCase, PublisherTestCase {
         store.actions = .init(expected: [.loadAllFavoriteDogImageURLList])
         store.favoriteAllDogImageURLListResponse = .failure(error)
 
-        assert(sut, store,
-               initialLoadable: .notRequested,
-               expected: [
+        assert(expected: [
                 .notRequested,
                 .isLoading(last: nil, cancelBag: CancelBag()),
                 .failed(error)
-            ])
+        ], when: { sut.load(dogImages: $0) })
+
+        store.verify()
     }
 
     // MARK: - Helper
@@ -75,25 +75,6 @@ class FavoriteDogImageListInteractorTests: XCTestCase, PublisherTestCase {
         let store  = MockedFavoriteDogImageStore()
         let sut = LiveFavoriteDogImageListInteractor(favoriteDogImageStore: store)
         return (sut, store)
-    }
-
-    private func assert(_ sut: FavoriteDogImageListInteractor,
-                        _ store: MockedFavoriteDogImageStore,
-                        initialLoadable: Loadable<[BreedType:[DogImage]]> = .notRequested,
-                        expected: [Loadable<[BreedType:[DogImage]]>],
-                        file: StaticString = #file,
-                        line: UInt = #line) {
-        let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
-        updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected, file: file, line: line)
-            store.verify(file: file, line: line)
-            exp.fulfill()
-        }.store(in: &cancellables)
-
-        sut.load(dogImages: binding)
-
-        wait(for: [exp], timeout: 1.0)
     }
 }
 

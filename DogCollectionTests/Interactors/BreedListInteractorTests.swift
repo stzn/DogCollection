@@ -22,11 +22,14 @@ class BreedListInteractorTests: XCTestCase, PublisherTestCase {
         webAPI.actions = .init(expected: [
             .loadBreedList
         ])
-        assert(sut, webAPI, expected: [
+
+        assert(expected: [
             .notRequested,
             .isLoading(last: nil, cancelBag: CancelBag()),
             .loaded(expected)
-        ])
+        ], when: { sut.load(breedList: $0) })
+
+        webAPI.verify()
     }
 
     func test_load_loaded_to_Loaded() {
@@ -37,13 +40,15 @@ class BreedListInteractorTests: XCTestCase, PublisherTestCase {
         webAPI.actions = .init(expected: [
             .loadBreedList
         ])
-        assert(sut, webAPI,
-               initialLoadable: .loaded(initial),
+
+        assert(initialLoadable: .loaded(initial),
                expected: [
                 .loaded(initial),
                 .isLoading(last: initial, cancelBag: CancelBag()),
                 .loaded(expected),
-        ])
+        ], when: { sut.load(breedList: $0) })
+
+        webAPI.verify()
     }
 
     func test_load_notRequested_to_Failed() {
@@ -53,12 +58,14 @@ class BreedListInteractorTests: XCTestCase, PublisherTestCase {
         webAPI.actions = .init(expected: [
             .loadBreedList
         ])
-        assert(sut, webAPI,
-               expected: [
-                .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
-                .failed(expected),
-        ])
+
+        assert(expected: [
+            .notRequested,
+            .isLoading(last: nil, cancelBag: CancelBag()),
+            .failed(expected),
+        ], when: { sut.load(breedList: $0) })
+
+        webAPI.verify()
     }
 
     // MARK: - Helper
@@ -67,24 +74,5 @@ class BreedListInteractorTests: XCTestCase, PublisherTestCase {
         let webAPI = MockedBreedListLoader()
         let sut = LiveBreedListInteractor(loader: webAPI)
         return (sut, webAPI)
-    }
-
-    private func assert(_ sut: BreedListInteractor,
-                        _ webAPI: MockedBreedListLoader,
-                        initialLoadable: Loadable<[Breed]> = .notRequested,
-                        expected: [Loadable<[Breed]>],
-                        file: StaticString = #file,
-                        line: UInt = #line) {
-        let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
-        updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected, file: file, line: line)
-            webAPI.verify(file: file, line: line)
-            exp.fulfill()
-        }.store(in: &cancellables)
-
-        sut.load(breedList: binding)
-
-        wait(for: [exp], timeout: 1.0)
     }
 }

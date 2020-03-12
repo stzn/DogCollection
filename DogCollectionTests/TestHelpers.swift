@@ -65,7 +65,24 @@ protocol PublisherTestCase: AnyObject {
     var cancellables: Set<AnyCancellable> { get set }
 }
 
-extension PublisherTestCase {
+extension PublisherTestCase where Self: XCTestCase {
+    func assert<Value: Equatable>(
+        initialLoadable: Loadable<Value> = .notRequested,
+        expected: [Loadable<Value>],
+        when: (Binding<Loadable<Value>>) -> Void,
+        file: StaticString = #file, line: UInt = #line) {
+        let exp = expectation(description: "wait for load")
+        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
+        updatesPublisher.sink { updates in
+            XCTAssertEqual(updates, expected, file: file, line: line)
+            exp.fulfill()
+        }.store(in: &cancellables)
+
+        when(binding)
+
+        wait(for: [exp], timeout: 1.0)
+    }
+
     func recordLoadableUpdates<Value>(initialLoadable: Loadable<Value> = .notRequested,
                                       for timeInterval: TimeInterval = 0.5)
         -> (Binding<Loadable<Value>>, AnyPublisher<[Loadable<Value>], Never>) {

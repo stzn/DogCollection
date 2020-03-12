@@ -21,14 +21,17 @@ class ImageDataInteractorTests: XCTestCase, PublisherTestCase {
 
         webAPI.imageResponse = .success(expected)
 
-        expect(webAPI, cache,
+        setExpect(webAPI, cache,
                webAPIExp: [.loadImage(testURL)],
                cacheExp: [.loadData(testURL)])
-        assert(sut, webAPI, cache, expected: [
-            .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .loaded(expected)
-        ])
+
+        assert(expected: [
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .loaded(expected)
+        ], when: { sut.load(from: testURL, image: $0) })
+
+        verify(webAPI, cache)
     }
 
     func test_load_fromCache() {
@@ -37,17 +40,19 @@ class ImageDataInteractorTests: XCTestCase, PublisherTestCase {
 
         cache.imageResponse = .success(expected)
 
-        expect(webAPI, cache,
+        setExpect(webAPI, cache,
                webAPIExp: [],
                cacheExp: [.loadData(testURL)])
 
         cache.cache(expected, key: testURL, expiry: .seconds(0))
 
-        assert(sut, webAPI, cache, expected: [
-            .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .loaded(expected)
-        ])
+        assert(expected: [
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .loaded(expected)
+        ], when: { sut.load(from: testURL, image: $0) })
+
+        verify(webAPI, cache)
     }
 
     func test_load_invalidWebResponse_failed() {
@@ -56,15 +61,17 @@ class ImageDataInteractorTests: XCTestCase, PublisherTestCase {
 
         webAPI.imageResponse = .failure(expected)
 
-        expect(webAPI, cache,
+        setExpect(webAPI, cache,
                webAPIExp: [.loadImage(testURL)],
                cacheExp: [.loadData(testURL)])
 
-        assert(sut, webAPI, cache, expected: [
-            .notRequested,
-            .isLoading(last: nil, cancelBag: CancelBag()),
-            .failed(expected)
-        ])
+        assert(expected: [
+                .notRequested,
+                .isLoading(last: nil, cancelBag: CancelBag()),
+                .failed(expected)
+        ], when: { sut.load(from: testURL, image: $0) })
+
+        verify(webAPI, cache)
     }
 
     func test_memoryWarning_purgeCache() {
@@ -90,7 +97,7 @@ class ImageDataInteractorTests: XCTestCase, PublisherTestCase {
             return (sut, webAPI, cache, memoryWarning)
     }
 
-    private func expect(
+    private func setExpect(
         _ webAPI: MockedImageDataLoader,
         _ cache: MockedImageDataCache,
         webAPIExp: [MockedImageDataLoader.Action],
@@ -105,25 +112,5 @@ class ImageDataInteractorTests: XCTestCase, PublisherTestCase {
                         file: StaticString = #file, line: UInt = #line) {
         webAPI.verify(file: file, line: line)
         cache.verify(file: file, line: line)
-    }
-
-    private func assert(_ sut: LiveImageDataInteractor,
-                        _ webAPI: MockedImageDataLoader,
-                        _ cache: MockedImageDataCache,
-                        initialLoadable: Loadable<Data> = .notRequested,
-                        expected: [Loadable<Data>],
-                        file: StaticString = #file,
-                        line: UInt = #line) {
-        let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
-        updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected, file: file, line: line)
-            self.verify(webAPI, cache, file: file, line: line)
-            exp.fulfill()
-        }.store(in: &cancellables)
-
-        sut.load(from: testURL, image: binding)
-
-        wait(for: [exp], timeout: 1.0)
     }
 }

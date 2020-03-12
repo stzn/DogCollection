@@ -26,12 +26,13 @@ class DogImageListInteractorTests: XCTestCase, PublisherTestCase {
             .loadFavoriteDogImageURLList
         ])
 
-        assert(sut, webAPI, store,
-               expected: [
-                .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
-                .loaded(expected)
-        ])
+        assert(expected: [
+            .notRequested,
+            .isLoading(last: nil, cancelBag: CancelBag()),
+            .loaded(expected)
+        ], when: { sut.loadDogImages(of: anyBreedType, dogImages: $0) })
+
+        verify(webAPI, store)
     }
 
     func test_load_loaded_to_Loaded() {
@@ -46,13 +47,15 @@ class DogImageListInteractorTests: XCTestCase, PublisherTestCase {
         store.actions = .init(expected: [
             .loadFavoriteDogImageURLList
         ])
-        assert(sut, webAPI, store,
-               initialLoadable: .loaded(initial),
+
+        assert(initialLoadable: .loaded(initial),
                expected: [
                 .loaded(initial),
                 .isLoading(last: initial, cancelBag: CancelBag()),
                 .loaded(expected),
-        ])
+        ], when: { sut.loadDogImages(of: anyBreedType, dogImages: $0) })
+
+        verify(webAPI, store)
     }
 
     func test_load_notRequested_to_WebAPIFailed() {
@@ -66,12 +69,14 @@ class DogImageListInteractorTests: XCTestCase, PublisherTestCase {
         store.actions = .init(expected: [
             .loadFavoriteDogImageURLList
         ])
-        assert(sut, webAPI, store,
-               expected: [
-                .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
-                .failed(expected),
-        ])
+
+        assert(expected: [
+            .notRequested,
+            .isLoading(last: nil, cancelBag: CancelBag()),
+            .failed(expected),
+        ], when: { sut.loadDogImages(of: anyBreedType, dogImages: $0) })
+
+        verify(webAPI, store)
     }
 
     func test_load_includeFavoriteDogImage() {
@@ -86,17 +91,19 @@ class DogImageListInteractorTests: XCTestCase, PublisherTestCase {
         store.actions = .init(expected: [
             .loadFavoriteDogImageURLList
         ])
-        assert(sut, webAPI, store,
-               expected: [
-                .notRequested,
-                .isLoading(last: nil, cancelBag: CancelBag()),
-                .loaded(expected.map { dogImage in
-                    if dogImage.imageURL == favoriteDogImage.imageURL {
-                        return DogImage(imageURL: dogImage.imageURL, isFavorite: true)
-                    }
-                    return dogImage
-                }),
-        ])
+
+        assert(expected: [
+            .notRequested,
+            .isLoading(last: nil, cancelBag: CancelBag()),
+            .loaded(expected.map { dogImage in
+                if dogImage.imageURL == favoriteDogImage.imageURL {
+                    return DogImage(imageURL: dogImage.imageURL, isFavorite: true)
+                }
+                return dogImage
+            }),
+        ], when: { sut.loadDogImages(of: anyBreedType, dogImages: $0) })
+
+        verify(webAPI, store)
     }
 
     // MARK: - Helper
@@ -108,24 +115,10 @@ class DogImageListInteractorTests: XCTestCase, PublisherTestCase {
         return (sut, webAPI, store)
     }
 
-    private func assert(_ sut: DogImageListInteractor,
-                        _ webAPI: MockedDogImageListLoader,
+    private func verify(_ webAPI: MockedDogImageListLoader,
                         _ store: MockedFavoriteDogImageStore,
-                        initialLoadable: Loadable<[DogImage]> = .notRequested,
-                        expected: [Loadable<[DogImage]>],
-                        file: StaticString = #file,
-                        line: UInt = #line) {
-        let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: initialLoadable)
-        updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected, file: file, line: line)
-            webAPI.verify(file: file, line: line)
-            store.verify(file: file, line: line)
-            exp.fulfill()
-        }.store(in: &cancellables)
-
-        sut.loadDogImages(of: "test", dogImages: binding)
-
-        wait(for: [exp], timeout: 1.0)
+                        file: StaticString = #file, line: UInt = #line) {
+        webAPI.verify(file: file, line: line)
+        store.verify(file: file, line: line)
     }
 }

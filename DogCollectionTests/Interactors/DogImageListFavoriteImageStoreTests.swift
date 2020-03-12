@@ -38,12 +38,13 @@ class DogImageListFavoriteImageStoreTests: XCTestCase, PublisherTestCase {
             .register(storeData),
         ])
 
-        assertAddFavorite(sut, store, for: storeData,
-                          initialDogImage: [initialDogImage], expected: [
-                            .loaded([initialDogImage]),
-                            .loaded([DogImage(imageURL: initialDogImage.imageURL, isFavorite: true)])
+        assert(initialLoadable: .loaded([initialDogImage]),
+               expected: [
+                .loaded([initialDogImage]),
+                .loaded([DogImage(imageURL: initialDogImage.imageURL, isFavorite: true)])],
+               when: {  sut.addFavoriteDogImage(storeData.url, for: storeData.breed, dogImages: $0) })
 
-        ])
+        store.verify()
     }
 
     func test_removeFavoriteDogImage_store() {
@@ -55,11 +56,13 @@ class DogImageListFavoriteImageStoreTests: XCTestCase, PublisherTestCase {
             .unregister(storedData),
         ])
 
-        assertRemoveFavorite(sut, store, for: storedData,
-                             initialDogImage: [initialDogImage], expected: [
-                                .loaded([initialDogImage]),
-                                .loaded([DogImage(imageURL: removeDogImageURL, isFavorite: false)])
-        ])
+        assert(initialLoadable: .loaded([initialDogImage]),
+               expected: [
+                .loaded([initialDogImage]),
+                .loaded([DogImage(imageURL: removeDogImageURL, isFavorite: false)])],
+               when: { sut.removeFavoriteDogImage(storedData.url, for: storedData.breed, dogImages: $0) })
+
+        store.verify()
     }
 
     // MARK: - Helper
@@ -70,45 +73,5 @@ class DogImageListFavoriteImageStoreTests: XCTestCase, PublisherTestCase {
         let store  = MockedFavoriteDogImageStore()
         let sut = LiveDogImageListInteractor(loader: webAPI, favoriteDogImageStore: store)
         return (sut, store)
-    }
-
-    private func assertAddFavorite(_ sut: DogImageListInteractor,
-                                   _ store: MockedFavoriteDogImageStore,
-                                   for data: StoredData,
-                                   initialDogImage: [DogImage],
-                                   expected: [Loadable<[DogImage]>],
-                                   file: StaticString = #file,
-                                   line: UInt = #line) {
-        let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: .loaded(initialDogImage))
-        updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected, file: file, line: line)
-            store.verify(file: file, line: line)
-            exp.fulfill()
-        }.store(in: &cancellables)
-
-        sut.addFavoriteDogImage(data.url, for: data.breed, dogImages: binding)
-
-        wait(for: [exp], timeout: 1.0)
-    }
-
-    private func assertRemoveFavorite(_ sut: DogImageListInteractor,
-                                      _ store: MockedFavoriteDogImageStore,
-                                      for data: StoredData,
-                                      initialDogImage: [DogImage],
-                                      expected: [Loadable<[DogImage]>],
-                                      file: StaticString = #file,
-                                      line: UInt = #line) {
-        let exp = expectation(description: "wait for load")
-        let (binding, updatesPublisher) = recordLoadableUpdates(initialLoadable: .loaded(initialDogImage))
-        updatesPublisher.sink { updates in
-            XCTAssertEqual(updates, expected, file: file, line: line)
-            store.verify(file: file, line: line)
-            exp.fulfill()
-        }.store(in: &cancellables)
-
-        sut.removeFavoriteDogImage(data.url, for: data.breed, dogImages: binding)
-
-        wait(for: [exp], timeout: 1.0)
     }
 }
