@@ -10,29 +10,35 @@ import XCTest
 import Combine
 @testable import DogCollection
 
-final class WebAPIClientStub: HTTPClient {
+final class MockHTTPClient: HTTPClient, Mock {
+    enum Action: Equatable {
+        case send
+    }
+    var actions = MockActions<Action>(expected: [])
+
     var publisher: AnyPublisher<Response, HTTPClientError>!
     private init(publisher: AnyPublisher<Response, HTTPClientError>) {
         self.publisher = publisher
     }
 
-    static func output(response: Response) -> HTTPClient {
+    static func output(response: Response) -> MockHTTPClient {
         let publisher = Just(response).setFailureType(to: HTTPClientError.self).eraseToAnyPublisher()
         return Self(publisher: publisher)
     }
 
-    static func failure(error: HTTPClientError) -> HTTPClient {
+    static func failure(error: HTTPClientError) -> MockHTTPClient {
         let publisher = Fail<Response, HTTPClientError>(error: error).eraseToAnyPublisher()
         return Self(publisher: publisher)
     }
 
     func send(request: URLRequest) -> AnyPublisher<Response, HTTPClientError> {
-        publisher
+        actions.factual.append(.send)
+        return publisher
     }
 }
 
 class TestWebAPI: WebAPI {
-    var client: HTTPClient = WebAPIClientStub.output(response: Response(data: Data(), response: okResponse))
+    var client: HTTPClient = MockHTTPClient.output(response: Response(data: Data(), response: okResponse))
     let baseURL: URL = testURL
     let queue = DispatchQueue(label: "test")
 }
