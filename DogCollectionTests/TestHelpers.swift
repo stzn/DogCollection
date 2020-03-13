@@ -36,6 +36,10 @@ var anyKey: URL {
     URL(string: "https://www.\(UUID().uuidString).com")!
 }
 
+var anyResponse: Response {
+    Response(data: Data(), response: okResponse)
+}
+
 // MARK: - UI
 
 extension UIColor {

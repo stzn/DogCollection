@@ -14,15 +14,15 @@ class DogWebAPITests: XCTestCase {
     private var cancellables: Set<AnyCancellable> = []
 
     func test_init_doesNotLoad() {
-        let (_, client) = makeSUT(with: anyResponse)
+        let (_, client) = makeSUT()
         XCTAssertEqual(client.actions.factual.count, 0)
         client.verify()
     }
 
     func test_loadBreedList_loadData() {
+        let (sut, client) = makeSUT()
         let expected = [Breed.anyBreed]
-        let response = Response(data: makeBreedListJSONData(from: expected), response: okResponse)
-        let (sut, client) = makeSUT(with: response)
+        client.response = .success(Response(data: makeBreedListJSONData(from: expected), response: okResponse))
         client.actions = .init(expected: [.send])
 
         let exp = expectation(description: "wait for load")
@@ -42,8 +42,9 @@ class DogWebAPITests: XCTestCase {
     }
 
     func test_loadBreedListError_deliverError() {
+        let (sut, client) = makeSUT()
         let expected = HTTPClientError.requestError(400)
-        let (sut, client) = makeSUT(with: expected)
+        client.response = .failure(expected)
         client.actions = .init(expected: [.send])
 
         let exp = expectation(description: "wait for load")
@@ -64,9 +65,9 @@ class DogWebAPITests: XCTestCase {
     }
 
     func test_loadDogImageList_loadData() {
+        let (sut, client) = makeSUT()
         let expected = [DogImage.anyDogImage]
-        let response = Response(data: makeDogImageListJSONData(from: expected), response: okResponse)
-        let (sut, client) = makeSUT(with: response)
+        client.response = .success(Response(data: makeDogImageListJSONData(from: expected), response: okResponse))
         client.actions = .init(expected: [.send])
 
         let exp = expectation(description: "wait for load")
@@ -87,7 +88,8 @@ class DogWebAPITests: XCTestCase {
 
     func test_loadDogImageError_deliverError() {
         let expected = HTTPClientError.requestError(400)
-        let (sut, client) = makeSUT(with: expected)
+        let (sut, client) = makeSUT()
+        client.response = .failure(expected)
         client.actions = .init(expected: [.send])
 
         let exp = expectation(description: "wait for load")
@@ -108,24 +110,10 @@ class DogWebAPITests: XCTestCase {
     }
 
     // MARK: - Helper
-    private func makeSUT(with response: Response) -> (DogWebAPI, MockHTTPClient) {
-        let client = MockHTTPClient.output(response: response)
+    private func makeSUT() -> (DogWebAPI, MockHTTPClient) {
+        let client = MockHTTPClient()
         let sut = DogWebAPI(client: client)
         return (sut, client)
-    }
-
-    private func makeSUT(with error: HTTPClientError) -> (DogWebAPI, MockHTTPClient) {
-        let client = MockHTTPClient.failure(error: error)
-        let sut = DogWebAPI(client: client)
-        return (sut, client)
-    }
-
-    private var anyResponse: Response {
-        Response(data: Data(), response: okResponse)
-    }
-
-    private var okResponse: HTTPURLResponse {
-        HTTPURLResponse(url: testURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
     }
 
     private func makeBreedListJSONData(from breeds: [Breed],

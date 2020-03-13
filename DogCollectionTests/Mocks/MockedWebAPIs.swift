@@ -15,30 +15,16 @@ final class MockHTTPClient: HTTPClient, Mock {
         case send
     }
     var actions = MockActions<Action>(expected: [])
-
-    var publisher: AnyPublisher<Response, HTTPClientError>!
-    private init(publisher: AnyPublisher<Response, HTTPClientError>) {
-        self.publisher = publisher
-    }
-
-    static func output(response: Response) -> MockHTTPClient {
-        let publisher = Just(response).setFailureType(to: HTTPClientError.self).eraseToAnyPublisher()
-        return Self(publisher: publisher)
-    }
-
-    static func failure(error: HTTPClientError) -> MockHTTPClient {
-        let publisher = Fail<Response, HTTPClientError>(error: error).eraseToAnyPublisher()
-        return Self(publisher: publisher)
-    }
+    var response: Result<Response, HTTPClientError> = .failure(.unknown(MockError.valueNotSet))
 
     func send(request: URLRequest) -> AnyPublisher<Response, HTTPClientError> {
         actions.factual.append(.send)
-        return publisher
+        return response.publish()
     }
 }
 
 class TestWebAPI: WebAPI {
-    var client: HTTPClient = MockHTTPClient.output(response: Response(data: Data(), response: okResponse))
+    let client: HTTPClient = MockHTTPClient()
     let baseURL: URL = testURL
     let queue = DispatchQueue(label: "test")
 }
