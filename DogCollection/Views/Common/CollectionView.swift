@@ -77,7 +77,7 @@ struct CollectionView<Elements, Content>: View where Elements: RandomAccessColle
     private func height(containerSize: CGSize, elementCount: Int) -> CGFloat {
         let columnCount = self.columnCount(for: containerSize)
         let addition = (elementCount % columnCount == 0) ? 0 : elementSize.height
-        return CGFloat(elementCount) * elementSize.width / CGFloat(columnCount) + addition
+        return CGFloat(elementCount) * elementSize.height / CGFloat(columnCount) + addition
     }
 
     private func columnCount(for size: CGSize) -> Int {
