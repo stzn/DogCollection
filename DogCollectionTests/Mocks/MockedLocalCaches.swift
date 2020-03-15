@@ -10,14 +10,14 @@ import Combine
 import Foundation
 @testable import DogCollection
 
-final class MockedImageDataCache: DogImageDataCache, Mock {
+final class MockedImageDataCache: ImageDataCache, Mock {
     enum Action: Equatable {
-        case loadData(DogImageDataCache.Key)
+        case loadData(ImageDataCache.Key)
     }
 
     var actions = MockActions<Action>(expected: [])
     var imageResponse: Result<Data, CacheError> = .failure(.isMissing)
-    private(set) var cache: [DogImageDataCache.Key: (value: Data, expirationDate: Date)] = [:]
+    private(set) var cache: [ImageDataCache.Key: (value: Data, expirationDate: Date)] = [:]
     private(set) var didPurgeCalled = false
     private(set) var didPurgeExpiredCalled = false
 

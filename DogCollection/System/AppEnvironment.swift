@@ -26,11 +26,11 @@ struct AppEnvironment {
         return URLSession(configuration: configuration)
     }
     
-    private static func configuredMemoryCache() -> DogImageDataMemoryCache {
-        return DogImageDataMemoryCache()
+    private static func configuredMemoryCache() -> ImageDataMemoryCache {
+        return ImageDataMemoryCache()
     }
     
-    private static func configureInteractors(cache: DogImageDataCache) -> DIContainer.Interactors {
+    private static func configureInteractors(cache: ImageDataCache) -> DIContainer.Interactors {
         let session = configuredURLSession()
         let client = URLSessionHTTPClient(session: session)
         let webComponents = configureWebComponents(client: client)

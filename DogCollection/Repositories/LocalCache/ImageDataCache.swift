@@ -9,7 +9,7 @@
 import Combine
 import Foundation
 
-protocol DogImageDataCache {
+protocol ImageDataCache {
     typealias Key = URL
     typealias Value = Data
     func cache(_ value: Value, key: Key, expiry: Expiry)

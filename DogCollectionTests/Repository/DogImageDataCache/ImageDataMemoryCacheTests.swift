@@ -52,11 +52,11 @@ class ImageDataMemoryCacheTests: XCTestCase {
 
     // MARK: - Helper
 
-    private func makeSUT() -> DogImageDataMemoryCache {
-        DogImageDataMemoryCache()
+    private func makeSUT() -> ImageDataMemoryCache {
+        ImageDataMemoryCache()
     }
 
-    private func expect(_ sut: DogImageDataMemoryCache, _ expected: Result<Data, CacheError>, for key: URL) {
+    private func expect(_ sut: ImageDataMemoryCache, _ expected: Result<Data, CacheError>, for key: URL) {
         let exp = expectation(description: "wait for cache")
         sut.cachedImage(for: key)
             .sinkToResult { result in

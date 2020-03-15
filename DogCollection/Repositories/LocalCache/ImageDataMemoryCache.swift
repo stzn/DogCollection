@@ -9,9 +9,9 @@
 import Combine
 import Foundation
 
-typealias DogImageDataMemoryCache = MemoryCache<DogImageDataCache.Key, DogImageDataCache.Value>
+typealias ImageDataMemoryCache = MemoryCache<ImageDataCache.Key, ImageDataCache.Value>
 
-extension DogImageDataMemoryCache: DogImageDataCache {
+extension ImageDataMemoryCache: ImageDataCache {
     func cache(_ value: Value, key: Key, expiry: Expiry) {
         self.insert(value, for: key, expiry: expiry)
     }

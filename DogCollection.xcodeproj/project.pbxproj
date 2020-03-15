@@ -30,8 +30,8 @@
 		D649C5B724024A0B0053CDD7 /* BreedRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D649C5B624024A0B0053CDD7 /* BreedRow.swift */; };
 		D649C5B924024A930053CDD7 /* BreedListResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D649C5B824024A930053CDD7 /* BreedListResultView.swift */; };
 		D64A6E69240A0A8200E6AE89 /* LoadableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E68240A0A8200E6AE89 /* LoadableTests.swift */; };
-		D64A6E6C240AFE3C00E6AE89 /* DogImageDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E6B240AFE3C00E6AE89 /* DogImageDataCache.swift */; };
-		D64A6E6E240B00F800E6AE89 /* DogImageDataMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E6D240B00F800E6AE89 /* DogImageDataMemoryCache.swift */; };
+		D64A6E6C240AFE3C00E6AE89 /* ImageDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E6B240AFE3C00E6AE89 /* ImageDataCache.swift */; };
+		D64A6E6E240B00F800E6AE89 /* ImageDataMemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E6D240B00F800E6AE89 /* ImageDataMemoryCache.swift */; };
 		D64A6E71240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E70240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift */; };
 		D64A6E73240B44E500E6AE89 /* ImageDataInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E72240B44E500E6AE89 /* ImageDataInteractorTests.swift */; };
 		D64A6E75240B462300E6AE89 /* MockedLocalCaches.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A6E74240B462300E6AE89 /* MockedLocalCaches.swift */; };
@@ -130,8 +130,8 @@
 		D649C5B624024A0B0053CDD7 /* BreedRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedRow.swift; sourceTree = "<group>"; };
 		D649C5B824024A930053CDD7 /* BreedListResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListResultView.swift; sourceTree = "<group>"; };
 		D64A6E68240A0A8200E6AE89 /* LoadableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableTests.swift; sourceTree = "<group>"; };
-		D64A6E6B240AFE3C00E6AE89 /* DogImageDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageDataCache.swift; sourceTree = "<group>"; };
-		D64A6E6D240B00F800E6AE89 /* DogImageDataMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImageDataMemoryCache.swift; sourceTree = "<group>"; };
+		D64A6E6B240AFE3C00E6AE89 /* ImageDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataCache.swift; sourceTree = "<group>"; };
+		D64A6E6D240B00F800E6AE89 /* ImageDataMemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataMemoryCache.swift; sourceTree = "<group>"; };
 		D64A6E70240B32CB00E6AE89 /* ImageDataMemoryCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataMemoryCacheTests.swift; sourceTree = "<group>"; };
 		D64A6E72240B44E500E6AE89 /* ImageDataInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataInteractorTests.swift; sourceTree = "<group>"; };
 		D64A6E74240B462300E6AE89 /* MockedLocalCaches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedLocalCaches.swift; sourceTree = "<group>"; };
@@ -345,15 +345,6 @@
 			path = BreedList;
 			sourceTree = "<group>";
 		};
-		D64A6E6A240AFE0700E6AE89 /* DogImageDataCache */ = {
-			isa = PBXGroup;
-			children = (
-				D64A6E6B240AFE3C00E6AE89 /* DogImageDataCache.swift */,
-				D64A6E6D240B00F800E6AE89 /* DogImageDataMemoryCache.swift */,
-			);
-			path = DogImageDataCache;
-			sourceTree = "<group>";
-		};
 		D64A6E6F240B2FB100E6AE89 /* DogImageDataCache */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,7 +403,6 @@
 			isa = PBXGroup;
 			children = (
 				D6D91D4324160E8B00A006CB /* LocalCache */,
-				D64A6E6A240AFE0700E6AE89 /* DogImageDataCache */,
 				D64AD3EA2411DAE1000A7138 /* FavoriteDogImageURLsStore */,
 				D6D91D362415C92700A006CB /* HTTPClient */,
 				D636F920240636A3004C7715 /* WebAPI */,
@@ -531,6 +521,8 @@
 			children = (
 				D6D91D3F24160B0E00A006CB /* CacheError.swift */,
 				D6D91D4124160B3700A006CB /* MemoryCache.swift */,
+				D64A6E6B240AFE3C00E6AE89 /* ImageDataCache.swift */,
+				D64A6E6D240B00F800E6AE89 /* ImageDataMemoryCache.swift */,
 			);
 			path = LocalCache;
 			sourceTree = "<group>";
@@ -707,12 +699,12 @@
 				D636F93724073619004C7715 /* AppState.swift in Sources */,
 				D655EE7B2414641200E33C98 /* CollectionView.swift in Sources */,
 				D6DAC49D2411EBDD001A5351 /* DogImageListLoader.swift in Sources */,
-				D64A6E6E240B00F800E6AE89 /* DogImageDataMemoryCache.swift in Sources */,
+				D64A6E6E240B00F800E6AE89 /* ImageDataMemoryCache.swift in Sources */,
 				D636F93924073B7A004C7715 /* Loadable.swift in Sources */,
 				D6BBA072241CC73100199481 /* FavoriteDogImageCollection.swift in Sources */,
 				D69F49EC240344310006D88F /* DogImageListViewState.swift in Sources */,
 				D69F49F024034D330006D88F /* DogImageItemViewState.swift in Sources */,
-				D64A6E6C240AFE3C00E6AE89 /* DogImageDataCache.swift in Sources */,
+				D64A6E6C240AFE3C00E6AE89 /* ImageDataCache.swift in Sources */,
 				D6DC716A2404D90C007A5C6F /* ImageDataWebLoader.swift in Sources */,
 				D649C5A324020B040053CDD7 /* BreedListViewState.swift in Sources */,
 				D6D91D3A2415D04B00A006CB /* Response.swift in Sources */,
