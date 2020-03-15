@@ -11,7 +11,9 @@ import SwiftUI
 struct FavoriteDogImageCollection: View {
     @Environment(\.injected) var container: DIContainer
     @Binding var dogImages: Loadable<FavoriteDogImages>
-    
+
+    private let headerSize: CGFloat = 44
+
     var body: some View {
         GeometryReader { proxy in
             ScrollView {
@@ -22,36 +24,6 @@ struct FavoriteDogImageCollection: View {
                 }
             }
         }
-    }
-
-    private let headerSize: CGFloat = 44
-
-    private func height(proxy: GeometryProxy) -> CGFloat {
-        guard let dogs = dogImages.value else {
-            return .zero
-        }
-        let elementSize = self.size(for: proxy)
-        let typesCount = dogs.count
-        let columnCount = self.columnCount(for: proxy.size)
-        var rowCount = 0
-        for breed in dogs.keys {
-            let count = dogs[breed]?.count ?? 0
-            let addition = (count % columnCount == 0) ? 0 : 1
-            rowCount += Int(floor(Double(count / columnCount))) + addition
-        }
-        return CGFloat(rowCount) * elementSize.height + CGFloat(typesCount) * headerSize
-    }
-
-    private func height(of breed: BreedType, proxy: GeometryProxy) -> CGFloat {
-        guard let dogs = dogImages.value?[breed] else {
-            return .zero
-        }
-        let elementSize = self.size(for: proxy)
-        let columnCount = self.columnCount(for: proxy.size)
-        let elementCount = dogs.count
-        let addition = (elementCount % columnCount == 0) ? 0 : 1
-        let rowCount = Int(floor(Double(elementCount / columnCount))) + addition
-        return CGFloat(rowCount) * elementSize.height + headerSize
     }
 
     private func createList(of breed: BreedType, proxy: GeometryProxy) -> some View {
@@ -69,6 +41,19 @@ struct FavoriteDogImageCollection: View {
             }
         } .frame(height: self.height(of: breed, proxy: proxy))
     }
+
+    private func height(of breed: BreedType, proxy: GeometryProxy) -> CGFloat {
+        guard let dogs = dogImages.value?[breed] else {
+            return .zero
+        }
+        let elementSize = self.size(for: proxy)
+        let columnCount = self.columnCount(for: proxy.size)
+        let elementCount = dogs.count
+        let addition = (elementCount % columnCount == 0) ? 0 : 1
+        let rowCount = Int(floor(Double(elementCount / columnCount))) + addition
+        return CGFloat(rowCount) * elementSize.height + headerSize
+    }
+
 
     private func createDogImageItems(for proxy: GeometryProxy, with rowModel: RowModel) -> some View {
         let size = self.size(for: proxy)

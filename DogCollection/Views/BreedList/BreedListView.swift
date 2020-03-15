@@ -39,7 +39,7 @@ struct BreedListView: View {
     private func loadedView(_ breeds: [Breed]) -> some View {
         VStack {
             SearchBar(text: $viewState.searchText)
-            BreedListResultView(breeds: breeds)
+            BreedListResultView(breeds: breeds.sorted(by: { $0.name < $1.name }))
             Spacer()
         }
     }

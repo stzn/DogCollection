@@ -48,16 +48,6 @@ struct DogImageCollection: View {
     }
 }
 
-private struct RowModel: Identifiable {
-    let id: String
-    let items: [DogImage]
-    init(items: [DogImage]) {
-        self.id = UUID().uuidString
-        self.items = items
-    }
-}
-
-
 struct DogImageCollection_Previews: PreviewProvider {
     static var previews: some View {
         DogImageCollection(breed: "Tom", dogImages: .constant(.loaded([DogImage.anyDogImage])))
