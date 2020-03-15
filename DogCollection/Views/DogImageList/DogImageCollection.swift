@@ -23,11 +23,9 @@ struct DogImageCollection: View {
     private var collectionView: some View {
         GeometryReader { proxy in
             CollectionView(data: self.dogImages.value ?? [], layout: flowLayout, elementSize: self.size(for: proxy)) {
-                DogImageItem(dogImage: $0, size: self.size(for: proxy), onTap: self.toggleFavorite(of:))
+                DogImageItem(dogImage: $0, size: self.size(for: proxy), showFavorite: $0.isFavorite, onTap: self.toggleFavorite(of:))
             }
         }
-        .navigationBarTitle(self.breed)
-        .edgesIgnoringSafeArea([.bottom])
     }
 
     // TODO: 更新のたびに画面全体が再レンダリングされる
@@ -39,8 +37,6 @@ struct DogImageCollection: View {
                     self.createDogImageItems(for: geometry, with: rowModel)
                 }
             }.id(UUID())// これがないとレイアウトが崩れる
-                .navigationBarTitle(self.breed)
-                .edgesIgnoringSafeArea([.bottom])
                 .onAppear {
                     UITableView.appearance().separatorStyle = .none
             }
@@ -51,7 +47,7 @@ struct DogImageCollection: View {
         let size = self.size(for: geometry)
         return HStack(spacing: 0) {
             ForEach(rowModel.items) { image in
-                DogImageItem(dogImage: image, size: size, onTap: self.toggleFavorite(of:))
+                DogImageItem(dogImage: image, size: size, showFavorite: image.isFavorite, onTap: self.toggleFavorite(of:))
             }
         }.listRowInsets(EdgeInsets())
     }

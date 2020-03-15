@@ -30,11 +30,13 @@ extension DIContainer {
         let breedListInteractor: BreedListInteractor
         let dogImageListInteractor: DogImageListInteractor
         let imageDataInteractor: ImageDataInteractor
+        let favoriteDogImageListInteractor: FavoriteDogImageListInteractor
 
         static var stub: Self {
             .init(breedListInteractor: StubBreedListInteractor(),
                   dogImageListInteractor: StubDogImageListInteractor(),
-                  imageDataInteractor: StubImageDataInteractor())
+                  imageDataInteractor: StubImageDataInteractor(),
+                  favoriteDogImageListInteractor: StubFavoriteDogImageListInteractor())
         }
     }
 }

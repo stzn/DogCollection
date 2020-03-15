@@ -10,13 +10,19 @@ import SwiftUI
 
 struct ContentView: View {
     private let container: DIContainer
-
     init(container: DIContainer) {
         self.container = container
     }
 
     var body: some View {
-        BreedListView().environment(\.injected, container)
+        TabView {
+            BreedListView()
+                .environment(\.injected, container)
+                .tabItem { Text("Search") }
+            FavoriteDogImageListView()
+                .environment(\.injected, container)
+                .tabItem { Text("Favorite") }
+        }.font(.headline)
     }
 }
 

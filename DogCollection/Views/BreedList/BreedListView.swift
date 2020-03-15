@@ -16,7 +16,6 @@ struct BreedListView: View {
         NavigationView {
             self.content
                 .navigationBarTitle("Search Dogs")
-                .edgesIgnoringSafeArea(.bottom)
         }
     }
 

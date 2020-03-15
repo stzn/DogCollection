@@ -14,7 +14,14 @@ struct DogImageItem: View {
 
     let dogImage: DogImage
     let size: CGSize
-    let onTap: (DogImage) -> Void
+    let showFavorite: Bool
+    let onTap: ((DogImage) -> Void)?
+    init(dogImage: DogImage, size: CGSize, showFavorite: Bool, onTap: ((DogImage) -> Void)? = nil) {
+        self.dogImage = dogImage
+        self.size = size
+        self.showFavorite = showFavorite
+        self.onTap = onTap
+    }
 
     private let placeholder = Image(uiImage: UIImage(systemName: "photo")!)
 
@@ -53,12 +60,12 @@ struct DogImageItem: View {
                         .frame(width: size.width, height: size.height)
                         .aspectRatio(contentMode: .fill)
                         .clipped()
-                    if dogImage.isFavorite {
+                    if showFavorite {
                         FavoriteBadge()
                             .frame(width: size.width / 4, height: size.width / 4)
                     }
                 }.onTapGesture {
-                    self.onTap(self.dogImage)
+                    self.onTap?(self.dogImage)
             })
         } else {
             return AnyView(placeholder)
@@ -77,6 +84,6 @@ struct DogImageItem: View {
 
 struct DogImageItem_Previews: PreviewProvider {
     static var previews: some View {
-        DogImageItem(dogImage: DogImage.anyDogImage, size: CGSize(width: 100, height: 100), onTap: { _ in })
+        DogImageItem(dogImage: DogImage.anyDogImage, size: CGSize(width: 100, height: 100), showFavorite: true, onTap: { _ in })
     }
 }

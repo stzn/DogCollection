@@ -1,26 +1,28 @@
 //
-//  DogImageListView.swift
+//  FavoriteDogImageListView.swift
 //  DogCollection
 //
-//  Created by Shinzan Takata on 2020/02/24.
+//  Created by Shinzan Takata on 2020/03/14.
 //  Copyright © 2020 shiz. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 
-struct DogImageListView: View {
-    let breed: String
-
+struct FavoriteDogImageListView: View {
     @Environment(\.injected) var container: DIContainer
-    @State var viewModel = DogImageListViewState()
+    @State var viewModel = FavoriteDogImageListViewState()
 
     var body: some View {
-        VStack(spacing: 0) {
-            self.content
-            Spacer()
+        NavigationView {
+            VStack(spacing: 0) {
+                self.content
+                Spacer()
+            }
+            .navigationBarTitle("Favorite")
+            .onDisappear {
+                self.$viewModel.dogImages.wrappedValue = .notRequested
+            }
         }
-        .navigationBarTitle(self.breed)
     }
 
     private var content: some View {
@@ -42,7 +44,7 @@ struct DogImageListView: View {
     }
 
     private var loadedView: some View {
-        DogImageCollection(breed: breed, dogImages: $viewModel.dogImages)
+        FavoriteDogImageCollection(dogImages: $viewModel.dogImages)
     }
 
     private func errorView(_ error: Error) -> some View {
@@ -51,12 +53,12 @@ struct DogImageListView: View {
     }
 
     private func loadDogImages() {
-        container.interactors.dogImageListInteractor.loadDogImages(of: breed, dogImages: $viewModel.dogImages)
+        container.interactors.favoriteDogImageListInteractor.load(dogImages: $viewModel.dogImages)
     }
 }
 
-struct DogImageListView_Previews: PreviewProvider {
+struct FavoriteDogImageListView_Previews: PreviewProvider {
     static var previews: some View {
-        DogImageListView(breed: "test")
+        FavoriteDogImageListView()
     }
 }

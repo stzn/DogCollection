@@ -10,8 +10,10 @@ import Combine
 import Foundation
 import SwiftUI
 
+typealias FavoriteDogImages = [BreedType: [DogImage]]
+
 protocol FavoriteDogImageListInteractor {
-    func load(dogImages: Binding<Loadable<[BreedType: [DogImage]]>>)
+    func load(dogImages: Binding<Loadable<FavoriteDogImages>>)
 }
 
 final class LiveFavoriteDogImageListInteractor: FavoriteDogImageListInteractor {
@@ -20,7 +22,7 @@ final class LiveFavoriteDogImageListInteractor: FavoriteDogImageListInteractor {
         self.favoriteDogImageStore = favoriteDogImageStore
     }
 
-    func load(dogImages: Binding<Loadable<[BreedType : [DogImage]]>>) {
+    func load(dogImages: Binding<Loadable<FavoriteDogImages>>) {
         let cancelBag = CancelBag()
         dogImages.wrappedValue = .isLoading(last: dogImages.wrappedValue.value, cancelBag: cancelBag)
         favoriteDogImageStore.loadAll()
@@ -33,4 +35,8 @@ final class LiveFavoriteDogImageListInteractor: FavoriteDogImageListInteractor {
                 }
         }.store(in: cancelBag)
     }
+}
+
+final class StubFavoriteDogImageListInteractor: FavoriteDogImageListInteractor {
+    func load(dogImages: Binding<Loadable<FavoriteDogImages>>) {}
 }
