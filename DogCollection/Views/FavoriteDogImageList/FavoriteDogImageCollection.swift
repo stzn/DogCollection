@@ -14,16 +14,21 @@ struct FavoriteDogImageCollection: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ForEach(self.dogImages.value?.keys.map { $0 } ?? [], id: \.self) { breed in
-                self.createCollectionView(of: breed, proxy: proxy)
+            VStack {
+                ForEach(self.dogImages.value?.keys.map { $0 } ?? [], id: \.self) { breed in
+                    self.createCollectionView(of: breed, proxy: proxy)
+                }
             }
         }
     }
 
     private func createCollectionView(of breed: BreedType, proxy: GeometryProxy) -> some View {
-        CollectionView(data: self.dogImages.value?[breed] ?? [], layout: flowLayout, elementSize: self.size(for: proxy)) {
-            DogImageItem(dogImage: $0,
-                         size: self.size(for: proxy), showFavorite: false)
+        VStack(spacing: 8) {
+            Text(breed).font(.title).multilineTextAlignment(.leading)
+            CollectionView(data: self.dogImages.value?[breed] ?? [], layout: flowLayout, elementSize: self.size(for: proxy)) {
+                DogImageItem(dogImage: $0,
+                             size: self.size(for: proxy), showFavorite: false)
+            }
         }
     }
 
@@ -65,6 +70,9 @@ struct FavoriteDogImageCollection: View {
 
 struct FavoriteDogImageCollection_Previews: PreviewProvider {
     static var previews: some View {
-        FavoriteDogImageCollection(dogImages: .constant(.loaded(["breed":[DogImage.anyDogImage]])))
+        FavoriteDogImageCollection(
+            dogImages: .constant(
+                .loaded(["breed":[DogImage.anyDogImage],
+                         "breed2":[DogImage.anyDogImage]])))
     }
 }
