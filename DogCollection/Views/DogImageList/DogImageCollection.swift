@@ -18,8 +18,6 @@ struct DogImageCollection: View {
         self.collectionView
     }
 
-    // TODO: 表示時のアニメーション
-
     private var collectionView: some View {
         GeometryReader { proxy in
             CollectionView(data: self.dogImages.value ?? [], layout: flowLayout, elementSize: self.size(for: proxy)) {

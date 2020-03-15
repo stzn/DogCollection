@@ -16,7 +16,8 @@ struct DogImageItem: View {
     let size: CGSize
     let showFavorite: Bool
     let onTap: ((DogImage) -> Void)?
-    init(dogImage: DogImage, size: CGSize, showFavorite: Bool, onTap: ((DogImage) -> Void)? = nil) {
+    init(dogImage: DogImage, size: CGSize, showFavorite: Bool,
+         onTap: ((DogImage) -> Void)? = nil) {
         self.dogImage = dogImage
         self.size = size
         self.showFavorite = showFavorite
@@ -43,7 +44,9 @@ struct DogImageItem: View {
     }
 
     private var notRequestedView: some View {
-        Text("").onAppear { self.loadDogImageData() }
+        Text("")
+            .frame(width: size.width, height: size.height)
+            .onAppear { self.loadDogImageData() }
     }
 
     private var isLoadingView: some View {
