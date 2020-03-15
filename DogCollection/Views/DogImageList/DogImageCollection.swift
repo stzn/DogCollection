@@ -28,56 +28,15 @@ struct DogImageCollection: View {
         }
     }
 
-    // TODO: 更新のたびに画面全体が再レンダリングされる
-
-    private var list: some View {
-        GeometryReader { proxy in
-            List {
-                ForEach(self.dataCollection(size: proxy.size)) { rowModel in
-                    self.createDogImageItems(for: proxy, with: rowModel)
-                }
-            }.id(UUID())// これがないとレイアウトが崩れる
-                .onAppear {
-                    UITableView.appearance().separatorStyle = .none
-            }
-        }
-    }
-
-    private func createDogImageItems(for proxy: GeometryProxy, with rowModel: RowModel) -> some View {
-        let size = self.size(for: proxy)
-        return HStack(spacing: 0) {
-            ForEach(rowModel.items) { image in
-                DogImageItem(dogImage: image, size: size, showFavorite: image.isFavorite, onTap: self.toggleFavorite(of:))
-            }
-        }.listRowInsets(EdgeInsets())
-    }
-    
     private func size(for proxy: GeometryProxy) -> CGSize {
         let size = proxy.size.width / CGFloat(columnCount(for: proxy.size))
         return CGSize(width: size, height: size)
     }
-    
+
     private func columnCount(for size: CGSize) -> Int {
         Int(ceil(size.width / 138))
     }
-    
-    private func dataCollection(size: CGSize) -> [RowModel] {
-        guard size != .zero else {
-            return []
-        }
-        
-        let strideSize = columnCount(for: size)
-        let dogs = dogImages.value ?? []
-        let rowModels = stride(from: dogs.startIndex, to: dogs.endIndex, by: strideSize)
-            .map { index -> RowModel in
-                let range = index..<min(index + strideSize, dogs.endIndex)
-                let subItems = dogs[range]
-                return RowModel(items: Array(subItems))
-        }
-        
-        return rowModels
-    }
-    
+
     private func toggleFavorite(of dogImage: DogImage) {
         if !dogImage.isFavorite {
             container.interactors.dogImageListInteractor

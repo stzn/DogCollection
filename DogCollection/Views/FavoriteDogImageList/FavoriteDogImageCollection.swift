@@ -14,26 +14,73 @@ struct FavoriteDogImageCollection: View {
     
     var body: some View {
         GeometryReader { proxy in
-            VStack {
-                ForEach(self.dogImages.value?.keys.map { $0 } ?? [], id: \.self) { breed in
-                    self.createCollectionView(of: breed, proxy: proxy)
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(self.dogImages.value?.keys.map { $0 } ?? [], id: \.self) { breed in
+                        self.createList(of: breed, proxy: proxy)
+                    }
                 }
             }
         }
     }
 
-    private func createCollectionView(of breed: BreedType, proxy: GeometryProxy) -> some View {
-        VStack(spacing: 8) {
-            Text(breed).font(.title).multilineTextAlignment(.leading)
-            CollectionView(data: self.dogImages.value?[breed] ?? [], layout: flowLayout, elementSize: self.size(for: proxy)) {
-                DogImageItem(dogImage: $0,
-                             size: self.size(for: proxy), showFavorite: false)
-            }
+    private let headerSize: CGFloat = 44
+
+    private func height(proxy: GeometryProxy) -> CGFloat {
+        guard let dogs = dogImages.value else {
+            return .zero
         }
+        let elementSize = self.size(for: proxy)
+        let typesCount = dogs.count
+        let columnCount = self.columnCount(for: proxy.size)
+        var rowCount = 0
+        for breed in dogs.keys {
+            let count = dogs[breed]?.count ?? 0
+            let addition = (count % columnCount == 0) ? 0 : 1
+            rowCount += Int(floor(Double(count / columnCount))) + addition
+        }
+        return CGFloat(rowCount) * elementSize.height + CGFloat(typesCount) * headerSize
+    }
+
+    private func height(of breed: BreedType, proxy: GeometryProxy) -> CGFloat {
+        guard let dogs = dogImages.value?[breed] else {
+            return .zero
+        }
+        let elementSize = self.size(for: proxy)
+        let columnCount = self.columnCount(for: proxy.size)
+        let elementCount = dogs.count
+        let addition = (elementCount % columnCount == 0) ? 0 : 1
+        let rowCount = Int(floor(Double(elementCount / columnCount))) + addition
+        return CGFloat(rowCount) * elementSize.height + headerSize
+    }
+
+    private func createList(of breed: BreedType, proxy: GeometryProxy) -> some View {
+        VStack {
+            Text(breed)
+                .font(.title)
+                .frame(height: headerSize)
+            List {
+                ForEach(self.dataCollection(of: breed, size: proxy.size)) { rowModel in
+                    self.createDogImageItems(for: proxy, with: rowModel)
+                }
+            }
+                .onAppear {
+                    UITableView.appearance().separatorStyle = .none
+            }
+        } .frame(height: self.height(of: breed, proxy: proxy))
+    }
+
+    private func createDogImageItems(for proxy: GeometryProxy, with rowModel: RowModel) -> some View {
+        let size = self.size(for: proxy)
+        return HStack(spacing: 0) {
+            ForEach(rowModel.items) { image in
+                DogImageItem(dogImage: image, size: size, showFavorite: false)
+            }
+        }.listRowInsets(EdgeInsets())
     }
 
     private func size(for proxy: GeometryProxy) -> CGSize {
-        let size = proxy.size.width / CGFloat(columnCount(for: proxy.size))
+        let size = proxy.size.width / CGFloat(self.columnCount(for: proxy.size))
         return CGSize(width: size, height: size)
     }
 
@@ -46,7 +93,7 @@ struct FavoriteDogImageCollection: View {
             return []
         }
 
-        let strideSize = columnCount(for: size)
+        let strideSize = self.columnCount(for: size)
         let dogs = dogImages.value?[breed] ?? []
         let rowModels = stride(from: dogs.startIndex, to: dogs.endIndex, by: strideSize)
             .map { index -> RowModel in
