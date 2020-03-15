@@ -32,8 +32,8 @@ struct FavoriteDogImageCollection: View {
         }
     }
 
-    private func size(for geometry: GeometryProxy) -> CGSize {
-        let size = geometry.size.width / CGFloat(columnCount(for: geometry.size))
+    private func size(for proxy: GeometryProxy) -> CGSize {
+        let size = proxy.size.width / CGFloat(columnCount(for: proxy.size))
         return CGSize(width: size, height: size)
     }
 
@@ -41,7 +41,7 @@ struct FavoriteDogImageCollection: View {
         Int(ceil(size.width / 138))
     }
 
-    private func dataCollection(for breed: BreedType, size: CGSize) -> [RowModel] {
+    private func dataCollection(of breed: BreedType, size: CGSize) -> [RowModel] {
         guard size != .zero else {
             return []
         }

@@ -31,10 +31,10 @@ struct DogImageCollection: View {
     // TODO: 更新のたびに画面全体が再レンダリングされる
 
     private var list: some View {
-        GeometryReader { geometry in
+        GeometryReader { proxy in
             List {
-                ForEach(self.dataCollection(size: geometry.size)) { rowModel in
-                    self.createDogImageItems(for: geometry, with: rowModel)
+                ForEach(self.dataCollection(size: proxy.size)) { rowModel in
+                    self.createDogImageItems(for: proxy, with: rowModel)
                 }
             }.id(UUID())// これがないとレイアウトが崩れる
                 .onAppear {
@@ -43,8 +43,8 @@ struct DogImageCollection: View {
         }
     }
 
-    private func createDogImageItems(for geometry: GeometryProxy, with rowModel: RowModel) -> some View {
-        let size = self.size(for: geometry)
+    private func createDogImageItems(for proxy: GeometryProxy, with rowModel: RowModel) -> some View {
+        let size = self.size(for: proxy)
         return HStack(spacing: 0) {
             ForEach(rowModel.items) { image in
                 DogImageItem(dogImage: image, size: size, showFavorite: image.isFavorite, onTap: self.toggleFavorite(of:))
@@ -52,8 +52,8 @@ struct DogImageCollection: View {
         }.listRowInsets(EdgeInsets())
     }
     
-    private func size(for geometry: GeometryProxy) -> CGSize {
-        let size = geometry.size.width / CGFloat(columnCount(for: geometry.size))
+    private func size(for proxy: GeometryProxy) -> CGSize {
+        let size = proxy.size.width / CGFloat(columnCount(for: proxy.size))
         return CGSize(width: size, height: size)
     }
     
@@ -81,10 +81,10 @@ struct DogImageCollection: View {
     private func toggleFavorite(of dogImage: DogImage) {
         if !dogImage.isFavorite {
             container.interactors.dogImageListInteractor
-                .addFavoriteDogImage(dogImage.imageURL, for: breed, dogImages: $dogImages)
+                .addFavoriteDogImage(dogImage.imageURL, of: breed, dogImages: $dogImages)
         } else {
             container.interactors.dogImageListInteractor
-                .removeFavoriteDogImage(dogImage.imageURL, for: breed, dogImages: $dogImages)
+                .removeFavoriteDogImage(dogImage.imageURL, of: breed, dogImages: $dogImages)
         }
     }
 }

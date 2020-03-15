@@ -12,16 +12,16 @@ struct BreedListResultView: View {
     let breeds: [Breed]
 
     var body: some View {
-        GeometryReader { geometry in
-            self.content(for: geometry)
+        GeometryReader { proxy in
+            self.content(for: proxy)
         }
     }
 
-    private func content(for geometry: GeometryProxy) -> AnyView {
+    private func content(for proxy: GeometryProxy) -> AnyView {
         if !self.breeds.isEmpty {
             return AnyView(loadedView)
         } else {
-            return AnyView(noResultView(for: geometry))
+            return AnyView(noResultView(for: proxy))
         }
     }
 
@@ -39,13 +39,13 @@ struct BreedListResultView: View {
         DogImageListView(breed: breed.name)
     }
 
-    private func noResultView(for geometry: GeometryProxy) -> some View {
+    private func noResultView(for proxy: GeometryProxy) -> some View {
         VStack(alignment: .center) {
             Spacer().frame(height: 20)
             HStack {
                 Text("No Results")
                 Image(systemName: "exclamationmark.triangle")
-            }.font(.headline).frame(width: geometry.size.width)
+            }.font(.headline).frame(width: proxy.size.width)
         }
     }
 }

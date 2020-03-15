@@ -11,9 +11,9 @@ import Foundation
 import SwiftUI
 
 protocol DogImageListInteractor {
-    func loadDogImages(of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
-    func addFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
-    func removeFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
+    func loadDogImages(of breedType: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
+    func addFavoriteDogImage(_ url: URL, of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
+    func removeFavoriteDogImage(_ url: URL, of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>)
 }
 
 struct LiveDogImageListInteractor: DogImageListInteractor {
@@ -45,13 +45,13 @@ struct LiveDogImageListInteractor: DogImageListInteractor {
         }
     }
 
-    func addFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
+    func addFavoriteDogImage(_ url: URL, of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
         guard var dogs = dogImages.wrappedValue.value,
             let index = dogs.firstIndex(where: { $0.imageURL == url }) else {
                 return
         }
         let cancelBag = CancelBag()
-        favoriteDogImageStore.register(url: url, for: breed)
+        favoriteDogImageStore.register(url: url, of: breed)
             .sinkToResult { result in
                 switch result {
                 case .success:
@@ -64,13 +64,13 @@ struct LiveDogImageListInteractor: DogImageListInteractor {
         }.store(in: cancelBag)
     }
 
-    func removeFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
+    func removeFavoriteDogImage(_ url: URL, of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {
         guard var dogs = dogImages.wrappedValue.value,
             let index = dogs.firstIndex(where: { $0.imageURL == url }) else {
                 return
         }
         let cancelBag = CancelBag()
-        favoriteDogImageStore.unregister(url: url, for: breed)
+        favoriteDogImageStore.unregister(url: url, of: breed)
             .sinkToResult { result in
                 switch result {
                 case .success:
@@ -85,7 +85,7 @@ struct LiveDogImageListInteractor: DogImageListInteractor {
 }
 
 struct StubDogImageListInteractor: DogImageListInteractor {
-    func addFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
+    func addFavoriteDogImage(_ url: URL, of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
     func loadDogImages(of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
-    func removeFavoriteDogImage(_ url: URL, for breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
+    func removeFavoriteDogImage(_ url: URL, of breed: BreedType, dogImages: Binding<Loadable<[DogImage]>>) {}
 }

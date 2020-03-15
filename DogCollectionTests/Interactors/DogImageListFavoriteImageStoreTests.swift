@@ -42,7 +42,7 @@ class DogImageListFavoriteImageStoreTests: XCTestCase, PublisherTestCase {
                expected: [
                 .loaded([initialDogImage]),
                 .loaded([DogImage(imageURL: initialDogImage.imageURL, isFavorite: true)])],
-               when: {  sut.addFavoriteDogImage(storeData.url, for: storeData.breed, dogImages: $0) })
+               when: {  sut.addFavoriteDogImage(storeData.url, of: storeData.breed, dogImages: $0) })
 
         store.verify()
     }
@@ -60,7 +60,7 @@ class DogImageListFavoriteImageStoreTests: XCTestCase, PublisherTestCase {
                expected: [
                 .loaded([initialDogImage]),
                 .loaded([DogImage(imageURL: removeDogImageURL, isFavorite: false)])],
-               when: { sut.removeFavoriteDogImage(storedData.url, for: storedData.breed, dogImages: $0) })
+               when: { sut.removeFavoriteDogImage(storedData.url, of: storedData.breed, dogImages: $0) })
 
         store.verify()
     }

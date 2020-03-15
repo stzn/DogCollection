@@ -18,6 +18,6 @@ protocol FavoriteDogImageURLsLoader {
 }
 
 protocol FavoriteDogImageURLsRegistrator {
-    func register(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error>
-    func unregister(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error>
+    func register(url: URL, of breed: BreedType) -> AnyPublisher<Void, Error>
+    func unregister(url: URL, of breed: BreedType) -> AnyPublisher<Void, Error>
 }

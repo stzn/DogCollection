@@ -37,12 +37,12 @@ final class MockedFavoriteDogImageStore: FavoriteDogImageURLsStore, Mock {
         return favoriteAllDogImageURLListResponse.publish()
     }
 
-    func register(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
+    func register(url: URL, of breed: BreedType) -> AnyPublisher<Void, Error> {
         actions.factual.append(.register(StoredData(breed: breed, url: url)))
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
-    func unregister(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
+    func unregister(url: URL, of breed: BreedType) -> AnyPublisher<Void, Error> {
         actions.factual.append(.unregister(StoredData(breed: breed, url: url)))
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }

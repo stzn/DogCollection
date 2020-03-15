@@ -23,12 +23,12 @@ final class FavoriteDogImageURLsMemoryStore: FavoriteDogImageURLsStore {
         return Just(urlsPerBreedType).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
-    func register(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
+    func register(url: URL, of breed: BreedType) -> AnyPublisher<Void, Error> {
         urlsPerBreedType[breed, default: []].insert(url)
         return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
-    func unregister(url: URL, for breed: BreedType) -> AnyPublisher<Void, Error> {
+    func unregister(url: URL, of breed: BreedType) -> AnyPublisher<Void, Error> {
         if var urls = urlsPerBreedType[breed] {
             urls.remove(url)
             urlsPerBreedType[breed] = urls
