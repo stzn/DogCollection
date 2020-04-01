@@ -35,9 +35,7 @@ struct DogImageItem: View {
         case .notRequested:
             return AnyView(notRequestedView)
         case .isLoading:
-            return AnyView(isLoadingView
-                .onDisappear { self.viewModel.imageData.cancelLoading() }
-            )
+            return AnyView(isLoadingView)
         case let .loaded(value):
             return loadedView(value)
         case .failed:
@@ -55,6 +53,7 @@ struct DogImageItem: View {
         LoadingView(message: "")
             .frame(width: size.width, height: size.height)
             .animation(.none)
+            .onDisappear { self.viewModel.imageData.cancelLoading() }
     }
 
     private func loadedView(_ data: Data) -> AnyView {
